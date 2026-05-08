@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PSI-Tracker V1.0 “Aegis Perfecta” – Ultimate Proxy Auditor</title>
+    <title>Psiphon Tracker V 1.0 "DEY Warrior" – تقدیم به جاویدنامان ایران در دی ماه ۱۴۰۴</title>
     <style>
-        /* ========== FONTS (System Native, Formal) ========== */
         body {
             font-family: 'B Nazanin', 'Vazirmatn', 'Tahoma', 'Segoe UI', sans-serif;
         }
@@ -16,7 +15,6 @@
             font-family: 'B Nazanin', 'Vazirmatn', 'Tahoma', sans-serif;
             font-weight: 700;
         }
-
         :root {
             --bg: #0a0a14;
             --surface: #12122a;
@@ -64,8 +62,6 @@
             position: relative;
             z-index: 1;
         }
-
-        /* ========== CANVAS GLOBE BANNER ========== */
         .hero {
             position: relative;
             text-align: center;
@@ -126,8 +122,6 @@
             margin-top: 0.8rem;
             letter-spacing: 2px;
         }
-
-        /* ========== HERO STATS ========== */
         .hero-stats {
             position: relative;
             z-index: 1;
@@ -144,7 +138,7 @@
             border-radius: 16px;
             padding: 0.9rem 1.5rem;
             backdrop-filter: blur(6px);
-            min-width: 160px;
+            min-width: 170px;
         }
         .stat-value {
             font-size: 1.9rem;
@@ -178,8 +172,6 @@
             50% { box-shadow: 0 0 22px rgba(122,162,247,0.7); }
             100% { box-shadow: 0 0 8px var(--glow); }
         }
-
-        /* ========== BILINGUAL HEADINGS ========== */
         .bilingual-heading {
             display: flex;
             justify-content: space-between;
@@ -198,7 +190,6 @@
         }
         .en-heading { flex: 1; direction: ltr; text-align: left; }
         .fa-heading { flex: 1; direction: rtl; text-align: right; }
-
         .row {
             display: flex;
             gap: 2rem;
@@ -220,8 +211,6 @@
             .hero { height: auto; }
             .hero-content h1 { font-size: 3rem; }
         }
-
-        /* ========== TABLES ========== */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -245,7 +234,6 @@
         }
         tr:last-child td { border-bottom: none; }
         tr:hover td { background: rgba(122, 162, 247, 0.04); }
-
         .tag {
             display: inline-block;
             background: var(--accent);
@@ -256,8 +244,6 @@
             font-weight: 700;
             margin: 0 2px;
         }
-
-        /* ========== CODE BLOCKS ========== */
         .code-block {
             background: #0d0d1f;
             border: 1px solid var(--border);
@@ -273,7 +259,6 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
-
         .back-to-top {
             position: fixed;
             bottom: 2rem;
@@ -293,7 +278,6 @@
             transition: 0.3s;
         }
         .back-to-top:hover { background: #9aa8f0; transform: translateY(-3px); }
-
         ul.feature-list { list-style: none; padding-right: 0; }
         .feature-list li::before {
             content: '✦';
@@ -302,24 +286,33 @@
         }
         .col-en ul.feature-list { padding-left: 0; }
         .col-en .feature-list li::before { margin-right: 0.5rem; margin-left: 0; }
+        .launcher-menu {
+            background: #0d0d1f;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            direction: ltr;
+            text-align: left;
+            color: #c0caf5;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
     </style>
 </head>
 <body>
 <div class="container">
 
-    <!-- ========== HERO BANNER WITH CANVAS GLOBE & LASERS ========== -->
+    <!-- ========== HERO BANNER ========== -->
     <div class="hero">
         <canvas id="globeCanvas"></canvas>
         <div class="hero-content">
-            <h1>PSI-Tracker</h1>
-            <div class="subtitle">Unbreakable Proxy Auditor for Censored Networks</div><br>
-            <span class="version-badge">V1.0 “Aegis Perfecta”</span>
+            <h1>Psiphon Tracker</h1>
+            <div class="subtitle">Unbreakable Proxy Scanner for Censored Networks</div><br>
+            <span class="version-badge">V 1.0 "DEY Warrior"</span>
         </div>
         <div class="hero-stats">
-            <div class="stat-item">
-                <div class="stat-value">25+</div>
-                <div class="stat-label">Advanced Audit Stages</div>
-            </div>
             <div class="stat-item">
                 <div class="stat-value">SOCKS4/5, HTTP</div>
                 <div class="stat-label">Full Protocol Spectrum</div>
@@ -332,85 +325,335 @@
                 <div class="stat-value">Up to 100</div>
                 <div class="stat-label">Parallel Threads</div>
             </div>
+            <div class="stat-item">
+                <div class="stat-value">Two‑Phase</div>
+                <div class="stat-label">Network Watchdog</div>
+            </div>
         </div>
         <div class="progress-bar-wrap">
             <div class="progress-fill"></div>
         </div>
         <p style="color:#aaa; font-size:0.9rem; margin-top:0.4rem;">
-            Two‑Phase Network Watchdog · Pause/Resume · Max‑Alive · Fair Scoring · 0% DNS Dependency
+            Pause/Resume (P/R) · Max‑Alive · Fair Multi‑Axis Scoring · 0% DNS Dependency · Crash‑Resistant
         </p>
     </div>
 
     <!-- ========== INTRODUCTION ========== -->
     <div class="bilingual-heading">
-        <h2 class="en-heading">🔬 Core Mission & Design</h2>
-        <h2 class="fa-heading">🔬 مأموریت اصلی و طراحی</h2>
+        <h2 class="en-heading">🔬 What is Psiphon Tracker "DEY Warrior"?</h2>
+        <h2 class="fa-heading">🔬 Psiphon Tracker "DEY Warrior" چیست؟</h2>
     </div>
     <div class="row">
         <div class="col-en">
-            <p><strong>PSI-Tracker V1.0 “Aegis Perfecta”</strong> is the ultimate proxy auditor for high‑latency, heavily censored environments. It tests <strong>every proxy through the proxy itself</strong> – the scanner never relies on its own internet to judge a proxy’s health. This means it works even when DNS, ICMP, and all foreign websites are blocked.</p>
-            <p>It accurately emulates Psiphon’s OSSH, Meek, and Fronted protocols, grades proxies with a fair multi‑axis score (Gen, PSI, Generic Viability), and includes <strong>real‑world tests</strong> like browsing, censorship bypass, stability, and persistent connection. A <strong>two‑phase network watchdog</strong> keeps the scan alive even when every external IP goes dark.</p>
+            <p><strong>Psiphon Tracker V 1.0 "DEY Warrior"</strong> is a <strong>multi-stage, thread-parallel proxy scanner</strong> designed for <strong>high-latency, heavily censored environments</strong> (like Iran). Every single test is performed <strong>through the proxy itself</strong> – the scanner <strong>never</strong> uses its own internet connection to judge a proxy's health. This means it works perfectly even when DNS, ICMP, and all foreign websites are blocked.</p>
+            <p>It accurately <strong>emulates Psiphon's real connection protocols</strong> (OSSH seed exchange with anti-echo, Meek POST with obfuscated headers, Fronted TLS to real CDNs) based on reverse engineering. Each proxy receives a <strong>fair, multi-axis score</strong> (Gen, PSI, Generic Viability) and is classified from <strong>DEAD</strong> to <strong>FULLY_READY</strong>.</p>
+            <p>A <strong>two-phase network watchdog</strong> (hardcoded IPs + sampling your own proxy list) keeps the scan alive even when every external IP goes dark. Manual pause/resume with <strong>P/R keys</strong> and <strong>--max-alive</strong> auto-stop give you full control.</p>
+            <p style="color:var(--warn); margin-top:0.8rem;"><strong>Dedication:</strong> This tool is proudly dedicated to the immortal names of Iran Land – Dey 1404.</p>
         </div>
         <div class="col-fa">
-            <p><strong>PSI-Tracker V1.0 “Aegis Perfecta”</strong> اسکنر نهایی پروکسی برای محیط‌های با فیلترینگ شدید و بدون DNS است. <strong>همهٔ تست‌ها از مسیر خود پروکسی</strong> انجام می‌شوند – اسکنر هرگز برای تأیید سلامت پروکسی به اینترنت خود متکی نیست. بنابراین حتی وقتی همهٔ سایت‌های خارجی مسدود باشند، اسکنر کار می‌کند.</p>
-            <p>این ابزار پروتکل‌های OSSH، Meek و Fronted سایفون را دقیقاً شبیه‌سازی می‌کند، پروکسی‌ها را با امتیاز چندمحوره ارزیابی می‌کند، و شامل <strong>تست‌های واقعی</strong> مثل مرور وب، عبور از فیلترینگ، پایداری و اتصال مداوم است. <strong>نگهبان شبکهٔ دومرحله‌ای</strong> اسکن را حتی وقتی همهٔ آی‌پی‌های خارجی قطع شوند زنده نگه می‌دارد.</p>
+            <p><strong>Psiphon Tracker V 1.0 "DEY Warrior"</strong> یک <strong>اسکنر پروکسی چندمرحله‌ای و چندنخی</strong> است که برای <strong>محیط‌های با تأخیر بالا و سانسور شدید</strong> (مانند ایران) طراحی شده است. <strong>تک‌تک تست‌ها از مسیر خود پروکسی</strong> انجام می‌شوند – اسکنر <strong>هرگز</strong> از اتصال اینترنت خود برای قضاوت درباره سلامت پروکسی استفاده نمی‌کند. به همین دلیل حتی وقتی DNS، ICMP و تمام وب‌سایت‌های خارجی مسدود باشند، کاملاً کار می‌کند.</p>
+            <p>این اسکنر <strong>پروتکل‌های واقعی Psiphon</strong> (تبادل بذر OSSH با ضد-اکو، ارسال Meek با هدرهای مبهم‌سازیشده، Fronted TLS به CDNهای واقعی) را بر اساس مهندسی معکوس شبیه‌سازی می‌کند. هر پروکسی یک <strong>امتیاز منصفانه چندمحوره</strong> (Gen، PSI، Generic Viability) دریافت می‌کند و از <strong>DEAD</strong> تا <strong>FULLY_READY</strong> طبقه‌بندی می‌شود.</p>
+            <p><strong>نگهبان شبکهٔ دومرحله‌ای</strong> (IPهای ثابت + نمونه‌گیری از لیست پروکسی خودتان) اسکن را حتی وقتی همهٔ IPهای خارجی قطع شوند زنده نگه می‌دارد. توقف/ادامهٔ دستی با کلیدهای <strong>P/R</strong> و توقف خودکار با <strong>--max-alive</strong> کنترل کامل را به شما می‌دهند.</p>
+            <p style="color:var(--warn); margin-top:0.8rem;"><strong>تقدیم:</strong> این ابزار با افتخار به نام‌های جاوید ایران زمین – دی ۱۴۰۴ تقدیم می‌شود.</p>
         </div>
     </div>
 
-    <!-- ========== INSTALLATION & REQUIREMENTS ========== -->
+    <!-- ========== KEY FEATURES ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">✨ Key Features</h2>
+        <h2 class="fa-heading">✨ ویژگی‌های کلیدی</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <ul class="feature-list">
+                <li><strong>Full RFC 1928 SOCKS5</strong> – IPv4, IPv6, domain name support, proper BND.ADDR handling</li>
+                <li><strong>Psiphon Emulation</strong> – Real OSSH seed exchange (anti-echo), Meek POST with obfuscated headers, Fronted TLS to real CDNs</li>
+                <li><strong>True UDP Test</strong> – SOCKS5 UDP relay, full IPv4/IPv6 support, crash-safe</li>
+                <li><strong>Accurate Server List Parser</strong> – Binary compressed list (IPv4, IPv6, DOMAIN entries) with safe bounds</li>
+                <li><strong>Context-Aware Checkpoint</strong> – Resume scans exactly from the last tested proxy; config fingerprint prevents stale data</li>
+                <li><strong>Port Diversity Test</strong> – Tests 5 ports (22,53,80,443,554) <strong>through the proxy</strong>, never directly</li>
+                <li><strong>Two-Phase Network Watchdog</strong> – Hardcoded IPs first, then samples your own proxies; auto-pause only when both phases fail</li>
+                <li><strong>Manual Pause/Resume</strong> – Press <kbd>P</kbd> to pause, <kbd>R</kbd> to resume anytime (no input blocking)</li>
+                <li><strong>--max-alive</strong> – Auto-stop after finding a set number of alive proxies</li>
+                <li><strong>Fair Multi-Axis Scoring</strong> – General Score (everyday use), PSI Score (Psiphon compatibility), Generic Viability (non-Psiphon tools like V2Ray)</li>
+                <li><strong>Real-World Tests</strong> – Real browsing, censorship bypass (Telegram, Twitter, Facebook), stability, persistent connection</li>
+                <li><strong>Advanced HTTP Validation</strong> – POST/PUT/DELETE echo, Cookie & Referrer transport, Gzip compression</li>
+                <li><strong>Multi-Judge Anonymity</strong> – 5 judges classify proxies as ELITE / ANONYMOUS / TRANSPARENT</li>
+                <li><strong>DNS-over-SOCKS Detection</strong> – Confirms the proxy handles DNS internally</li>
+                <li><strong>Captive Portal Detection</strong> – Identifies login walls</li>
+                <li><strong>Multi-pass Retry</strong> – Slow proxies get an automatic second chance and are labelled <code>SLOW_OK</code></li>
+                <li><strong>Compact & Verbose Modes</strong> – Default compact; <code>--verbose</code> shows every endpoint test result</li>
+                <li><strong>Production-Hardened</strong> – All sockets & sessions properly closed, caches expire after 5 min, atomic file writes, thread-safe</li>
+            </ul>
+        </div>
+        <div class="col-fa">
+            <ul class="feature-list">
+                <li><strong>پشتیبانی کامل از SOCKS5 مطابق RFC 1928</strong> – IPv4، IPv6، نام دامنه، مدیریت صحیح BND.ADDR</li>
+                <li><strong>شبیه‌سازی Psiphon</strong> – تبادل بذر OSSH واقعی (ضد-اکو)، ارسال Meek با هدرهای مبهم، Fronted TLS به CDNهای واقعی</li>
+                <li><strong>تست UDP واقعی</strong> – رله UDP از طریق SOCKS5، پشتیبانی IPv4/IPv6، مقاوم در برابر crash</li>
+                <li><strong>پارسر دقیق لیست سرور</strong> – لیست فشرده باینری (IPv4, IPv6, DOMAIN) با مرزهای ایمن</li>
+                <li><strong>Checkpoint حساس به Context</strong> – ازسرگیری اسکن دقیقاً از آخرین پروکسی تست‌شده؛ fingerprint تنظیمات از داده‌های قدیمی جلوگیری می‌کند</li>
+                <li><strong>تست Port Diversity</strong> – تست ۵ پورت (22,53,80,443,554) <strong>از طریق خود پروکسی</strong>، نه به صورت مستقیم</li>
+                <li><strong>نگهبان شبکهٔ دومرحله‌ای</strong> – ابتدا IPهای ثابت، سپس نمونه‌گیری از پروکسی‌های خودتان؛ توقف خودکار فقط وقتی هر دو فاز شکست بخورند</li>
+                <li><strong>توقف/ادامهٔ دستی</strong> – کلید <kbd>P</kbd> برای توقف، <kbd>R</kbd> برای ادامه در هر لحظه (بدون مسدود شدن ورودی)</li>
+                <li><strong>--max-alive</strong> – توقف خودکار پس از یافتن تعداد مشخصی پروکسی زنده</li>
+                <li><strong>امتیازدهی منصفانه چندمحوره</strong> – General Score (کاربرد روزمره)، PSI Score (سازگاری با Psiphon)، Generic Viability (ابزارهای غیر Psiphon مثل V2Ray)</li>
+                <li><strong>تست‌های دنیای واقعی</strong> – مرور واقعی وب، عبور از سانسور (تلگرام، توییتر، فیسبوک)، پایداری، اتصال مداوم</li>
+                <li><strong>اعتبارسنجی پیشرفته HTTP</strong> – POST/PUT/DELETE، انتقال Cookie و Referrer، فشرده‌سازی Gzip</li>
+                <li><strong>تشخیص ناشناسی چند قاضی</strong> – ۵ قاضی، طبقه‌بندی ELITE / ANONYMOUS / TRANSPARENT</li>
+                <li><strong>تشخیص DNS-over-SOCKS</strong> – تأیید می‌کند که پروکسی DNS را داخلی مدیریت می‌کند</li>
+                <li><strong>تشخیص Captive Portal</strong> – شناسایی صفحات ورود اجباری</li>
+                <li><strong>تلاش مجدد چندمرحله‌ای</strong> – پروکسی‌های کند شانس دوم می‌گیرند و برچسب <code>SLOW_OK</code> می‌خورند</li>
+                <li><strong>حالت فشرده و کامل</strong> – پیش‌فرض فشرده؛ <code>--verbose</code> نتیجهٔ تک‌تک تست‌ها را نشان می‌دهد</li>
+                <li><strong>مستحکم در سطح Production</strong> – تمام سوکت‌ها و نشست‌ها به‌درستی بسته می‌شوند، کش‌ها پس از ۵ دقیقه منقضی می‌شوند، نوشتن اتمیک فایل‌ها، ایمن در برابر ترد</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ========== INSTALLATION ========== -->
     <div class="bilingual-heading">
         <h2 class="en-heading">📦 Installation & Requirements</h2>
         <h2 class="fa-heading">📦 نصب و پیش‌نیازها</h2>
     </div>
     <div class="row">
         <div class="col-en">
-            <p>Python 3.7+ required. Install dependencies:</p>
-            <div class="code-block">pip install -r requirements.txt</div>
+            <p><strong>Python 3.7</strong> or newer required.</p>
+            <div class="code-block">git clone https://github.com/SulgX/PSI_Tracker.git
+cd PSI_Tracker
+pip install -r requirements.txt</div>
             <p><strong>requirements.txt</strong>:</p>
-            <div class="code-block">
-tqdm>=4.64.0
+            <div class="code-block">tqdm>=4.64.0
 colorama>=0.4.6
 requests>=2.28.0
-PySocks>=1.7.1
-            </div>
-            <p>Missing <code>PySocks</code> still allows raw‑socket SOCKS tests, but some high‑level features (Meek over SOCKS) will be limited.</p>
+PySocks>=1.7.1</div>
+            <p>Note: Without <code>PySocks</code>, raw-socket SOCKS tests still work, but some high-level features (Meek over SOCKS) are limited.</p>
         </div>
         <div class="col-fa">
-            <p>نیاز به Python 3.7 به بالا. نصب وابستگی‌ها:</p>
-            <div class="code-block" style="direction:ltr; text-align:left;">pip install -r requirements.txt</div>
+            <p>نیاز به <strong>Python 3.7</strong> یا جدیدتر.</p>
+            <div class="code-block" style="direction:ltr; text-align:left;">git clone https://github.com/SulgX/PSI_Tracker.git
+cd PSI_Tracker
+pip install -r requirements.txt</div>
             <p><strong>requirements.txt</strong>:</p>
-            <div class="code-block" style="direction:ltr; text-align:left;">
-tqdm>=4.64.0
+            <div class="code-block" style="direction:ltr; text-align:left;">tqdm>=4.64.0
 colorama>=0.4.6
 requests>=2.28.0
-PySocks>=1.7.1
-            </div>
-            <p>بدون <code>PySocks</code> هم تست‌های SOCKS با سوکت خام انجام می‌شود، اما برخی قابلیت‌ها محدود می‌گردد.</p>
+PySocks>=1.7.1</div>
+            <p>توجه: بدون <code>PySocks</code> نیز تست‌های SOCKS با سوکت خام کار می‌کنند، اما برخی قابلیت‌های سطح بالا محدود می‌شوند.</p>
         </div>
     </div>
 
-    <!-- ========== TEST STAGES ========== -->
+    <!-- ========== LAUNCHER (WINDOWS) ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">🚀 Quick Start with Launcher (Windows)</h2>
+        <h2 class="fa-heading">🚀 شروع سریع با Launcher (ویندوز)</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <p>A professional Windows batch launcher (<code>launcher.bat</code>) is included. It manages all settings and runs scans in the <strong>same window</strong> so <kbd>P</kbd>/<kbd>R</kbd> keys work.</p>
+            <p><strong>How to use:</strong></p>
+            <ol>
+                <li>Double-click <code>launcher.bat</code></li>
+                <li>Press <code>[1]</code> to set your proxy list file (e.g. <code>my_ips.txt</code>)</li>
+                <li>Choose a scan mode:
+                    <ul>
+                        <li><strong>Q – Quick Scan</strong> (20 threads, 30s timeout, --no-geo --no-diversity)</li>
+                        <li><strong>D – Deep Scan</strong> (50 threads, 90s timeout, --verbose)</li>
+                        <li><strong>F – Full Scan</strong> (50 threads, 120s timeout, --verbose)</li>
+                        <li><strong>C – Custom Scan</strong> (uses all configured settings)</li>
+                    </ul>
+                </li>
+                <li>Press <code>Y</code> to start</li>
+                <li>During scan: press <kbd>P</kbd> to pause, <kbd>R</kbd> to resume</li>
+            </ol>
+            <p>The launcher saves your settings in <code>launcher_settings.ini</code> for next time.</p>
+            <p><strong>Launcher Menu Options (1-22):</strong></p>
+            <div class="launcher-menu">
+  [1] List file          [12] Scope CIDRs
+  [2] Range(s)           [13] Allow all
+  [3] Port(s)            [14] Targets config
+  [4] Threads            [15] Fallback IPs
+  [5] Timeout            [16] No GeoIP
+  [6] TCP multiplier     [17] No diversity
+  [7] Auth (user:pass)   [18] Verbose
+  [8] SSH host:port      [19] Max alive (stop)
+  [9] Output alive       [20] Clean files
+ [10] Output URLs        [21] Retest all
+ [11] Checkpoint         [22] Refresh fallback
+
+  [S] Save settings     [L] Load defaults
+  [H] Help              [X] Exit</div>
+        </div>
+        <div class="col-fa">
+            <p>یک Launcher حرفه‌ای دسته‌ای ویندوز (<code>launcher.bat</code>) ارائه شده است که تمام تنظیمات را مدیریت می‌کند و اسکن را در <strong>همان پنجره</strong> اجرا می‌کند تا کلیدهای <kbd>P</kbd>/<kbd>R</kbd> کار کنند.</p>
+            <p><strong>روش استفاده:</strong></p>
+            <ol>
+                <li>روی <code>launcher.bat</code> دابل کلیک کنید.</li>
+                <li>دکمه <code>[1]</code> را بزنید تا فایل لیست پروکسی خود را مشخص کنید (مثلاً <code>my_ips.txt</code>).</li>
+                <li>یکی از حالت‌های اسکن را انتخاب کنید:
+                    <ul>
+                        <li><strong>Q – اسکن سریع</strong> (۲۰ ترد، ۳۰ ثانیه، --no-geo --no-diversity)</li>
+                        <li><strong>D – اسکن عمیق</strong> (۵۰ ترد، ۹۰ ثانیه، --verbose)</li>
+                        <li><strong>F – اسکن کامل</strong> (۵۰ ترد، ۱۲۰ ثانیه، --verbose)</li>
+                        <li><strong>C – اسکن سفارشی</strong> (با تنظیمات پیکربندی‌شده)</li>
+                    </ul>
+                </li>
+                <li>دکمه <code>Y</code> را برای شروع فشار دهید.</li>
+                <li>در حین اسکن: <kbd>P</kbd> برای توقف، <kbd>R</kbd> برای ادامه.</li>
+            </ol>
+            <p>لانچر تنظیمات شما را در <code>launcher_settings.ini</code> برای دفعات بعد ذخیره می‌کند.</p>
+            <p><strong>گزینه‌های منوی لانچر (۱-۲۲):</strong></p>
+            <div class="launcher-menu" style="direction:rtl; text-align:right;">
+  [۱] فایل لیست         [۱۲] محدوده‌های CIDR
+  [۲] بازه(ها)          [۱۳] رد کردن الزام scope
+  [۳] پورت(ها)          [۱۴] فایل JSON اهداف سفارشی
+  [۴] تعداد ترد         [۱۵] فایل IPهای پشتیبان
+  [۵] زمان انتظار       [۱۶] غیرفعال کردن GeoIP
+  [۶] ضریب TCP          [۱۷] رد شدن از port diversity
+  [۷] احراز هویت        [۱۸] حالت Verbose
+  [۸] هاست:پورت SSH     [۱۹] حداکثر پروکسی زنده
+  [۹] فایل خروجی زنده‌ها  [۲۰] پاک‌سازی فایل‌های خروجی
+  [۱۰] فایل خروجی URLها  [۲۱] تست مجدد همه
+  [۱۱] فایل Checkpoint   [۲۲] بازنشانی IPهای پشتیبان
+
+  [S] ذخیره تنظیمات     [L] بارگذاری پیش‌فرض
+  [H] راهنما            [X] خروج</div>
+        </div>
+    </div>
+
+    <!-- ========== MANUAL COMMAND LINE USAGE ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">⚙️ Manual Command Line Usage</h2>
+        <h2 class="fa-heading">⚙️ استفاده دستی از خط فرمان</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <p>All arguments can be used directly with <code>python psi_tracker.py</code>.</p>
+            <h3>Basic scan</h3>
+            <div class="code-block">python psi_tracker.py --list proxies.txt --alive alive.txt --urls urls.txt</div>
+            <h3>CIDR range with multiple ports</h3>
+            <div class="code-block">python psi_tracker.py --range 192.168.1.0/24 --port 1080 8080 --scope 192.168.0.0/16</div>
+            <h3>With authentication</h3>
+            <div class="code-block">python psi_tracker.py --list auth_proxies.txt --auth admin:123456 --timeout 45</div>
+            <h3>Resume previous scan</h3>
+            <p>Progress is saved in <code>scan_progress.json</code>. Just run again with the same <code>--list</code> or <code>--range</code> – it will automatically resume. Use <code>--retest</code> to ignore the checkpoint, <code>--clean</code> to reset.</p>
+            <div class="code-block">python psi_tracker.py --list proxies.txt</div>
+            <h3>Fast scan (no GeoIP, no diversity)</h3>
+            <div class="code-block">python psi_tracker.py --list proxies.txt --no-diversity --no-geo</div>
+            <h3>Stop after finding 20 alive proxies</h3>
+            <div class="code-block">python psi_tracker.py --list proxies.txt --max-alive 20</div>
+            <h3>Refresh fallback IPs only (no scan)</h3>
+            <div class="code-block">python psi_tracker.py --refresh-ips</div>
+            <h3>Pause/Resume manually</h3>
+            <p>Press <kbd>P</kbd> to pause and <kbd>R</kbd> to resume anytime while scanning.</p>
+        </div>
+        <div class="col-fa">
+            <p>همه آرگومان‌ها را می‌توان مستقیماً با <code>python psi_tracker.py</code> استفاده کرد.</p>
+            <h3>اسکن ساده</h3>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psi_tracker.py --list proxies.txt --alive alive.txt --urls urls.txt</div>
+            <h3>محدوده CIDR با چند پورت</h3>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psi_tracker.py --range 192.168.1.0/24 --port 1080 8080 --scope 192.168.0.0/16</div>
+            <h3>با احراز هویت</h3>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psi_tracker.py --list auth_proxies.txt --auth admin:123456 --timeout 45</div>
+            <h3>ادامه اسکن قبلی</h3>
+            <p>پیشرفت در <code>scan_progress.json</code> ذخیره می‌شود. کافی است دوباره با همان <code>--list</code> یا <code>--range</code> اجرا کنید – به‌طور خودکار ادامه می‌یابد. با <code>--retest</code> نادیده گرفته و با <code>--clean</code> پاک می‌شود.</p>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psi_tracker.py --list proxies.txt</div>
+            <h3>اسکن سریع (بدون GeoIP و تنوع پورت)</h3>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psi_tracker.py --list proxies.txt --no-diversity --no-geo</div>
+            <h3>توقف پس از یافتن ۲۰ پروکسی زنده</h3>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psi_tracker.py --list proxies.txt --max-alive 20</div>
+            <h3>فقط بازنشانی IPهای پشتیبان (بدون اسکن)</h3>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psi_tracker.py --refresh-ips</div>
+            <h3>توقف/ادامهٔ دستی</h3>
+            <p>در حین اسکن کلید <kbd>P</kbd> را برای توقف و <kbd>R</kbd> را برای ادامه فشار دهید.</p>
+        </div>
+    </div>
+
+    <!-- ========== FULL COMMAND-LINE ARGUMENTS ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">📋 Full Command‑Line Arguments</h2>
+        <h2 class="fa-heading">📋 تمام آرگومان‌های خط فرمان</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <table>
+                <tr><th>Argument</th><th>Description</th></tr>
+                <tr><td><code>--list FILE</code></td><td>Target file (IP:PORT, CIDR, dash ranges)</td></tr>
+                <tr><td><code>--range RANGE [RANGE ...]</code></td><td>CIDR or dash ranges (requires --port)</td></tr>
+                <tr><td><code>--port PORT [PORT ...]</code></td><td>Port(s) for IPs without port</td></tr>
+                <tr><td><code>--threads N</code></td><td>Number of threads (default: 50)</td></tr>
+                <tr><td><code>--timeout SECONDS</code></td><td>Per-proxy timeout (default: 60)</td></tr>
+                <tr><td><code>--tcp-timeout-mult X</code></td><td>TCP connect multiplier (default: 0.6)</td></tr>
+                <tr><td><code>--auth USER:PASS</code></td><td>Credentials for proxies that require authentication</td></tr>
+                <tr><td><code>--ssh-host HOST</code></td><td>SSH target host (default: github.com)</td></tr>
+                <tr><td><code>--ssh-port PORT</code></td><td>SSH target port (default: 22)</td></tr>
+                <tr><td><code>--alive FILE</code></td><td>Output file for alive proxies with full details (default: alive_proxies.txt)</td></tr>
+                <tr><td><code>--urls FILE</code></td><td>Output file for proxy URLs (default: proxy_urls.txt)</td></tr>
+                <tr><td><code>--checkpoint FILE</code></td><td>Progress checkpoint file (default: scan_progress.json)</td></tr>
+                <tr><td><code>--scope CIDR [CIDR ...]</code></td><td>Restrict range expansion to these CIDRs</td></tr>
+                <tr><td><code>--allow-all</code></td><td>Bypass the --scope requirement</td></tr>
+                <tr><td><code>--targets-config JSON</code></td><td>Custom test targets JSON config</td></tr>
+                <tr><td><code>--fallback-ips JSON</code></td><td>Additional fallback IPs JSON file (default: fallback_ips.json)</td></tr>
+                <tr><td><code>--clean</code></td><td>Clear output files before starting</td></tr>
+                <tr><td><code>--retest</code></td><td>Ignore existing checkpoint and re-test all</td></tr>
+                <tr><td><code>--refresh-ips</code></td><td>Re-resolve known hosts and update the fallback IPs file</td></tr>
+                <tr><td><code>--no-geo</code></td><td>Disable GeoIP lookup</td></tr>
+                <tr><td><code>--no-diversity</code></td><td>Skip port diversity test</td></tr>
+                <tr><td><code>--verbose</code></td><td>Detailed console output (shows every endpoint test)</td></tr>
+                <tr><td><code>--max-alive N</code></td><td>Stop scanning after finding N alive proxies</td></tr>
+            </table>
+        </div>
+        <div class="col-fa">
+            <table>
+                <tr><th>آرگومان</th><th>توضیح</th></tr>
+                <tr><td><code>--list فایل</code></td><td>فایل اهداف (IP:PORT, CIDR, بازه خط تیره)</td></tr>
+                <tr><td><code>--range بازه [بازه ...]</code></td><td>محدوده CIDR یا خط تیره (نیازمند --port)</td></tr>
+                <tr><td><code>--port پورت [پورت ...]</code></td><td>پورت(ها) برای IPهای بدون پورت</td></tr>
+                <tr><td><code>--threads تعداد</code></td><td>تعداد تردها (پیش‌فرض: ۵۰)</td></tr>
+                <tr><td><code>--timeout ثانیه</code></td><td>زمان انتظار هر پروکسی (پیش‌فرض: ۶۰)</td></tr>
+                <tr><td><code>--tcp-timeout-mult X</code></td><td>ضریب زمان اتصال TCP (پیش‌فرض: 0.6)</td></tr>
+                <tr><td><code>--auth USER:PASS</code></td><td>اعتبارنامه برای پروکسی‌های نیازمند احراز هویت</td></tr>
+                <tr><td><code>--ssh-host میزبان</code></td><td>میزبان هدف SSH (پیش‌فرض: github.com)</td></tr>
+                <tr><td><code>--ssh-port پورت</code></td><td>پورت هدف SSH (پیش‌فرض: 22)</td></tr>
+                <tr><td><code>--alive فایل</code></td><td>فایل خروجی پروکسی‌های زنده با جزئیات کامل (پیش‌فرض: alive_proxies.txt)</td></tr>
+                <tr><td><code>--urls فایل</code></td><td>فایل خروجی URLهای پروکسی (پیش‌فرض: proxy_urls.txt)</td></tr>
+                <tr><td><code>--checkpoint فایل</code></td><td>فایل نقطه بررسی پیشرفت (پیش‌فرض: scan_progress.json)</td></tr>
+                <tr><td><code>--scope CIDR [CIDR ...]</code></td><td>محدود کردن گسترش بازه به این CIDRها</td></tr>
+                <tr><td><code>--allow-all</code></td><td>دور زدن الزام --scope</td></tr>
+                <tr><td><code>--targets-config JSON</code></td><td>فایل JSON پیکربندی اهداف تست سفارشی</td></tr>
+                <tr><td><code>--fallback-ips JSON</code></td><td>فایل JSON اضافی برای IPهای پشتیبان (پیش‌فرض: fallback_ips.json)</td></tr>
+                <tr><td><code>--clean</code></td><td>پاک‌سازی فایل‌های خروجی قبل از شروع</td></tr>
+                <tr><td><code>--retest</code></td><td>نادیده گرفتن checkpoint موجود و تست مجدد همه</td></tr>
+                <tr><td><code>--refresh-ips</code></td><td>بازآوری IPهای شناخته‌شده و به‌روزرسانی فایل IPهای پشتیبان</td></tr>
+                <tr><td><code>--no-geo</code></td><td>غیرفعال کردن جستجوی GeoIP</td></tr>
+                <tr><td><code>--no-diversity</code></td><td>رد شدن از تست port diversity</td></tr>
+                <tr><td><code>--verbose</code></td><td>خروجی کنسول با جزئیات کامل (نمایش نتیجه هر تست endpoint)</td></tr>
+                <tr><td><code>--max-alive N</code></td><td>توقف اسکن پس از یافتن N پروکسی زنده</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ========== COMPREHENSIVE AUDIT STAGES ========== -->
     <div class="bilingual-heading">
         <h2 class="en-heading">🧪 Comprehensive Audit Stages</h2>
-        <h2 class="fa-heading">🧪 مراحل جامع ممیزی</h2>
+        <h2 class="fa-heading">🧪 مراحل جامع اسکن</h2>
     </div>
     <div class="row">
         <div class="col-en">
             <table>
                 <tr><th>Stage</th><th>Description</th></tr>
-                <tr><td>TCP Connectivity</td><td>Raw socket connect with user‑configurable multiplier</td></tr>
-                <tr><td>Protocol Detection</td><td>SOCKS5 (no‑auth / user‑pass), SOCKS4, HTTP CONNECT, HTTP Forward</td></tr>
+                <tr><td>TCP Connectivity</td><td>Raw socket connect with configurable multiplier</td></tr>
+                <tr><td>Protocol Detection</td><td>SOCKS5 (no-auth / user-pass), SOCKS4, HTTP CONNECT, HTTP Forward</td></tr>
                 <tr><td>Primary TLS Tunnel</td><td>TLS 1.2+ handshake to b-cdn.net (domain, not IP) with cert validation</td></tr>
-                <tr><td>General Endpoints</td><td>Google, Cloudflare, GitHub, Telegram Web, YouTube (via proxy, domain‑based)</td></tr>
-                <tr><td>PSI Server List</td><td>Fetches &amp; parses real Psiphon server list (gzip, ETag cache)</td></tr>
-                <tr><td>OSSH Emulation</td><td>Sends Psiphon seed exchange over SOCKS5/4 tunnel</td></tr>
+                <tr><td>General Endpoints</td><td>Google, Cloudflare, GitHub, Telegram Web, YouTube (via proxy, domain-based)</td></tr>
+                <tr><td>PSI Server List</td><td>Fetches & parses real Psiphon server list (gzip, ETag cache)</td></tr>
+                <tr><td>OSSH Seed Exchange</td><td>Psiphon anti-echo seed exchange over SOCKS5/4 tunnel</td></tr>
                 <tr><td>SSH Banner</td><td>SSH-2.0 banner detection through proxy</td></tr>
                 <tr><td>Meek Fronting</td><td>POST to /meek with obfuscated headers</td></tr>
                 <tr><td>UDP Associate</td><td>SOCKS5 UDP relay test (IPv4/IPv6 BND.ADDR support)</td></tr>
-                <tr><td>Data Transfer</td><td>Downloads 1 KB from httpbin</td></tr>
-                <tr><td>Speed Test</td><td>Measures MB/s over 512 KB fetch</td></tr>
-                <tr><td>Advanced HTTP</td><td>POST/PUT/DELETE echo, Cookie &amp; Referrer transport, Gzip compression</td></tr>
-                <tr><td>Anonymity (5 judges)</td><td>Multi‑judge classification (ELITE / ANONYMOUS / TRANSPARENT)</td></tr>
+                <tr><td>Data Transfer</td><td>Downloads 1 KB from httpbin</td></tr>
+                <tr><td>Speed Test</td><td>Measures MB/s over 512 KB fetch</td></tr>
+                <tr><td>Advanced HTTP</td><td>POST/PUT/DELETE echo, Cookie & Referrer transport, Gzip compression</td></tr>
+                <tr><td>Anonymity (5 judges)</td><td>Multi-judge classification (ELITE / ANONYMOUS / TRANSPARENT)</td></tr>
                 <tr><td>Real Browsing</td><td>Accesses gstatic.com, httpbin.org, cloudflare.com</td></tr>
                 <tr><td>Censorship Bypass</td><td>Checks Telegram, Twitter, Facebook</td></tr>
                 <tr><td>Persistent Connection</td><td>5 sequential requests on a single session</td></tr>
@@ -429,8 +672,8 @@ PySocks>=1.7.1
                 <tr><td>تشخیص پروتکل</td><td>SOCKS5 (بدون/با احراز)، SOCKS4، HTTP CONNECT، HTTP Forward</td></tr>
                 <tr><td>تونل اصلی TLS</td><td>handshake TLS 1.2+ روی نام دامنه b-cdn.net با اعتبارسنجی</td></tr>
                 <tr><td>نقاط عمومی</td><td>Google, Cloudflare, GitHub, Telegram Web, YouTube (مبتنی بر دامنه)</td></tr>
-                <tr><td>لیست سرور سایفون</td><td>دریافت و پردازش لیست واقعی (گنزیپ، کش ETag)</td></tr>
-                <tr><td>شبیه‌سازی OSSH</td><td>تبادل seed روی تونل SOCKS5/4</td></tr>
+                <tr><td>لیست سرور Psiphon</td><td>دریافت و پردازش لیست واقعی (گنزیپ، کش ETag)</td></tr>
+                <tr><td>تبادل بذر OSSH</td><td>تبادل بذر ضد-اکوی Psiphon روی تونل SOCKS5/4</td></tr>
                 <tr><td>بنر SSH</td><td>تشخیص بنر SSH-2.0 از مسیر پروکسی</td></tr>
                 <tr><td>Meek Fronting</td><td>ارسال POST مبهم‌سازی‌شده به /meek</td></tr>
                 <tr><td>UDP Associate</td><td>تست رله UDP با پشتیبانی از IPv4/IPv6</td></tr>
@@ -446,148 +689,155 @@ PySocks>=1.7.1
                 <tr><td>DNS از طریق SOCKS</td><td>بررسی وضوح دامنه توسط پروکسی</td></tr>
                 <tr><td>نکات TCP</td><td>جمع‌آوری TTL و retransmissions برای امتیاز</td></tr>
                 <tr><td>تنوع پورت</td><td>تست ۵ پورت از مسیر خود پروکسی</td></tr>
-                <tr><td>موقعیت جغرافیایی</td><td>تشخیص کشور از چند سرویس</td></tr>
+                <tr><td>موقعیت جغرافیایی</td><td>تشخیص کشور از چند سرویس (اختیاری)</td></tr>
             </table>
         </div>
     </div>
 
-    <!-- ========== NETWORK WATCHDOG ========== -->
+    <!-- ========== TWO-PHASE NETWORK WATCHDOG ========== -->
     <div class="bilingual-heading">
         <h2 class="en-heading">🛡️ Two‑Phase Network Watchdog</h2>
         <h2 class="fa-heading">🛡️ نگهبان شبکهٔ دومرحله‌ای</h2>
     </div>
     <div class="row">
         <div class="col-en">
-            <p>The scanner uses a unique two‑phase watchdog to detect internet loss:</p>
+            <p>The scanner uses a unique two-phase watchdog to detect internet loss:</p>
             <ol>
-                <li><strong>Phase 1 – Well‑known IPs:</strong> Checks TCP port 443 on several hardcoded IPs (Google, Cloudflare, GitHub, …). No DNS needed.</li>
+                <li><strong>Phase 1 – Well-known IPs:</strong> Checks TCP port 443 on several hardcoded IPs (Google, Cloudflare, GitHub, …). No DNS needed.</li>
                 <li><strong>Phase 2 – Proxy targets:</strong> If Phase 1 fails, it randomly samples <strong>proxies from your own list</strong>. If even one proxy responds, the internet is considered alive.</li>
             </ol>
-            <p>Only when <strong>both phases fail</strong> will the scanner pause and wait for the network to return.</p>
+            <p>Only when <strong>both phases fail</strong> will the scanner pause and wait for the network to return. It automatically resumes when connectivity is restored, or you can press <kbd>R</kbd> to force a retry.</p>
         </div>
         <div class="col-fa">
-            <p>اسکنر از یک نگهبان دومرحله‌ای برای تشخیص قطعی اینترنت استفاده می‌کند:</p>
+            <p>اسکنر از یک نگهبان دومرحله‌ای منحصربه‌فرد برای تشخیص قطعی اینترنت استفاده می‌کند:</p>
             <ol>
-                <li><strong>مرحلهٔ ۱ – آی‌پی‌های معروف:</strong> پورت ۴۴۳ چندین آی‌پی سخت‌کد (گوگل، کلاودفلر، گیت‌هاب، …) را بررسی می‌کند. بدون نیاز به DNS.</li>
-                <li><strong>مرحلهٔ ۲ – خود پروکسی‌ها:</strong> اگر مرحلهٔ ۱ شکست خورد، از <strong>پروکسی‌های لیست شما</strong> نمونه‌برداری می‌کند. اگر حتی یک پروکسی پاسخ دهد، اینترنت زنده است.</li>
+                <li><strong>فاز ۱ – IPهای معروف:</strong> پورت ۴۴۳ چندین IP ثابت (گوگل، کلاودفلر، گیت‌هاب، varzesh3.com و …) را بررسی می‌کند. بدون نیاز به DNS.</li>
+                <li><strong>فاز ۲ – خود پروکسی‌ها:</strong> اگر فاز ۱ شکست خورد، از <strong>پروکسی‌های لیست خودتان</strong> نمونه‌برداری می‌کند. اگر حتی یک پروکسی پاسخ دهد، شبکه زنده است.</li>
             </ol>
-            <p>تنها زمانی که <strong>هر دو مرحله</strong> شکست بخورند، اسکنر مکث می‌کند و منتظر بازگشت شبکه می‌ماند.</p>
+            <p>تنها زمانی که <strong>هر دو فاز</strong> شکست بخورند، اسکنر متوقف می‌شود و منتظر بازگشت شبکه می‌ماند. با بازیابی اتصال، به‌طور خودکار ادامه می‌یابد یا می‌توانید <kbd>R</kbd> را برای تلاش مجدد فشار دهید.</p>
         </div>
     </div>
 
-    <!-- ========== COMMAND LINE ARGUMENTS ========== -->
+    <!-- ========== SCORING SYSTEM ========== -->
     <div class="bilingual-heading">
-        <h2 class="en-heading">⚙️ All Command‑Line Arguments</h2>
-        <h2 class="fa-heading">⚙️ تمام آرگومان‌های خط فرمان</h2>
+        <h2 class="en-heading">📈 Fair Scoring System</h2>
+        <h2 class="fa-heading">📈 سیستم امتیازدهی منصفانه</h2>
     </div>
     <div class="row">
         <div class="col-en">
-            <div class="code-block">
---list FILE            Target file (IP:PORT, CIDR, dash range)
---range RANGE [RANGE]  CIDR or dash ranges
---port PORT [PORT]     Port(s) for IPs without port
---threads N            Threads (default 50)
---timeout SECONDS      Per‑proxy timeout (default 60)
---tcp-timeout-mult X   TCP connect multiplier (default 0.6)
---auth USER:PASS       Credentials for auth‑requiring proxies
---ssh-host HOST        SSH target host (default github.com)
---ssh-port PORT        SSH target port (default 22)
---alive FILE           Output file for alive proxies with details
---urls FILE            Output file for proxy URLs
---checkpoint FILE      Progress checkpoint file
---scope CIDR [CIDR]    Restrict range expansion to these CIDRs
---allow-all            Bypass --scope requirement
---targets-config JSON  Custom test targets JSON config
---fallback-ips JSON    Additional fallback IPs JSON file
---clean                Clear output files before start
---retest               Ignore checkpoint and re‑test all
---refresh-ips          Re‑resolve known hosts &amp; update fallback IPs
---no-geo               Disable GeoIP lookup
---no-diversity         Skip port diversity test
---verbose              Detailed console output (full stats)
---max-alive N          Stop after finding N alive proxies
-            </div>
+            <h3>1. General Score (Gen, max 50)</h3>
+            <p>Measures everyday proxy performance:</p>
+            <ul>
+                <li>TLS tunnel success to b-cdn.net: <strong>+25</strong></li>
+                <li>Slow TLS success (after retry): <strong>+15</strong></li>
+                <li>Each reachable public endpoint (Google, Cloudflare, GitHub, Telegram Web, YouTube): <strong>+6</strong></li>
+                <li>Successful 1 KB data transfer: <strong>+8</strong></li>
+                <li>TCP hints (TTL &lt; 64): <strong>+2</strong></li>
+                <li>DNS over SOCKS: <strong>+2</strong></li>
+                <li>Real browsing success (&gt;50%): up to <strong>+10</strong></li>
+                <li>Persistent connection (5 sequential requests): <strong>+2</strong></li>
+            </ul>
+            <h3>2. PSI Score (Psiphon compatibility, max 55)</h3>
+            <p>Measures Psiphon-specific compatibility:</p>
+            <ul>
+                <li>Psiphon server list reachability: up to <strong>30</strong></li>
+                <li>TLS tunnel success: <strong>+5</strong></li>
+                <li>OSSH seed exchange: <strong>+10</strong> (PASS) / <strong>+5</strong> (INCONCLUSIVE)</li>
+                <li>SSH banner detection: <strong>+4</strong> (PASS) / <strong>+2</strong> (INCONCLUSIVE)</li>
+                <li>Server list fetch: <strong>+10</strong></li>
+                <li>Meek handshake: <strong>+6</strong></li>
+                <li>UDP relay: <strong>+2</strong></li>
+                <li>Port diversity (through proxy): up to <strong>+8</strong></li>
+                <li>Advanced HTTP (POST/PUT/DELETE, Cookie, Referrer, Compression): <strong>+4</strong></li>
+                <li>Censorship bypass success: up to <strong>+9</strong> (3 sites)</li>
+                <li>Stability ≥ 80%: <strong>+3</strong></li>
+            </ul>
+            <h3>3. Generic Viability (G_Via, max 50)</h3>
+            <p>Usefulness for non-Psiphon tools like V2Ray/VPNs:</p>
+            <ul>
+                <li>TCP open: <strong>+5</strong></li>
+                <li>Forward proxy detected (HTTP_FWD): <strong>+5</strong></li>
+                <li>Each reachable general endpoint: <strong>+4</strong></li>
+                <li>Data transfer: <strong>+8</strong></li>
+                <li>Advanced HTTP: <strong>+5</strong></li>
+            </ul>
+            <p><strong>Total Score = Gen + PSI (max 105)</strong></p>
+
+            <h3>Classification</h3>
+            <table>
+                <tr><th>Class</th><th>Score Range</th></tr>
+                <tr><td>DEAD</td><td>&lt; 5</td></tr>
+                <tr><td>MARGINAL</td><td>5 – 19</td></tr>
+                <tr><td>ALIVE</td><td>20 – 34</td></tr>
+                <tr><td>TUNNEL_OK</td><td>35 – 54</td></tr>
+                <tr><td>CDN_REACHABLE</td><td>55 – 74</td></tr>
+                <tr><td>PSIPHON_LIKELY</td><td>75 – 89</td></tr>
+                <tr><td>FULLY_READY</td><td>≥ 90</td></tr>
+            </table>
         </div>
         <div class="col-fa">
-            <div class="code-block" style="direction:rtl; text-align:right;">
---list فایل            فایل اهداف (IP:PORT, CIDR, بازه خط تیره)
---range بازه [بازه]    محدوده IP (نیازمند --port)
---port پورت [پورت]     پورت(های) اسکن
---threads تعداد        تعداد ترد (پیش‌فرض ۵۰)
---timeout ثانیه        زمان انتظار هر پروکسی (پیش‌فرض ۶۰)
---tcp-timeout-mult X   ضریب زمان اتصال TCP (پیش‌فرض ۰.۶)
---auth USER:PASS       اعتبارنامه پروکسی‌های نیازمند احراز
---ssh-host میزبان      میزبان هدف SSH (پیش‌فرض github.com)
---ssh-port پورت        پورت هدف SSH (پیش‌فرض ۲۲)
---alive فایل           فایل خروجی پروکسی‌های زنده با جزئیات
---urls فایل            فایل خروجی URLهای پروکسی
---checkpoint فایل      فایل ذخیره نقطه بررسی
---scope CIDR [CIDR]    محدوده‌های مجاز برای گسترش بازه
---allow-all            چشم‌پوشی از الزام --scope
---targets-config JSON   فایل پیکربندی اهداف سفارشی JSON
---fallback-ips JSON    فایل IPهای پشتیبان اضافی JSON
---clean                پاک‌سازی فایل‌های خروجی پیش از شروع
---retest               نادیده گرفتن checkpoint و تست مجدد همه
---refresh-ips          بازنشانی IPهای شناخته‌شده و به‌روزرسانی فایل
---no-geo               غیرفعال کردن جستجوی موقعیت جغرافیایی
---no-diversity         رد شدن از تست تنوع پورت
---verbose              نمایش جزئیات کامل در کنسول
---max-alive N          توقف پس از یافتن N پروکسی زنده
-            </div>
+            <h3>۱. General Score (Gen، حداکثر ۵۰)</h3>
+            <p>سنجش کارایی روزمره پروکسی:</p>
+            <ul>
+                <li>موفقیت تونل TLS به b-cdn.net: <strong>+۲۵</strong></li>
+                <li>موفقیت TLS کند (پس از تلاش مجدد): <strong>+۱۵</strong></li>
+                <li>هر endpoint عمومی قابل دسترس (Google، Cloudflare، GitHub، Telegram Web، YouTube): <strong>+۶</strong></li>
+                <li>انتقال موفق ۱KB داده: <strong>+۸</strong></li>
+                <li>نکات TCP (TTL < 64): <strong>+۲</strong></li>
+                <li>DNS over SOCKS: <strong>+۲</strong></li>
+                <li>موفقیت در مرور واقعی (>۵۰٪): تا <strong>+۱۰</strong></li>
+                <li>اتصال مداوم (۵ درخواست پشت‌سرهم): <strong>+۲</strong></li>
+            </ul>
+            <h3>۲. PSI Score (سازگاری با Psiphon، حداکثر ۵۵)</h3>
+            <p>سنجش سازگاری خاص Psiphon:</p>
+            <ul>
+                <li>دسترسی به لیست سرور Psiphon: تا <strong>۳۰</strong></li>
+                <li>موفقیت تونل TLS: <strong>+۵</strong></li>
+                <li>تبادل بذر OSSH: <strong>+۱۰</strong> (PASS) / <strong>+۵</strong> (INCONCLUSIVE)</li>
+                <li>تشخیص بنر SSH: <strong>+۴</strong> (PASS) / <strong>+۲</strong> (INCONCLUSIVE)</li>
+                <li>دریافت (fetch) لیست سرور: <strong>+۱۰</strong></li>
+                <li>Meek handshake: <strong>+۶</strong></li>
+                <li>رله UDP: <strong>+۲</strong></li>
+                <li>Port diversity (از طریق پروکسی): تا <strong>+۸</strong></li>
+                <li>HTTP پیشرفته (POST/PUT/DELETE, Cookie, Referrer, Compression): <strong>+۴</strong></li>
+                <li>موفقیت در عبور از سانسور: تا <strong>+۹</strong> (۳ سایت)</li>
+                <li>پایداری ≥ ۸۰٪: <strong>+۳</strong></li>
+            </ul>
+            <h3>۳. Generic Viability (G_Via، حداکثر ۵۰)</h3>
+            <p>میزان سودمندی برای ابزارهای غیر Psiphon مثل V2Ray/VPN:</p>
+            <ul>
+                <li>TCP باز: <strong>+۵</strong></li>
+                <li>پروکسی Forward شناسایی‌شده (HTTP_FWD): <strong>+۵</strong></li>
+                <li>هر endpoint عمومی قابل دسترس: <strong>+۴</strong></li>
+                <li>انتقال داده: <strong>+۸</strong></li>
+                <li>HTTP پیشرفته: <strong>+۵</strong></li>
+            </ul>
+            <p><strong>امتیاز کل = Gen + PSI (حداکثر ۱۰۵)</strong></p>
+
+            <h3>طبقه‌بندی</h3>
+            <table>
+                <tr><th>کلاس</th><th>بازهٔ امتیاز</th></tr>
+                <tr><td>DEAD</td><td>&lt; ۵</td></tr>
+                <tr><td>MARGINAL</td><td>۵ – ۱۹</td></tr>
+                <tr><td>ALIVE</td><td>۲۰ – ۳۴</td></tr>
+                <tr><td>TUNNEL_OK</td><td>۳۵ – ۵۴</td></tr>
+                <tr><td>CDN_REACHABLE</td><td>۵۵ – ۷۴</td></tr>
+                <tr><td>PSIPHON_LIKELY</td><td>۷۵ – ۸۹</td></tr>
+                <tr><td>FULLY_READY</td><td>≥ ۹۰</td></tr>
+            </table>
         </div>
     </div>
 
-    <!-- ========== USAGE EXAMPLES ========== -->
+    <!-- ========== CONSOLE LEGEND ========== -->
     <div class="bilingual-heading">
-        <h2 class="en-heading">🚀 Usage Examples</h2>
-        <h2 class="fa-heading">🚀 مثال‌های استفاده</h2>
+        <h2 class="en-heading">📺 Console Legend</h2>
+        <h2 class="fa-heading">📺 راهنمای نمایش کنسول</h2>
     </div>
     <div class="row">
         <div class="col-en">
-            <h3>1. Basic scan</h3>
-            <div class="code-block">python psitracker.py --list proxies.txt --alive alive.txt --urls urls.txt</div>
-            <h3>2. CIDR range with multiple ports</h3>
-            <div class="code-block">python psitracker.py --range 192.168.1.0/24 --port 1080 8080 --scope 192.168.0.0/16</div>
-            <h3>3. Authentication</h3>
-            <div class="code-block">python psitracker.py --list auth_proxies.txt --auth admin:123456 --timeout 45</div>
-            <h3>4. Resume previous scan</h3>
-            <p>Progress saved in <code>scan_progress.json</code>. Use <code>--retest</code> to ignore it, <code>--clean</code> to reset.</p>
-            <h3>5. Faster scanning (no GeoIP, no diversity)</h3>
-            <div class="code-block">python psitracker.py --list proxies.txt --no-diversity --no-geo</div>
-            <h3>6. Stop after finding 20 alive proxies</h3>
-            <div class="code-block">python psitracker.py --list proxies.txt --max-alive 20</div>
-            <h3>7. Pause/Resume manually</h3>
-            <p>Press <kbd>P</kbd> to pause and <kbd>R</kbd> to resume anytime while scanning.</p>
-        </div>
-        <div class="col-fa">
-            <h3>۱. اسکن ساده</h3>
-            <div class="code-block" style="direction:ltr; text-align:left;">python psitracker.py --list proxies.txt --alive alive.txt --urls urls.txt</div>
-            <h3>۲. محدوده CIDR با چند پورت</h3>
-            <div class="code-block" style="direction:ltr; text-align:left;">python psitracker.py --range 192.168.1.0/24 --port 1080 8080 --scope 192.168.0.0/16</div>
-            <h3>۳. احراز هویت</h3>
-            <div class="code-block" style="direction:ltr; text-align:left;">python psitracker.py --list auth_proxies.txt --auth admin:123456 --timeout 45</div>
-            <h3>۴. ادامهٔ اسکن قبلی</h3>
-            <p>پیشرفت در <code>scan_progress.json</code> ذخیره می‌شود. با <code>--retest</code> نادیده گرفته و با <code>--clean</code> پاک می‌شود.</p>
-            <h3>۵. اسکن سریع‌تر (بدون GeoIP و تنوع پورت)</h3>
-            <div class="code-block" style="direction:ltr; text-align:left;">python psitracker.py --list proxies.txt --no-diversity --no-geo</div>
-            <h3>۶. توقف پس از ۲۰ پروکسی زنده</h3>
-            <div class="code-block" style="direction:ltr; text-align:left;">python psitracker.py --list proxies.txt --max-alive 20</div>
-            <h3>۷. توقف/ادامهٔ دستی</h3>
-            <p>در حین اسکن کلید <kbd>P</kbd> را برای توقف و <kbd>R</kbd> را برای ادامه فشار دهید.</p>
-        </div>
-    </div>
-
-    <!-- ========== LEGEND ========== -->
-    <div class="bilingual-heading">
-        <h2 class="en-heading">📋 Console Legend</h2>
-        <h2 class="fa-heading">📋 راهنمای نمایش کنسول</h2>
-    </div>
-    <div class="row">
-        <div class="col-en">
-            <p>The scanner prints a legend on startup explaining every field:</p>
-            <div class="code-block">
-G.Via = Generic Viability (max 50)
-Pub   = Public endpoints (GOG, CF, GH, TLG, YT)
+            <p>On startup the scanner prints a legend explaining every field:</p>
+            <div class="code-block">G.Via = Generic Viability (max 50)
+Pub   = Public endpoints (GOG=google, CF=cloudflare, GH=github, TLG=telegram web, YT=youtube)
 TUN   = TLS tunnel (OK / SLOW / FAIL)
 Psi   = Psiphon endpoints
 Div   = Port diversity
@@ -595,131 +845,54 @@ SL    = Server list status
 Cens  = Censorship bypass count
 Stb   = Stability
 Brw   = Browsing score
-Persist = Persistent connection
-            </div>
+Persist = Persistent connection</div>
         </div>
         <div class="col-fa">
             <p>اسکنر پیش از شروع یک راهنما چاپ می‌کند که همهٔ فیلدها را توضیح می‌دهد:</p>
-            <div class="code-block" style="direction:ltr; text-align:left;">
-G.Via = قابلیت عمومی (حداکثر ۵۰)
+            <div class="code-block" style="direction:ltr; text-align:left;">G.Via = قابلیت عمومی (حداکثر ۵۰)
 Pub   = نقاط عمومی (GOG, CF, GH, TLG, YT)
 TUN   = تونل TLS (OK / SLOW / FAIL)
-Psi   = نقاط سایفون
+Psi   = نقاط Psiphon
 Div   = تنوع پورت
 SL    = وضعیت لیست سرور
 Cens  = تعداد سایت‌های عبور از فیلترینگ
 Stb   = پایداری
 Brw   = امتیاز مرور واقعی
-Persist = اتصال مداوم
-            </div>
+Persist = اتصال مداوم</div>
         </div>
     </div>
 
-    <!-- ========== PROXY URLS OUTPUT ========== -->
+    <!-- ========== OUTPUT FILES ========== -->
     <div class="bilingual-heading">
-        <h2 class="en-heading">🔗 proxy_urls.txt Format</h2>
-        <h2 class="fa-heading">🔗 قالب proxy_urls.txt</h2>
+        <h2 class="en-heading">📄 Output Files</h2>
+        <h2 class="fa-heading">📄 فایل‌های خروجی</h2>
     </div>
     <div class="row">
         <div class="col-en">
-            <div class="code-block">
-socks5://10.20.30.40:1080 #Score 82 #G_Via 45 #FRONTED
+            <ul>
+                <li><strong>alive_proxies.txt</strong> – Tab-separated detailed results (20+ columns) including protocol, auth status, compartment scores, anonymity, captive portal detection, etc.</li>
+                <li><strong>proxy_urls.txt</strong> – Ready-to-use proxy URLs with scores:</li>
+            </ul>
+            <div class="code-block">socks5://10.20.30.40:1080 #Score 82 #G_Via 45 #FRONTED
 http://172.16.0.1:8080    #Score 67 #G_Via 38 #MEEK
-socks4://192.168.1.1:4145 #Score 55 #G_Via 30 #OSSH
-            </div>
-            <p>Each line is a ready‑to‑use URL with total score, generic viability score, and the best performing channel.</p>
+socks4://192.168.1.1:4145 #Score 55 #G_Via 30 #OSSH</div>
+            <ul>
+                <li><strong>scan_progress.json</strong> – Checkpoint file that stores progress, server list cache, and config fingerprint.</li>
+                <li><strong>tcp_open_proxies.txt</strong> – Proxies where TCP port is open but no known protocol was detected.</li>
+            </ul>
         </div>
         <div class="col-fa">
-            <div class="code-block" style="direction:ltr; text-align:left;">
-socks5://10.20.30.40:1080 #Score 82 #G_Via 45 #FRONTED
+            <ul>
+                <li><strong>alive_proxies.txt</strong> – نتایج تفصیلی جدا شده با tab (بیش از ۲۰ ستون) شامل پروتکل، وضعیت احراز هویت، امتیازات بخش‌ها، ناشناسی، تشخیص Captive Portal و غیره.</li>
+                <li><strong>proxy_urls.txt</strong> – URLهای پروکسی آماده استفاده با امتیازات:</li>
+            </ul>
+            <div class="code-block" style="direction:ltr; text-align:left;">socks5://10.20.30.40:1080 #Score 82 #G_Via 45 #FRONTED
 http://172.16.0.1:8080    #Score 67 #G_Via 38 #MEEK
-socks4://192.168.1.1:4145 #Score 55 #G_Via 30 #OSSH
-            </div>
-            <p>هر خط یک URL آماده به همراه امتیاز کل، امتیاز قابلیت عمومی و بهترین کانال عملکرد را نشان می‌دهد.</p>
-        </div>
-    </div>
-
-    <!-- ========== SCORING ========== -->
-    <div class="bilingual-heading">
-        <h2 class="en-heading">📈 Fair Scoring &amp; Classification</h2>
-        <h2 class="fa-heading">📈 امتیازدهی منصفانه و طبقه‌بندی</h2>
-    </div>
-    <div class="row">
-        <div class="col-en">
-            <p><strong>General Score (max 50)</strong> – measures everyday proxy usage:</p>
+socks4://192.168.1.1:4145 #Score 55 #G_Via 30 #OSSH</div>
             <ul>
-                <li>TLS tunnel success: +25</li>
-                <li>Each reachable public endpoint (Google, Cloudflare, …): +6</li>
-                <li>Data transfer (1 KB): +8</li>
-                <li>TCP hints (TTL &lt; 64): +2</li>
-                <li>DNS over SOCKS: +2</li>
-                <li>Real browsing: up to +10</li>
-                <li>Persistent connection (5 requests): +2</li>
+                <li><strong>scan_progress.json</strong> – فایل Checkpoint که پیشرفت، کش لیست سرور و fingerprint تنظیمات را ذخیره می‌کند.</li>
+                <li><strong>tcp_open_proxies.txt</strong> – پروکسی‌هایی که پورت TCP آنها باز است اما هیچ پروتکل شناخته‌شده‌ای شناسایی نشده است.</li>
             </ul>
-            <p><strong>PSI Score (max 55)</strong> – measures Psiphon compatibility:</p>
-            <ul>
-                <li>Psiphon server list reachability: up to 30</li>
-                <li>TLS tunnel success: +5</li>
-                <li>OSSH seed exchange: +10 (pass) / +5 (inconclusive)</li>
-                <li>SSH banner: +4 / +2</li>
-                <li>Server list fetch: +10</li>
-                <li>Meek handshake: +6</li>
-                <li>UDP relay: +2</li>
-                <li>Port diversity: up to +8</li>
-                <li>Advanced HTTP (POST/PUT/DELETE/…): +4</li>
-                <li>Censorship bypass: up to +9</li>
-                <li>Stability (≥80%): +3</li>
-            </ul>
-            <p><strong>Generic Viability (G_Via, max 50)</strong> – usefulness for non‑Psiphon tools like V2Ray.</p>
-            <p>Total Score = Gen + PSI (max 105).</p>
-            <table>
-                <tr><th>Class</th><th>Score Range</th></tr>
-                <tr><td>DEAD</td><td>&lt;5</td></tr>
-                <tr><td>MARGINAL</td><td>5‑19</td></tr>
-                <tr><td>ALIVE</td><td>20‑34</td></tr>
-                <tr><td>TUNNEL_OK</td><td>35‑54</td></tr>
-                <tr><td>CDN_REACHABLE</td><td>55‑74</td></tr>
-                <tr><td>PSIPHON_LIKELY</td><td>75‑89</td></tr>
-                <tr><td>FULLY_READY</td><td>90+</td></tr>
-            </table>
-        </div>
-        <div class="col-fa">
-            <p><strong>امتیاز عمومی (حداکثر ۵۰)</strong> – کارایی روزمره:</p>
-            <ul>
-                <li>تونل TLS موفق: +۲۵</li>
-                <li>هر نقطهٔ عمومی قابل دسترس: +۶</li>
-                <li>انتقال داده (۱KB): +۸</li>
-                <li>نکات TCP (TTL < 64): +۲</li>
-                <li>DNS از طریق SOCKS: +۲</li>
-                <li>مرور واقعی: تا +۱۰</li>
-                <li>اتصال مداوم (۵ درخواست): +۲</li>
-            </ul>
-            <p><strong>امتیاز سایفون (حداکثر ۵۵)</strong> – سازگاری با سایفون:</p>
-            <ul>
-                <li>دسترسی به لیست سرور سایفون: تا ۳۰</li>
-                <li>تونل TLS موفق: +۵</li>
-                <li>تبادل seed سایفون: +۱۰ (قبول) / +۵ (نامشخص)</li>
-                <li>بنر SSH: +۴ / +۲</li>
-                <li>دریافت لیست سرور: +۱۰</li>
-                <li>Meek handshake: +۶</li>
-                <li>رله UDP: +۲</li>
-                <li>تنوع پورت: تا +۸</li>
-                <li>HTTP پیشرفته: +۴</li>
-                <li>عبور از فیلترینگ: تا +۹</li>
-                <li>پایداری (≥۸۰٪): +۳</li>
-            </ul>
-            <p><strong>قابلیت عمومی (G_Via، حداکثر ۵۰)</strong> – میزان سودمندی برای V2Ray و ابزارهای غیر سایفون.</p>
-            <p>امتیاز کل = عمومی + سایفون (حداکثر ۱۰۵).</p>
-            <table>
-                <tr><th>طبقه</th><th>بازهٔ امتیاز</th></tr>
-                <tr><td>DEAD</td><td>&lt;۵</td></tr>
-                <tr><td>MARGINAL</td><td>۵‑۱۹</td></tr>
-                <tr><td>ALIVE</td><td>۲۰‑۳۴</td></tr>
-                <tr><td>TUNNEL_OK</td><td>۳۵‑۵۴</td></tr>
-                <tr><td>CDN_REACHABLE</td><td>۵۵‑۷۴</td></tr>
-                <tr><td>PSIPHON_LIKELY</td><td>۷۵‑۸۹</td></tr>
-                <tr><td>FULLY_READY</td><td>۹۰+</td></tr>
-            </table>
         </div>
     </div>
 
@@ -731,31 +904,33 @@ socks4://192.168.1.1:4145 #Score 55 #G_Via 30 #OSSH
     <div class="row">
         <div class="col-en">
             <ul class="feature-list">
-                <li><strong>Socket tuning</strong>: <code>TCP_NODELAY</code> on every socket.</li>
-                <li><strong>TLS enforcement</strong>: Only TLS 1.2+ with AEAD ciphers, mandatory certificate verification.</li>
-                <li><strong>Retry logic</strong>: Exponential backoff + jitter, plus per‑test 1.2‑1.5× timeout multipliers.</li>
-                <li><strong>Atomic checkpoint</strong>: Write‑temp‑then‑rename prevents corruption.</li>
-                <li><strong>Thread safety</strong>: Locks protect shared caches and file writes; server list fetch uses atomic cache update.</li>
-                <li><strong>Memory control</strong>: DNS and GeoIP caches expire after 300 s; server list limited to 100 entries.</li>
-                <li><strong>Zero DNS dependency</strong>: All tests use hostnames through the proxy; only SOCKS4 needs a pre‑resolved IP (from cache or fallback).</li>
-                <li><strong>Manual Pause/Resume</strong>: Keyboard listener thread with <code>threading.Event</code>, cross‑platform.</li>
+                <li><strong>Socket tuning:</strong> <code>TCP_NODELAY</code> on every socket.</li>
+                <li><strong>TLS enforcement:</strong> Only TLS 1.2+ with AEAD ciphers, mandatory certificate verification.</li>
+                <li><strong>Retry logic:</strong> Exponential backoff + jitter, plus per-test timeout multipliers (1.2×, 1.5×).</li>
+                <li><strong>Atomic checkpoint:</strong> Write-temp-then-rename prevents corruption.</li>
+                <li><strong>Thread safety:</strong> Locks protect shared caches and file writes; server list fetch uses atomic cache update.</li>
+                <li><strong>Memory control:</strong> DNS and GeoIP caches expire after 300s; server list limited to 100 entries.</li>
+                <li><strong>Zero DNS dependency:</strong> All tests use hostnames through the proxy; only SOCKS4 needs a pre-resolved IP (from cache or fallback).</li>
+                <li><strong>Manual Pause/Resume:</strong> Keyboard listener thread with <code>threading.Event</code>, cross-platform.</li>
+                <li><strong>Crash-resistant:</strong> All sockets & sessions properly closed in <code>finally</code> blocks.</li>
             </ul>
         </div>
         <div class="col-fa">
             <ul class="feature-list">
-                <li><strong>تنظیم سوکت</strong>: <code>TCP_NODELAY</code> روی هر سوکت فعال است.</li>
-                <li><strong>اجبار TLS</strong>: فقط TLS 1.2+ با رمزهای AEAD، تأیید اجباری گواهی.</li>
-                <li><strong>منطق تلاش مجدد</strong>: پس‌روی نمایی با لرزش، و ضرب‌های ۱.۲–۱.۵ برابری زمان.</li>
-                <li><strong>نقطه بررسی اتمیک</strong>: نوشتن در فایل موقت سپس بازنام‌گذاری.</li>
-                <li><strong>امنیت ترد</strong>: قفل‌ها از حافظه‌های مشترک و فایل‌ها محافظت می‌کنند؛ به‌روزرسانی کش لیست سرور اتمیک است.</li>
-                <li><strong>کنترل حافظه</strong>: کش‌های DNS و GeoIP پس از ۳۰۰ ثانیه منقضی می‌شوند؛ لیست سرور به ۱۰۰ رکورد محدود است.</li>
-                <li><strong>بدون وابستگی به DNS</strong>: تمام تست‌ها با نام دامنه از طریق پروکسی انجام می‌شوند؛ فقط SOCKS4 به IP از قبل حل‌شده نیاز دارد (از کش یا فال‌بک).</li>
-                <li><strong>توقف/ادامهٔ دستی</strong>: نخ شنوندهٔ کیبورد با <code>threading.Event</code>، چندسکویی.</li>
+                <li><strong>تنظیم سوکت:</strong> <code>TCP_NODELAY</code> روی هر سوکت فعال است.</li>
+                <li><strong>اجبار TLS:</strong> فقط TLS 1.2+ با رمزهای AEAD، تأیید اجباری گواهی.</li>
+                <li><strong>منطق تلاش مجدد:</strong> پس‌روی نمایی + jitter، با ضریب‌های ۱.۲× و ۱.۵× زمان.</li>
+                <li><strong>Checkpoint اتمیک:</strong> نوشتن در فایل موقت سپس بازنام‌گذاری – هرگز progress خراب نمی‌شود.</li>
+                <li><strong>ایمنی ترد:</strong> قفل‌ها از کش‌های مشترک و نوشتن فایل‌ها محافظت می‌کنند؛ به‌روزرسانی کش لیست سرور اتمیک است.</li>
+                <li><strong>کنترل حافظه:</strong> کش‌های DNS و GeoIP پس از ۳۰۰ ثانیه منقضی می‌شوند؛ لیست سرور به ۱۰۰ ورودی محدود است.</li>
+                <li><strong>وابستگی صفر به DNS:</strong> تمام تست‌ها با نام دامنه از طریق پروکسی انجام می‌شوند؛ فقط SOCKS4 به IP از قبل حل‌شده (از کش یا فال‌بک) نیاز دارد.</li>
+                <li><strong>توقف/ادامهٔ دستی:</strong> نخ شنوندهٔ کیبورد با <code>threading.Event</code>، چندسکویی.</li>
+                <li><strong>مقاوم در برابر crash:</strong> تمام سوکت‌ها و نشست‌ها در بلوک‌های <code>finally</code> به‌درستی بسته می‌شوند.</li>
             </ul>
         </div>
     </div>
 
-    <!-- ========== EXTRA NOTES ========== -->
+    <!-- ========== FINAL NOTES ========== -->
     <div class="bilingual-heading">
         <h2 class="en-heading">🧩 Final Notes</h2>
         <h2 class="fa-heading">🧩 نکات پایانی</h2>
@@ -763,30 +938,32 @@ socks4://192.168.1.1:4145 #Score 55 #G_Via 30 #OSSH
     <div class="row">
         <div class="col-en">
             <ul class="feature-list">
-                <li>Proxies without credentials when needed are marked <code>AUTH:Y</code> and skipped (score 0).</li>
+                <li>Proxies that require authentication but none is provided are marked <code>AUTH:Y</code> and skipped (score 0).</li>
                 <li>Slow proxies get an automatic second chance and are labelled <code>SLOW_OK</code>.</li>
-                <li>Ping &gt; 5000 ms triggers a <code>HEAVY_LOAD</code> warning but does not discard the proxy.</li>
-                <li>All tests are performed <strong>through</strong> the proxy; no direct connections are used for scoring.</li>
-                <li>Output <code>alive_proxies.txt</code> contains 20+ tab‑separated columns for deep analysis.</li>
-                <li>The scanner is Python 3.7+ compatible and has been tested on Linux / Windows / macOS.</li>
+                <li>Ping &gt; 5000 ms triggers a <code>HEAVY_LOAD</code> warning but does not discard the proxy.</li>
+                <li><strong>Every single test is performed through the proxy.</strong> No direct connections are used for scoring.</li>
+                <li>Output <code>alive_proxies.txt</code> contains 20+ tab-separated columns for deep analysis.</li>
                 <li>Press <kbd>P</kbd> to pause, <kbd>R</kbd> to resume during scan.</li>
+                <li>Python 3.7+ compatible. Tested on Linux, Windows, macOS.</li>
             </ul>
         </div>
         <div class="col-fa">
             <ul class="feature-list">
-                <li>پروکسی‌های بدون اعتبارنامه با <code>AUTH:Y</code> علامت‌گذاری و نادیده گرفته می‌شوند.</li>
+                <li>پروکسی‌هایی که نیاز به احراز هویت دارند اما اعتبارنامه‌ای ارائه نشده، <code>AUTH:Y</code> علامت‌گذاری و رد می‌شوند (امتیاز ۰).</li>
                 <li>پروکسی‌های کند به‌طور خودکار شانس دوم می‌گیرند و برچسب <code>SLOW_OK</code> می‌خورند.</li>
                 <li>پینگ بالای ۵۰۰۰ میلی‌ثانیه هشدار <code>HEAVY_LOAD</code> می‌دهد اما پروکسی را حذف نمی‌کند.</li>
-                <li>تمام تست‌ها <strong>از مسیر خود پروکسی</strong> انجام می‌شوند؛ هیچ اتصال مستقیمی برای امتیازدهی استفاده نمی‌شود.</li>
-                <li>خروجی <code>alive_proxies.txt</code> بیش از ۲۰ ستون جداشده با تب برای تحلیل عمیق دارد.</li>
-                <li>اسکنر با Python 3.7 به بالا سازگار است و روی لینوکس/ویندوز/مک آزمایش شده است.</li>
-                <li>در حین اسکن با فشردن <kbd>P</kbd> توقف و با <kbd>R</kbd> ادامه دهید.</li>
+                <li><strong>تک‌تک تست‌ها از مسیر خود پروکسی انجام می‌شوند.</strong> هیچ اتصال مستقیمی برای امتیازدهی استفاده نمی‌شود.</li>
+                <li>خروجی <code>alive_proxies.txt</code> بیش از ۲۰ ستون جداشده با tab برای تحلیل عمیق دارد.</li>
+                <li>در حین اسکن <kbd>P</kbd> برای توقف، <kbd>R</kbd> برای ادامه.</li>
+                <li>سازگار با Python 3.7+. تست‌شده روی لینوکس، ویندوز، مک.</li>
             </ul>
         </div>
     </div>
 
-    <p style="margin-top: 3rem; text-align: center; opacity: 0.7;">
-        🌟 PSI-Tracker V1.0 “Aegis Perfecta” — Built to win the war against censorship.
+    <p style="margin-top: 3rem; text-align: center; opacity: 0.7; font-size: 1.2rem;">
+        ❤️ Psiphon Tracker V 1.0 "DEY Warrior" — Built to win the war against censorship.<br>
+        <strong>تقدیم به جاویدنامان ایران زمین – دی ۱۴۰۴</strong><br>
+        Their memory lives on in every line of code that defends free access to information.
     </p>
 </div>
 
