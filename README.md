@@ -1,6 +1,3 @@
-Here's the corrected English `README.md` with proper table formatting and clear code block separation.  
-Everything is aligned with the actual script.
-
 ```markdown
 # Psiphon Tracker V 1.0 “DEY Warrior”  
 **Unbreakable Proxy Scanner for Censored Networks**  
