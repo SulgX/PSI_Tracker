@@ -1,4 +1,4 @@
-# PSI-Tracker V1.0 "DEY_PSI" – Unbreakable Proxy Auditor for Iran
+# PSI-Tracker V1.0 "DEY_Immortal" – Unbreakable Proxy Auditor for Iran
 ** In memory of the immortal Iranians **
 
 **Find working SOCKS/HTTP proxies when DNS, ICMP, and all foreign websites are blocked.**
