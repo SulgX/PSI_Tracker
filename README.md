@@ -8,13 +8,13 @@
 
 ---
 
-## 🔬 What is Psiphon Tracker “DEY Warrior”?
+## 🔬 What is PSI‑Tracker “DEY Warrior”?
 
-Psiphon Tracker is a **multi‑stage, thread‑parallel proxy scanner** designed for **high‑latency, heavily censored environments** (like Iran).  
+PSI‑Tracker is a **multi‑stage, thread‑parallel proxy scanner** designed for **high‑latency, heavily censored environments** (like Iran).  
 Every single test is performed **through the proxy itself** – the scanner **never** uses its own internet connection to judge a proxy’s health.  
 This means it works perfectly even when DNS, ICMP, and all foreign websites are blocked.
 
-The scanner accurately **emulates Psiphon’s real connection protocols** (OSSH seed exchange with anti‑echo, Meek POST with obfuscated headers, Fronted TLS to real CDNs) based on reverse engineering.  
+The scanner accurately **emulates Psiphon’s real connection protocols** (OSSH seed exchange, Meek, Fronted TLS) based on reverse engineering.  
 Each proxy receives a **fair, multi‑axis score** (Gen, PSI, Generic Viability) and is classified from **DEAD** to **FULLY_READY**.
 
 > **Dedication**: This tool is proudly dedicated to the immortal names of Iran Land – Dey 1404.
@@ -26,13 +26,13 @@ Each proxy receives a **fair, multi‑axis score** (Gen, PSI, Generic Viability)
 - **Full RFC 1928 SOCKS5** – IPv4, IPv6, domain name support, proper BND.ADDR handling
 - **Psiphon Emulation** – Real OSSH seed exchange (anti‑echo), Meek POST with obfuscated headers, Fronted TLS to real CDNs
 - **True UDP Test** – SOCKS5 UDP relay, full IPv4/IPv6 support, crash‑safe
-- **Accurate Server List Parser** – Binary compressed list (IPv4, IPv6, DOMAIN entries) with safe bounds
-- **Context‑Aware Checkpoint** – Resume scans exactly from the last tested proxy, config fingerprint prevents stale data
-- **Port Diversity Test** – Tests 5 ports (22, 53, 80, 443, 554) **through the proxy**, never directly
+- **Accurate Server List Parser** – Binary compressed list parser (IPv4, IPv6, DOMAIN entries) with safe bounds
+- **Context‑Aware Checkpoint** – Resume scans exactly from the last tested proxy; config fingerprint prevents stale data
+- **Port Diversity Test** – Tests multiple ports **through the proxy**, never directly
 - **Two‑Phase Network Watchdog** – Hardcoded IPs first, then samples your own proxies; auto‑pause only when both phases fail
 - **Manual Pause/Resume** – Press `P` to pause, `R` to resume anytime (no input blocking)
 - **`--max-alive`** – Auto‑stop after finding a set number of alive proxies
-- **Fair Multi‑Axis Scoring** – General Score (everyday use), PSI Score (Psiphon compatibility), Generic Viability (non‑Psiphon tools like V2Ray)
+- **Fair Multi‑Axis Scoring** – General Score (everyday use), PSI Score (Psiphon compatibility), Generic Viability (non‑Psiphon tools)
 - **Real‑World Tests** – Real browsing, censorship bypass (Telegram, Twitter, Facebook), stability, persistent connection
 - **Advanced HTTP Validation** – POST/PUT/DELETE echo, Cookie & Referrer transport, Gzip compression
 - **Multi‑Judge Anonymity** – 5 judges classify proxies as ELITE / ANONYMOUS / TRANSPARENT (conservative)
@@ -56,7 +56,8 @@ cd PSI_Tracker
 pip install -r requirements.txt
 ```
 
-**`requirements.txt`** content:
+`requirements.txt` content:
+
 ```
 tqdm>=4.64.0
 colorama>=0.4.6
@@ -64,51 +65,33 @@ requests>=2.28.0
 PySocks>=1.7.1
 ```
 
-> **Note:** Without `PySocks`, raw‑socket SOCKS tests still work, but some high‑level features (Meek over SOCKS) are limited.
+Note: Without PySocks, raw‑socket SOCKS tests still work, but some high‑level features (Meek over SOCKS) are limited.
 
 ---
 
 ## 🚀 Quick Start with the Launcher (Windows)
 
-A professional Windows batch launcher (`launcher.bat`) is included. It manages all settings and runs scans in the **same window** so `P`/`R` keys work.
+A professional Windows batch launcher (`launcher.bat`) is included to manage all settings and run scans in the same window (so P/R keys work).
 
-**How to use:**
+How to use:
 
-1. Double‑click `launcher.bat`
-2. Press `[1]` to set your proxy list file (e.g., `my_ips.txt`)
+1. Double‑click `launcher.bat`.
+2. Press `[1]` to set your proxy list file (e.g., `my_ips.txt`).
 3. Choose a scan mode:
    - **Q** – Quick Scan (20 threads, 30s timeout, `--no-geo --no-diversity`)
    - **D** – Deep Scan (50 threads, 90s timeout, `--verbose`)
    - **F** – Full Scan (50 threads, 120s timeout, `--verbose`)
-   - **C** – Custom Scan (uses all configured settings)
-4. Press `Y` to start
-5. During scan: press `P` to pause, `R` to resume
+   - **C** – Custom Scan (uses manually configured settings)
+4. Press `Y` to start.
+5. During scan: press `P` to pause, `R` to resume.
 
 The launcher saves your settings in `launcher_settings.ini` for next time.
-
-**Launcher Menu Options (1–22):**
-```
- [1] List file          [12] Scope CIDRs
- [2] Range(s)           [13] Allow all
- [3] Port(s)            [14] Targets config
- [4] Threads            [15] Fallback IPs
- [5] Timeout            [16] No GeoIP
- [6] TCP multiplier     [17] No diversity
- [7] Auth (user:pass)   [18] Verbose
- [8] SSH host:port      [19] Max alive (stop)
- [9] Output alive       [20] Clean files
-[10] Output URLs        [21] Retest all
-[11] Checkpoint         [22] Refresh fallback
-
- [S] Save settings     [L] Load defaults
- [H] Help              [X] Exit
-```
 
 ---
 
 ## ⚙️ Manual Command Line Usage
 
-All arguments can be used directly with `python psi_tracker.py`.
+All arguments can be used directly with `python psi_tracker.py` (the script is the same file provided).
 
 ### Basic scan
 ```bash
@@ -126,7 +109,8 @@ python psi_tracker.py --list auth_proxies.txt --auth admin:123456 --timeout 45
 ```
 
 ### Resume previous scan
-Progress is saved in `scan_progress.json`. Just run again with the same `--list` or `--range` – it will automatically resume. Use `--retest` to ignore the checkpoint, `--clean` to reset.
+Progress is saved in `scan_progress.json`. Just run again with the same `--list` or `--range` – it will automatically resume.
+
 ```bash
 python psi_tracker.py --list proxies.txt
 ```
@@ -146,9 +130,6 @@ python psi_tracker.py --list proxies.txt --max-alive 20
 python psi_tracker.py --refresh-ips
 ```
 
-### Pause/Resume manually
-Press `P` to pause and `R` to resume anytime while scanning.
-
 ---
 
 ## 📋 Full Command‑Line Arguments
@@ -162,15 +143,15 @@ Press `P` to pause and `R` to resume anytime while scanning.
 | `--timeout SECONDS` | Per‑proxy timeout (default: 60) |
 | `--tcp-timeout-mult X` | TCP connect multiplier (default: 0.6) |
 | `--auth USER:PASS` | Credentials for proxies that require authentication |
-| `--ssh-host HOST` | SSH target host (default: `github.com`) |
-| `--ssh-port PORT` | SSH target port (default: `22`) |
-| `--alive FILE` | Output file for alive proxies with full details (default: `alive_proxies.txt`) |
-| `--urls FILE` | Output file for proxy URLs (default: `proxy_urls.txt`) |
-| `--checkpoint FILE` | Progress checkpoint file (default: `scan_progress.json`) |
+| `--ssh-host HOST` | SSH target host (default: github.com) |
+| `--ssh-port PORT` | SSH target port (default: 22) |
+| `--alive FILE` | Output file for alive proxies with full details |
+| `--urls FILE` | Output file for proxy URLs |
+| `--checkpoint FILE` | Progress checkpoint file (default: scan_progress.json) |
 | `--scope CIDR [CIDR ...]` | Restrict range expansion to these CIDRs |
 | `--allow-all` | Bypass the `--scope` requirement |
 | `--targets-config JSON` | Custom test targets JSON config |
-| `--fallback-ips JSON` | Additional fallback IPs JSON file (default: `fallback_ips.json`) |
+| `--fallback-ips JSON` | Additional fallback IPs JSON file |
 | `--clean` | Clear output files before starting |
 | `--retest` | Ignore existing checkpoint and re‑test all |
 | `--refresh-ips` | Re‑resolve known hosts and update the fallback IPs file |
@@ -181,55 +162,14 @@ Press `P` to pause and `R` to resume anytime while scanning.
 
 ---
 
-## 🧪 Comprehensive Audit Stages
-
-The scanner performs 22+ deep tests on every single proxy:
-
-| Stage | Description |
-|-------|-------------|
-| TCP Connectivity | Raw socket connect with configurable multiplier |
-| Protocol Detection | SOCKS5 (no‑auth / user‑pass), SOCKS4, HTTP CONNECT, HTTP Forward |
-| Primary TLS Tunnel | TLS 1.2+ handshake to `b-cdn.net` (domain, not IP) with cert validation |
-| General Endpoints | Google, Cloudflare, GitHub, Telegram Web, YouTube (via proxy, domain‑based) |
-| PSI Server List | Fetches & parses real Psiphon server list (gzip, ETag cache) |
-| OSSH Seed Exchange | Psiphon anti‑echo seed exchange over SOCKS5/4 tunnel |
-| SSH Banner | SSH‑2.0 banner detection through proxy |
-| Meek Fronting | POST to `/meek` with obfuscated headers |
-| UDP Associate | SOCKS5 UDP relay test (IPv4/IPv6 BND.ADDR support) |
-| Data Transfer | Downloads 1 KB from httpbin |
-| Speed Test | Measures MB/s over 512 KB fetch |
-| Advanced HTTP | POST/PUT/DELETE echo, Cookie & Referrer transport, Gzip compression |
-| Anonymity (5 judges) | Multi‑judge classification (ELITE / ANONYMOUS / TRANSPARENT) |
-| Real Browsing | Accesses `gstatic.com`, `httpbin.org`, `cloudflare.com` |
-| Censorship Bypass | Checks Telegram, Twitter, Facebook |
-| Persistent Connection | 5 sequential requests on a single session |
-| Stability | 3 parallel requests to httpbin |
-| Captive Portal | Detects login redirects |
-| DNS over SOCKS | Verifies domain resolution through the proxy |
-| TCP Hints | Collects TTL, retransmissions (Linux) for score bonus |
-| Port Diversity | Tests 5 ports (22,53,80,443,554) through the proxy |
-| GeoIP (optional) | Country detection via multiple services |
-
----
-
-## 🛡️ Two‑Phase Network Watchdog
-
-A unique mechanism that never blocks the scan unnecessarily:
-
-1. **Phase 1 – Hardcoded IPs:** Checks TCP port 443 on well‑known IPs (Google, Cloudflare, GitHub, …). No DNS needed.
-2. **Phase 2 – Proxy targets:** If Phase 1 fails, it randomly samples **proxies from your own list**. If even one proxy responds, the internet is considered alive.
-
-Only when **both phases fail** does the scanner pause and wait for the network to return. It automatically resumes when connectivity is restored, or you can press `R` to force a retry.
-
----
-
 ## 📈 Scoring System
 
 Every proxy receives three scores that reflect its real‑world usability.
 
 ### 1. General Score (Gen, max 50)
 Measures everyday proxy performance:
-- TLS tunnel success to `b-cdn.net`: **+25**
+
+- TLS tunnel success to b-cdn.net: **+25**
 - Slow TLS success (after retry): **+15**
 - Each reachable public endpoint (Google, Cloudflare, GitHub, Telegram Web, YouTube): **+6**
 - Successful 1 KB data transfer: **+8**
@@ -240,6 +180,7 @@ Measures everyday proxy performance:
 
 ### 2. PSI Score (Psiphon compatibility, max 55)
 Measures Psiphon‑specific compatibility:
+
 - Psiphon server list reachability: up to **30**
 - TLS tunnel success: **+5**
 - OSSH seed exchange: **+10** (PASS) / **+5** (INCONCLUSIVE)
@@ -254,6 +195,7 @@ Measures Psiphon‑specific compatibility:
 
 ### 3. Generic Viability (G_Via, max 50)
 Usefulness for non‑Psiphon tools like V2Ray / VPNs:
+
 - TCP open: **+5**
 - Forward proxy detected (HTTP_FWD): **+5**
 - Each reachable general endpoint: **+4**
@@ -267,8 +209,8 @@ Usefulness for non‑Psiphon tools like V2Ray / VPNs:
 
 ## 🏷️ Classification
 
-| Class | Total Score Range |
-|-------|-------------------|
+| Class | Total Score |
+|------|-----------|
 | DEAD | < 5 |
 | MARGINAL | 5 – 19 |
 | ALIVE | 20 – 34 |
@@ -282,6 +224,7 @@ Usefulness for non‑Psiphon tools like V2Ray / VPNs:
 ## 📺 Console Legend
 
 On startup the scanner prints a legend that explains every field:
+
 ```
 G.Via = Generic Viability (max 50)
 Pub   = Public endpoints (GOG=google, CF=cloudflare, GH=github, TLG=telegram web, YT=youtube)
@@ -299,29 +242,41 @@ Persist = Persistent connection
 
 ## 📄 Output Files
 
-- **`alive_proxies.txt`** – Tab‑separated detailed results (20+ columns) including protocol, auth status, compartment scores (OSSH/Meek/Fronted/SSH), anonymity, captive portal detection, etc.
-- **`proxy_urls.txt`** – Ready‑to‑use proxy URLs with scores. Format:
-  ```
-  socks5://10.20.30.40:1080 #Score 82 #G_Via 45 #FRONTED
-  http://172.16.0.1:8080    #Score 67 #G_Via 38 #MEEK
-  socks4://192.168.1.1:4145 #Score 55 #G_Via 30 #OSSH
-  ```
-- **`scan_progress.json`** – Checkpoint file that stores progress, server list cache, and config fingerprint.
-- **`tcp_open_proxies.txt`** – Proxies where TCP port is open but no known protocol was detected.
+- **alive_proxies.txt** – Tab‑separated detailed results (20+ columns) including protocol, auth status, compartment scores, anonymity, captcha detection, etc.
+- **proxy_urls.txt** – Ready‑to‑use proxy URLs with scores. Format:
+
+```
+socks5://10.20.30.40:1080 #Score 82 #G_Via 45 #FRONTED
+http://172.16.0.1:8080    #Score 67 #G_Via 38 #MEEK
+```
+
+- **scan_progress.json** – Checkpoint file that stores progress, server list cache, and config fingerprint.
+- **tcp_open_proxies.txt** – Proxies where TCP port is open but no known protocol was detected.
+
+---
+
+## 🛡️ Two‑Phase Network Watchdog
+
+A unique mechanism that never blocks the scan unnecessarily:
+
+**Phase 1 – Hardcoded IPs:** Checks TCP port 443 on well‑known IPs (Google, Cloudflare, GitHub, …). No DNS needed.
+
+**Phase 2 – Proxy targets:** If Phase 1 fails, it randomly samples proxies from your own list. If even one proxy responds, the network is considered alive.
+
+Only when **both phases** fail will the scanner pause and wait for the network to return. It automatically resumes when connectivity is restored, or you can press `R` to force a retry.
 
 ---
 
 ## ⚡ Advanced Internals
 
-- **Socket tuning:** `TCP_NODELAY` on every socket.
+- **Socket tuning:** TCP_NODELAY on every socket.
 - **TLS enforcement:** Only TLS 1.2+ with AEAD ciphers, mandatory certificate verification.
 - **Retry logic:** Exponential backoff + jitter, plus per‑test timeout multipliers (1.2×, 1.5×).
 - **Atomic checkpoint:** Write‑temp‑then‑rename – never corrupts progress.
-- **Thread safety:** Locks protect all shared caches and file writes; server list fetch uses atomic cache update.
+- **Thread safety:** Locks protect all shared caches and file writes.
 - **Memory control:** DNS & GeoIP caches expire after 300 s; server list limited to 100 entries.
-- **Zero DNS dependency:** All tests use hostnames through the proxy; only SOCKS4 needs a pre‑resolved IP (from cache or fallback).
-- **Manual Pause/Resume:** Cross‑platform keyboard listener with `threading.Event`.
-- **Crash‑resistant:** All sockets & sessions properly closed in `finally` blocks.
+- **Zero DNS dependency:** All tests use hostnames through the proxy. Only SOCKS4 requires a pre‑resolved IP (from cache or fallback).
+- **Manual Pause/Resume:** Cross‑platform keyboard listener with threading.Event.
 
 ---
 
@@ -330,7 +285,7 @@ Persist = Persistent connection
 - Proxies that require authentication but none is provided are marked `AUTH:Y` and skipped (score 0).
 - Slow proxies get an automatic second chance and are labelled `SLOW_OK`.
 - Ping > 5000 ms triggers a `HEAVY_LOAD` warning but does not discard the proxy.
-- **Every single test is performed through the proxy.** No direct connections are used for scoring.
+- Every single test is performed through the proxy. No direct connections are used for scoring.
 - Press `P` to pause, `R` to resume during scan.
 - Python 3.7+ compatible. Tested on Linux, Windows, macOS.
 
