@@ -4,7 +4,7 @@ title PSI-TRACKER LAUNCHER
 color 0A
 
 :: =====================================================================
-::  PSI-TRACKER V1.0 "AEGIS PERFECTA" - RELIABLE LAUNCHER
+::  PSI-TRACKER V1.0 "DEY Warrior" - RELIABLE LAUNCHER
 ::  Runs scans in the SAME window so you can use P/R keys.
 :: =====================================================================
 
@@ -57,7 +57,7 @@ if not exist "%SCRIPT%" (
 :menu
 cls
 echo ===============================================================================
-echo                      PSI-TRACKER V1.0 "AEGIS PERFECTA"
+echo                      PSI-TRACKER V1.0 "DEY Warrior"
 echo ===============================================================================
 echo.
 echo  [1] List file          : %LIST_FILE%
@@ -385,7 +385,7 @@ goto menu
 cls
 echo ================================= HELP =================================
 echo.
-echo PSI-TRACKER V1.0 "AEGIS PERFECTA" - FULL ARGUMENT REFERENCE
+echo PSI-TRACKER V1.0 "DEY Warrior" - FULL ARGUMENT REFERENCE
 echo.
 echo --list FILE            Target file (IP:PORT, CIDR, dash range)
 echo --range RANGE          CIDR or dash ranges
