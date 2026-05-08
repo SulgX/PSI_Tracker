@@ -1,6 +1,3 @@
-اینجا `README.md` کامل و نهایی، کاملاً هماهنگ با ساختار `README-FA.md`:
-
-```markdown
 # Psiphon Tracker V 1.0 “DEY Warrior”  
 **Unbreakable Proxy Scanner for Censored Networks**  
 *Built to win the war against censorship – dedicated to the immortal names of Iran Land, Dey 1404.*
