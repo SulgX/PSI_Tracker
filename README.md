@@ -1,6 +1,6 @@
 # Psiphon Tracker V 1.0 “DEY Warrior”  
 **Unbreakable Proxy Scanner for Censored Networks**  
-*Built to win the war against censorship – dedicated to the immortal names of Iran Land, Dey 1404.*
+*Built to win the war against censorship – dedicated to the immortal names of IRAN, Dey 1404.*
 
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -16,7 +16,7 @@ This means it works perfectly even when DNS, ICMP, and all foreign websites are 
 The scanner accurately **emulates Psiphon’s real connection protocols** (OSSH seed exchange, Meek, Fronted TLS) based on reverse engineering.  
 Each proxy receives a **fair, multi‑axis score** (Gen, PSI, Generic Viability) and is classified from **DEAD** to **FULLY_READY**.
 
-> **Dedication**: This tool is proudly dedicated to the immortal names of Iran Land – Dey 1404.
+> **Dedication**: This tool is proudly dedicated to the immortal names of IRAN – Dey 1404.
 
 ---
 
