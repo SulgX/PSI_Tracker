@@ -1,0 +1,3 @@
+In this file, put your proxy IPs in the form of IP:PORT, one number per line. For example: 
+
+0.0.0.0: 12341
