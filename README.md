@@ -1,3 +1,6 @@
+Here's the corrected English `README.md` with proper table formatting and clear code block separation.  
+Everything is aligned with the actual script.
+
 ```markdown
 # Psiphon Tracker V 1.0 “DEY Warrior”  
 **Unbreakable Proxy Scanner for Censored Networks**  
@@ -56,7 +59,7 @@ cd PSI_Tracker
 pip install -r requirements.txt
 ```
 
-**requirements.txt**:
+**`requirements.txt`** content:
 ```
 tqdm>=4.64.0
 colorama>=0.4.6
@@ -282,7 +285,6 @@ Usefulness for non‑Psiphon tools like V2Ray / VPNs:
 ## 📺 Console Legend
 
 On startup the scanner prints a legend that explains every field:
-
 ```
 G.Via = Generic Viability (max 50)
 Pub   = Public endpoints (GOG=google, CF=cloudflare, GH=github, TLG=telegram web, YT=youtube)
