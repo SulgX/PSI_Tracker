@@ -51,7 +51,6 @@ Each proxy receives a **fair, multi‑axis score** (Gen, PSI, Generic Viability)
 - **Python 3.7** or newer
 - `tqdm`, `colorama`, `requests`, `PySocks`
 
-```bash
 git clone https://github.com/SulgX/PSI_Tracker.git
 cd PSI_Tracker
 pip install -r requirements.txt
