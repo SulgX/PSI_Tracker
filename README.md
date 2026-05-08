@@ -290,6 +290,6 @@ Only when **both phases** fail will the scanner pause and wait for the network t
 
 ---
 
-❤️ **Dedicated to the immortal names of Iran Land – Dey 1404.**  
+❤️ **Dedicated to the immortal names of IRAN – Dey 1404.**  
 Their memory lives on in every line of code that defends free access to information.
 ```
