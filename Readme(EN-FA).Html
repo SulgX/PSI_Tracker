@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSI-Tracker V1.0 “Aegis Perfecta” – Ultimate Proxy Auditor</title>
+    <style>
+        /* ========== FONTS (System Native, Formal) ========== */
+        body {
+            font-family: 'B Nazanin', 'Vazirmatn', 'Tahoma', 'Segoe UI', sans-serif;
+        }
+        h1, h2, h3, .en-heading, .code-block, .stat-value {
+            font-family: 'Consolas', 'Courier New', 'Segoe UI', monospace;
+        }
+        .fa-heading {
+            font-family: 'B Nazanin', 'Vazirmatn', 'Tahoma', sans-serif;
+            font-weight: 700;
+        }
+
+        :root {
+            --bg: #0a0a14;
+            --surface: #12122a;
+            --text: #e0e0ff;
+            --accent: #7aa2f7;
+            --glow: rgba(122, 162, 247, 0.2);
+            --success: #9ece6a;
+            --warn: #e0af68;
+            --fail: #f7768e;
+            --border: #1e1e3a;
+            --star: rgba(255, 255, 255, 0.12);
+            --font-base: 1.15rem;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-weight: 300;
+            font-size: var(--font-base);
+            line-height: 1.8;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(1px 1px at 20% 30%, var(--star), transparent),
+                radial-gradient(1px 1px at 50% 70%, var(--star), transparent),
+                radial-gradient(1px 1px at 80% 20%, var(--star), transparent),
+                radial-gradient(1.5px 1.5px at 10% 80%, var(--star), transparent),
+                radial-gradient(1px 1px at 90% 40%, var(--star), transparent),
+                radial-gradient(1px 1px at 30% 90%, var(--star), transparent),
+                radial-gradient(2px 2px at 70% 10%, rgba(255,255,255,0.1), transparent),
+                radial-gradient(1.5px 1.5px at 40% 60%, rgba(255,255,255,0.08), transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 1450px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== CANVAS GLOBE BANNER ========== */
+        .hero {
+            position: relative;
+            text-align: center;
+            padding: 2rem 1rem 1.5rem;
+            margin-bottom: 2rem;
+            background: radial-gradient(ellipse at center, #121a35 0%, #0a0a18 70%);
+            border: 1px solid #2a2a5a;
+            border-radius: 24px;
+            box-shadow: 0 0 50px rgba(122, 162, 247, 0.15);
+            overflow: hidden;
+            height: 520px;
+        }
+        #globeCanvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .hero-content h1 {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 4.5rem;
+            font-weight: 700;
+            letter-spacing: 10px;
+            background: linear-gradient(to right, #aaccff, #ffffff, #aaccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 25px var(--glow);
+            margin-top: 50px;
+            filter: drop-shadow(0 0 10px #5a8aef);
+        }
+        .hero-content .subtitle {
+            font-size: 1.3rem;
+            color: #c0caf5;
+            letter-spacing: 3px;
+            word-spacing: 5px;
+            margin-top: -5px;
+            background: rgba(10,10,20,0.5);
+            display: inline-block;
+            padding: 0.2rem 1.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .version-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: #0a0a14;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-top: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        /* ========== HERO STATS ========== */
+        .hero-stats {
+            position: relative;
+            z-index: 1;
+            margin-top: 1.8rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+        }
+        .stat-item {
+            background: rgba(18,18,42,0.8);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0.9rem 1.5rem;
+            backdrop-filter: blur(6px);
+            min-width: 160px;
+        }
+        .stat-value {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #c0caf5;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: #8888aa;
+            margin-top: 0.2rem;
+        }
+        .progress-bar-wrap {
+            width: 100%;
+            max-width: 450px;
+            background: #1e1e3a;
+            border-radius: 20px;
+            height: 14px;
+            margin: 1rem auto 0.5rem;
+            overflow: hidden;
+        }
+        .progress-fill {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #7aa2f7, #c0aaf7);
+            box-shadow: 0 0 14px var(--glow);
+            animation: pulse-bar 2.2s infinite;
+        }
+        @keyframes pulse-bar {
+            0% { box-shadow: 0 0 8px var(--glow); }
+            50% { box-shadow: 0 0 22px rgba(122,162,247,0.7); }
+            100% { box-shadow: 0 0 8px var(--glow); }
+        }
+
+        /* ========== BILINGUAL HEADINGS ========== */
+        .bilingual-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin: 2.8rem 0 1.2rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.4rem;
+        }
+        .bilingual-heading h2 {
+            font-size: 1.7rem;
+            color: #fff;
+            text-shadow: 0 0 8px var(--glow);
+            margin: 0;
+            border: none;
+            padding: 0;
+        }
+        .en-heading { flex: 1; direction: ltr; text-align: left; }
+        .fa-heading { flex: 1; direction: rtl; text-align: right; }
+
+        .row {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+        .col-en {
+            flex: 1 1 50%;
+            direction: ltr;
+            text-align: left;
+        }
+        .col-fa {
+            flex: 1 1 50%;
+            direction: rtl;
+            text-align: right;
+        }
+        @media (max-width: 768px) {
+            .row { flex-direction: column; }
+            .bilingual-heading { flex-direction: column; }
+            .hero { height: auto; }
+            .hero-content h1 { font-size: 3rem; }
+        }
+
+        /* ========== TABLES ========== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 0.9rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: #1a1a3a;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(122, 162, 247, 0.04); }
+
+        .tag {
+            display: inline-block;
+            background: var(--accent);
+            color: #0a0a14;
+            padding: 0.1rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin: 0 2px;
+        }
+
+        /* ========== CODE BLOCKS ========== */
+        .code-block {
+            background: #0d0d1f;
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            direction: ltr;
+            text-align: left;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: #c0caf5;
+            margin: 1rem 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: var(--accent);
+            color: #0a0a14;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.3rem;
+            box-shadow: 0 0 14px var(--glow);
+            z-index: 9999;
+            transition: 0.3s;
+        }
+        .back-to-top:hover { background: #9aa8f0; transform: translateY(-3px); }
+
+        ul.feature-list { list-style: none; padding-right: 0; }
+        .feature-list li::before {
+            content: '✦';
+            color: var(--accent);
+            margin-left: 0.5rem;
+        }
+        .col-en ul.feature-list { padding-left: 0; }
+        .col-en .feature-list li::before { margin-right: 0.5rem; margin-left: 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ========== HERO BANNER WITH CANVAS GLOBE & LASERS ========== -->
+    <div class="hero">
+        <canvas id="globeCanvas"></canvas>
+        <div class="hero-content">
+            <h1>PSI-Tracker</h1>
+            <div class="subtitle">Unbreakable Proxy Auditor for Censored Networks</div><br>
+            <span class="version-badge">V1.0 “Aegis Perfecta”</span>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-value">25+</div>
+                <div class="stat-label">Advanced Audit Stages</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">SOCKS4/5, HTTP</div>
+                <div class="stat-label">Full Protocol Spectrum</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">0–105</div>
+                <div class="stat-label">Dual Score (Gen + PSI)</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">Up to 100</div>
+                <div class="stat-label">Parallel Threads</div>
+            </div>
+        </div>
+        <div class="progress-bar-wrap">
+            <div class="progress-fill"></div>
+        </div>
+        <p style="color:#aaa; font-size:0.9rem; margin-top:0.4rem;">
+            Two‑Phase Network Watchdog · Pause/Resume · Max‑Alive · Fair Scoring · 0% DNS Dependency
+        </p>
+    </div>
+
+    <!-- ========== INTRODUCTION ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">🔬 Core Mission & Design</h2>
+        <h2 class="fa-heading">🔬 مأموریت اصلی و طراحی</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <p><strong>PSI-Tracker V1.0 “Aegis Perfecta”</strong> is the ultimate proxy auditor for high‑latency, heavily censored environments. It tests <strong>every proxy through the proxy itself</strong> – the scanner never relies on its own internet to judge a proxy’s health. This means it works even when DNS, ICMP, and all foreign websites are blocked.</p>
+            <p>It accurately emulates Psiphon’s OSSH, Meek, and Fronted protocols, grades proxies with a fair multi‑axis score (Gen, PSI, Generic Viability), and includes <strong>real‑world tests</strong> like browsing, censorship bypass, stability, and persistent connection. A <strong>two‑phase network watchdog</strong> keeps the scan alive even when every external IP goes dark.</p>
+        </div>
+        <div class="col-fa">
+            <p><strong>PSI-Tracker V1.0 “Aegis Perfecta”</strong> اسکنر نهایی پروکسی برای محیط‌های با فیلترینگ شدید و بدون DNS است. <strong>همهٔ تست‌ها از مسیر خود پروکسی</strong> انجام می‌شوند – اسکنر هرگز برای تأیید سلامت پروکسی به اینترنت خود متکی نیست. بنابراین حتی وقتی همهٔ سایت‌های خارجی مسدود باشند، اسکنر کار می‌کند.</p>
+            <p>این ابزار پروتکل‌های OSSH، Meek و Fronted سایفون را دقیقاً شبیه‌سازی می‌کند، پروکسی‌ها را با امتیاز چندمحوره ارزیابی می‌کند، و شامل <strong>تست‌های واقعی</strong> مثل مرور وب، عبور از فیلترینگ، پایداری و اتصال مداوم است. <strong>نگهبان شبکهٔ دومرحله‌ای</strong> اسکن را حتی وقتی همهٔ آی‌پی‌های خارجی قطع شوند زنده نگه می‌دارد.</p>
+        </div>
+    </div>
+
+    <!-- ========== INSTALLATION & REQUIREMENTS ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">📦 Installation & Requirements</h2>
+        <h2 class="fa-heading">📦 نصب و پیش‌نیازها</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <p>Python 3.7+ required. Install dependencies:</p>
+            <div class="code-block">pip install -r requirements.txt</div>
+            <p><strong>requirements.txt</strong>:</p>
+            <div class="code-block">
+tqdm>=4.64.0
+colorama>=0.4.6
+requests>=2.28.0
+PySocks>=1.7.1
+            </div>
+            <p>Missing <code>PySocks</code> still allows raw‑socket SOCKS tests, but some high‑level features (Meek over SOCKS) will be limited.</p>
+        </div>
+        <div class="col-fa">
+            <p>نیاز به Python 3.7 به بالا. نصب وابستگی‌ها:</p>
+            <div class="code-block" style="direction:ltr; text-align:left;">pip install -r requirements.txt</div>
+            <p><strong>requirements.txt</strong>:</p>
+            <div class="code-block" style="direction:ltr; text-align:left;">
+tqdm>=4.64.0
+colorama>=0.4.6
+requests>=2.28.0
+PySocks>=1.7.1
+            </div>
+            <p>بدون <code>PySocks</code> هم تست‌های SOCKS با سوکت خام انجام می‌شود، اما برخی قابلیت‌ها محدود می‌گردد.</p>
+        </div>
+    </div>
+
+    <!-- ========== TEST STAGES ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">🧪 Comprehensive Audit Stages</h2>
+        <h2 class="fa-heading">🧪 مراحل جامع ممیزی</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <table>
+                <tr><th>Stage</th><th>Description</th></tr>
+                <tr><td>TCP Connectivity</td><td>Raw socket connect with user‑configurable multiplier</td></tr>
+                <tr><td>Protocol Detection</td><td>SOCKS5 (no‑auth / user‑pass), SOCKS4, HTTP CONNECT, HTTP Forward</td></tr>
+                <tr><td>Primary TLS Tunnel</td><td>TLS 1.2+ handshake to b-cdn.net (domain, not IP) with cert validation</td></tr>
+                <tr><td>General Endpoints</td><td>Google, Cloudflare, GitHub, Telegram Web, YouTube (via proxy, domain‑based)</td></tr>
+                <tr><td>PSI Server List</td><td>Fetches &amp; parses real Psiphon server list (gzip, ETag cache)</td></tr>
+                <tr><td>OSSH Emulation</td><td>Sends Psiphon seed exchange over SOCKS5/4 tunnel</td></tr>
+                <tr><td>SSH Banner</td><td>SSH-2.0 banner detection through proxy</td></tr>
+                <tr><td>Meek Fronting</td><td>POST to /meek with obfuscated headers</td></tr>
+                <tr><td>UDP Associate</td><td>SOCKS5 UDP relay test (IPv4/IPv6 BND.ADDR support)</td></tr>
+                <tr><td>Data Transfer</td><td>Downloads 1 KB from httpbin</td></tr>
+                <tr><td>Speed Test</td><td>Measures MB/s over 512 KB fetch</td></tr>
+                <tr><td>Advanced HTTP</td><td>POST/PUT/DELETE echo, Cookie &amp; Referrer transport, Gzip compression</td></tr>
+                <tr><td>Anonymity (5 judges)</td><td>Multi‑judge classification (ELITE / ANONYMOUS / TRANSPARENT)</td></tr>
+                <tr><td>Real Browsing</td><td>Accesses gstatic.com, httpbin.org, cloudflare.com</td></tr>
+                <tr><td>Censorship Bypass</td><td>Checks Telegram, Twitter, Facebook</td></tr>
+                <tr><td>Persistent Connection</td><td>5 sequential requests on a single session</td></tr>
+                <tr><td>Stability</td><td>3 parallel requests to httpbin</td></tr>
+                <tr><td>Captive Portal</td><td>Detects login redirects</td></tr>
+                <tr><td>DNS over SOCKS</td><td>Verifies domain resolution through the proxy</td></tr>
+                <tr><td>TCP Hints</td><td>Collects TTL, retransmissions (Linux) for score bonus</td></tr>
+                <tr><td>Port Diversity</td><td>Tests 5 ports (22,53,80,443,554) through the proxy</td></tr>
+                <tr><td>GeoIP (optional)</td><td>Country detection via multiple services</td></tr>
+            </table>
+        </div>
+        <div class="col-fa">
+            <table>
+                <tr><th>مرحله</th><th>توضیح</th></tr>
+                <tr><td>اتصال TCP</td><td>اتصال سوکت خام با ضریب زمان قابل تنظیم</td></tr>
+                <tr><td>تشخیص پروتکل</td><td>SOCKS5 (بدون/با احراز)، SOCKS4، HTTP CONNECT، HTTP Forward</td></tr>
+                <tr><td>تونل اصلی TLS</td><td>handshake TLS 1.2+ روی نام دامنه b-cdn.net با اعتبارسنجی</td></tr>
+                <tr><td>نقاط عمومی</td><td>Google, Cloudflare, GitHub, Telegram Web, YouTube (مبتنی بر دامنه)</td></tr>
+                <tr><td>لیست سرور سایفون</td><td>دریافت و پردازش لیست واقعی (گنزیپ، کش ETag)</td></tr>
+                <tr><td>شبیه‌سازی OSSH</td><td>تبادل seed روی تونل SOCKS5/4</td></tr>
+                <tr><td>بنر SSH</td><td>تشخیص بنر SSH-2.0 از مسیر پروکسی</td></tr>
+                <tr><td>Meek Fronting</td><td>ارسال POST مبهم‌سازی‌شده به /meek</td></tr>
+                <tr><td>UDP Associate</td><td>تست رله UDP با پشتیبانی از IPv4/IPv6</td></tr>
+                <tr><td>انتقال داده</td><td>دریافت ۱KB از httpbin</td></tr>
+                <tr><td>تست سرعت</td><td>محاسبه MB/s با ۵۱۲KB</td></tr>
+                <tr><td>HTTP پیشرفته</td><td>تست POST/PUT/DELETE، کوکی، Referrer و فشرده‌سازی</td></tr>
+                <tr><td>گمنامی (۵ قاضی)</td><td>طبقه‌بندی ELITE / ANONYMOUS / TRANSPARENT</td></tr>
+                <tr><td>مرور واقعی</td><td>دسترسی به gstatic.com، httpbin.org، cloudflare.com</td></tr>
+                <tr><td>عبور از فیلترینگ</td><td>بررسی تلگرام، توییتر، فیسبوک</td></tr>
+                <tr><td>اتصال مداوم</td><td>۵ درخواست پشت‌سرهم روی یک Session</td></tr>
+                <tr><td>پایداری</td><td>۳ درخواست موازی به httpbin</td></tr>
+                <tr><td>Captive Portal</td><td>تشخیص هدایت به صفحه ورود</td></tr>
+                <tr><td>DNS از طریق SOCKS</td><td>بررسی وضوح دامنه توسط پروکسی</td></tr>
+                <tr><td>نکات TCP</td><td>جمع‌آوری TTL و retransmissions برای امتیاز</td></tr>
+                <tr><td>تنوع پورت</td><td>تست ۵ پورت از مسیر خود پروکسی</td></tr>
+                <tr><td>موقعیت جغرافیایی</td><td>تشخیص کشور از چند سرویس</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ========== NETWORK WATCHDOG ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">🛡️ Two‑Phase Network Watchdog</h2>
+        <h2 class="fa-heading">🛡️ نگهبان شبکهٔ دومرحله‌ای</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <p>The scanner uses a unique two‑phase watchdog to detect internet loss:</p>
+            <ol>
+                <li><strong>Phase 1 – Well‑known IPs:</strong> Checks TCP port 443 on several hardcoded IPs (Google, Cloudflare, GitHub, …). No DNS needed.</li>
+                <li><strong>Phase 2 – Proxy targets:</strong> If Phase 1 fails, it randomly samples <strong>proxies from your own list</strong>. If even one proxy responds, the internet is considered alive.</li>
+            </ol>
+            <p>Only when <strong>both phases fail</strong> will the scanner pause and wait for the network to return.</p>
+        </div>
+        <div class="col-fa">
+            <p>اسکنر از یک نگهبان دومرحله‌ای برای تشخیص قطعی اینترنت استفاده می‌کند:</p>
+            <ol>
+                <li><strong>مرحلهٔ ۱ – آی‌پی‌های معروف:</strong> پورت ۴۴۳ چندین آی‌پی سخت‌کد (گوگل، کلاودفلر، گیت‌هاب، …) را بررسی می‌کند. بدون نیاز به DNS.</li>
+                <li><strong>مرحلهٔ ۲ – خود پروکسی‌ها:</strong> اگر مرحلهٔ ۱ شکست خورد، از <strong>پروکسی‌های لیست شما</strong> نمونه‌برداری می‌کند. اگر حتی یک پروکسی پاسخ دهد، اینترنت زنده است.</li>
+            </ol>
+            <p>تنها زمانی که <strong>هر دو مرحله</strong> شکست بخورند، اسکنر مکث می‌کند و منتظر بازگشت شبکه می‌ماند.</p>
+        </div>
+    </div>
+
+    <!-- ========== COMMAND LINE ARGUMENTS ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">⚙️ All Command‑Line Arguments</h2>
+        <h2 class="fa-heading">⚙️ تمام آرگومان‌های خط فرمان</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <div class="code-block">
+--list FILE            Target file (IP:PORT, CIDR, dash range)
+--range RANGE [RANGE]  CIDR or dash ranges
+--port PORT [PORT]     Port(s) for IPs without port
+--threads N            Threads (default 50)
+--timeout SECONDS      Per‑proxy timeout (default 60)
+--tcp-timeout-mult X   TCP connect multiplier (default 0.6)
+--auth USER:PASS       Credentials for auth‑requiring proxies
+--ssh-host HOST        SSH target host (default github.com)
+--ssh-port PORT        SSH target port (default 22)
+--alive FILE           Output file for alive proxies with details
+--urls FILE            Output file for proxy URLs
+--checkpoint FILE      Progress checkpoint file
+--scope CIDR [CIDR]    Restrict range expansion to these CIDRs
+--allow-all            Bypass --scope requirement
+--targets-config JSON  Custom test targets JSON config
+--fallback-ips JSON    Additional fallback IPs JSON file
+--clean                Clear output files before start
+--retest               Ignore checkpoint and re‑test all
+--refresh-ips          Re‑resolve known hosts &amp; update fallback IPs
+--no-geo               Disable GeoIP lookup
+--no-diversity         Skip port diversity test
+--verbose              Detailed console output (full stats)
+--max-alive N          Stop after finding N alive proxies
+            </div>
+        </div>
+        <div class="col-fa">
+            <div class="code-block" style="direction:rtl; text-align:right;">
+--list فایل            فایل اهداف (IP:PORT, CIDR, بازه خط تیره)
+--range بازه [بازه]    محدوده IP (نیازمند --port)
+--port پورت [پورت]     پورت(های) اسکن
+--threads تعداد        تعداد ترد (پیش‌فرض ۵۰)
+--timeout ثانیه        زمان انتظار هر پروکسی (پیش‌فرض ۶۰)
+--tcp-timeout-mult X   ضریب زمان اتصال TCP (پیش‌فرض ۰.۶)
+--auth USER:PASS       اعتبارنامه پروکسی‌های نیازمند احراز
+--ssh-host میزبان      میزبان هدف SSH (پیش‌فرض github.com)
+--ssh-port پورت        پورت هدف SSH (پیش‌فرض ۲۲)
+--alive فایل           فایل خروجی پروکسی‌های زنده با جزئیات
+--urls فایل            فایل خروجی URLهای پروکسی
+--checkpoint فایل      فایل ذخیره نقطه بررسی
+--scope CIDR [CIDR]    محدوده‌های مجاز برای گسترش بازه
+--allow-all            چشم‌پوشی از الزام --scope
+--targets-config JSON   فایل پیکربندی اهداف سفارشی JSON
+--fallback-ips JSON    فایل IPهای پشتیبان اضافی JSON
+--clean                پاک‌سازی فایل‌های خروجی پیش از شروع
+--retest               نادیده گرفتن checkpoint و تست مجدد همه
+--refresh-ips          بازنشانی IPهای شناخته‌شده و به‌روزرسانی فایل
+--no-geo               غیرفعال کردن جستجوی موقعیت جغرافیایی
+--no-diversity         رد شدن از تست تنوع پورت
+--verbose              نمایش جزئیات کامل در کنسول
+--max-alive N          توقف پس از یافتن N پروکسی زنده
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== USAGE EXAMPLES ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">🚀 Usage Examples</h2>
+        <h2 class="fa-heading">🚀 مثال‌های استفاده</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <h3>1. Basic scan</h3>
+            <div class="code-block">python psitracker.py --list proxies.txt --alive alive.txt --urls urls.txt</div>
+            <h3>2. CIDR range with multiple ports</h3>
+            <div class="code-block">python psitracker.py --range 192.168.1.0/24 --port 1080 8080 --scope 192.168.0.0/16</div>
+            <h3>3. Authentication</h3>
+            <div class="code-block">python psitracker.py --list auth_proxies.txt --auth admin:123456 --timeout 45</div>
+            <h3>4. Resume previous scan</h3>
+            <p>Progress saved in <code>scan_progress.json</code>. Use <code>--retest</code> to ignore it, <code>--clean</code> to reset.</p>
+            <h3>5. Faster scanning (no GeoIP, no diversity)</h3>
+            <div class="code-block">python psitracker.py --list proxies.txt --no-diversity --no-geo</div>
+            <h3>6. Stop after finding 20 alive proxies</h3>
+            <div class="code-block">python psitracker.py --list proxies.txt --max-alive 20</div>
+            <h3>7. Pause/Resume manually</h3>
+            <p>Press <kbd>P</kbd> to pause and <kbd>R</kbd> to resume anytime while scanning.</p>
+        </div>
+        <div class="col-fa">
+            <h3>۱. اسکن ساده</h3>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psitracker.py --list proxies.txt --alive alive.txt --urls urls.txt</div>
+            <h3>۲. محدوده CIDR با چند پورت</h3>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psitracker.py --range 192.168.1.0/24 --port 1080 8080 --scope 192.168.0.0/16</div>
+            <h3>۳. احراز هویت</h3>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psitracker.py --list auth_proxies.txt --auth admin:123456 --timeout 45</div>
+            <h3>۴. ادامهٔ اسکن قبلی</h3>
+            <p>پیشرفت در <code>scan_progress.json</code> ذخیره می‌شود. با <code>--retest</code> نادیده گرفته و با <code>--clean</code> پاک می‌شود.</p>
+            <h3>۵. اسکن سریع‌تر (بدون GeoIP و تنوع پورت)</h3>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psitracker.py --list proxies.txt --no-diversity --no-geo</div>
+            <h3>۶. توقف پس از ۲۰ پروکسی زنده</h3>
+            <div class="code-block" style="direction:ltr; text-align:left;">python psitracker.py --list proxies.txt --max-alive 20</div>
+            <h3>۷. توقف/ادامهٔ دستی</h3>
+            <p>در حین اسکن کلید <kbd>P</kbd> را برای توقف و <kbd>R</kbd> را برای ادامه فشار دهید.</p>
+        </div>
+    </div>
+
+    <!-- ========== LEGEND ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">📋 Console Legend</h2>
+        <h2 class="fa-heading">📋 راهنمای نمایش کنسول</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <p>The scanner prints a legend on startup explaining every field:</p>
+            <div class="code-block">
+G.Via = Generic Viability (max 50)
+Pub   = Public endpoints (GOG, CF, GH, TLG, YT)
+TUN   = TLS tunnel (OK / SLOW / FAIL)
+Psi   = Psiphon endpoints
+Div   = Port diversity
+SL    = Server list status
+Cens  = Censorship bypass count
+Stb   = Stability
+Brw   = Browsing score
+Persist = Persistent connection
+            </div>
+        </div>
+        <div class="col-fa">
+            <p>اسکنر پیش از شروع یک راهنما چاپ می‌کند که همهٔ فیلدها را توضیح می‌دهد:</p>
+            <div class="code-block" style="direction:ltr; text-align:left;">
+G.Via = قابلیت عمومی (حداکثر ۵۰)
+Pub   = نقاط عمومی (GOG, CF, GH, TLG, YT)
+TUN   = تونل TLS (OK / SLOW / FAIL)
+Psi   = نقاط سایفون
+Div   = تنوع پورت
+SL    = وضعیت لیست سرور
+Cens  = تعداد سایت‌های عبور از فیلترینگ
+Stb   = پایداری
+Brw   = امتیاز مرور واقعی
+Persist = اتصال مداوم
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== PROXY URLS OUTPUT ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">🔗 proxy_urls.txt Format</h2>
+        <h2 class="fa-heading">🔗 قالب proxy_urls.txt</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <div class="code-block">
+socks5://10.20.30.40:1080 #Score 82 #G_Via 45 #FRONTED
+http://172.16.0.1:8080    #Score 67 #G_Via 38 #MEEK
+socks4://192.168.1.1:4145 #Score 55 #G_Via 30 #OSSH
+            </div>
+            <p>Each line is a ready‑to‑use URL with total score, generic viability score, and the best performing channel.</p>
+        </div>
+        <div class="col-fa">
+            <div class="code-block" style="direction:ltr; text-align:left;">
+socks5://10.20.30.40:1080 #Score 82 #G_Via 45 #FRONTED
+http://172.16.0.1:8080    #Score 67 #G_Via 38 #MEEK
+socks4://192.168.1.1:4145 #Score 55 #G_Via 30 #OSSH
+            </div>
+            <p>هر خط یک URL آماده به همراه امتیاز کل، امتیاز قابلیت عمومی و بهترین کانال عملکرد را نشان می‌دهد.</p>
+        </div>
+    </div>
+
+    <!-- ========== SCORING ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">📈 Fair Scoring &amp; Classification</h2>
+        <h2 class="fa-heading">📈 امتیازدهی منصفانه و طبقه‌بندی</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <p><strong>General Score (max 50)</strong> – measures everyday proxy usage:</p>
+            <ul>
+                <li>TLS tunnel success: +25</li>
+                <li>Each reachable public endpoint (Google, Cloudflare, …): +6</li>
+                <li>Data transfer (1 KB): +8</li>
+                <li>TCP hints (TTL &lt; 64): +2</li>
+                <li>DNS over SOCKS: +2</li>
+                <li>Real browsing: up to +10</li>
+                <li>Persistent connection (5 requests): +2</li>
+            </ul>
+            <p><strong>PSI Score (max 55)</strong> – measures Psiphon compatibility:</p>
+            <ul>
+                <li>Psiphon server list reachability: up to 30</li>
+                <li>TLS tunnel success: +5</li>
+                <li>OSSH seed exchange: +10 (pass) / +5 (inconclusive)</li>
+                <li>SSH banner: +4 / +2</li>
+                <li>Server list fetch: +10</li>
+                <li>Meek handshake: +6</li>
+                <li>UDP relay: +2</li>
+                <li>Port diversity: up to +8</li>
+                <li>Advanced HTTP (POST/PUT/DELETE/…): +4</li>
+                <li>Censorship bypass: up to +9</li>
+                <li>Stability (≥80%): +3</li>
+            </ul>
+            <p><strong>Generic Viability (G_Via, max 50)</strong> – usefulness for non‑Psiphon tools like V2Ray.</p>
+            <p>Total Score = Gen + PSI (max 105).</p>
+            <table>
+                <tr><th>Class</th><th>Score Range</th></tr>
+                <tr><td>DEAD</td><td>&lt;5</td></tr>
+                <tr><td>MARGINAL</td><td>5‑19</td></tr>
+                <tr><td>ALIVE</td><td>20‑34</td></tr>
+                <tr><td>TUNNEL_OK</td><td>35‑54</td></tr>
+                <tr><td>CDN_REACHABLE</td><td>55‑74</td></tr>
+                <tr><td>PSIPHON_LIKELY</td><td>75‑89</td></tr>
+                <tr><td>FULLY_READY</td><td>90+</td></tr>
+            </table>
+        </div>
+        <div class="col-fa">
+            <p><strong>امتیاز عمومی (حداکثر ۵۰)</strong> – کارایی روزمره:</p>
+            <ul>
+                <li>تونل TLS موفق: +۲۵</li>
+                <li>هر نقطهٔ عمومی قابل دسترس: +۶</li>
+                <li>انتقال داده (۱KB): +۸</li>
+                <li>نکات TCP (TTL < 64): +۲</li>
+                <li>DNS از طریق SOCKS: +۲</li>
+                <li>مرور واقعی: تا +۱۰</li>
+                <li>اتصال مداوم (۵ درخواست): +۲</li>
+            </ul>
+            <p><strong>امتیاز سایفون (حداکثر ۵۵)</strong> – سازگاری با سایفون:</p>
+            <ul>
+                <li>دسترسی به لیست سرور سایفون: تا ۳۰</li>
+                <li>تونل TLS موفق: +۵</li>
+                <li>تبادل seed سایفون: +۱۰ (قبول) / +۵ (نامشخص)</li>
+                <li>بنر SSH: +۴ / +۲</li>
+                <li>دریافت لیست سرور: +۱۰</li>
+                <li>Meek handshake: +۶</li>
+                <li>رله UDP: +۲</li>
+                <li>تنوع پورت: تا +۸</li>
+                <li>HTTP پیشرفته: +۴</li>
+                <li>عبور از فیلترینگ: تا +۹</li>
+                <li>پایداری (≥۸۰٪): +۳</li>
+            </ul>
+            <p><strong>قابلیت عمومی (G_Via، حداکثر ۵۰)</strong> – میزان سودمندی برای V2Ray و ابزارهای غیر سایفون.</p>
+            <p>امتیاز کل = عمومی + سایفون (حداکثر ۱۰۵).</p>
+            <table>
+                <tr><th>طبقه</th><th>بازهٔ امتیاز</th></tr>
+                <tr><td>DEAD</td><td>&lt;۵</td></tr>
+                <tr><td>MARGINAL</td><td>۵‑۱۹</td></tr>
+                <tr><td>ALIVE</td><td>۲۰‑۳۴</td></tr>
+                <tr><td>TUNNEL_OK</td><td>۳۵‑۵۴</td></tr>
+                <tr><td>CDN_REACHABLE</td><td>۵۵‑۷۴</td></tr>
+                <tr><td>PSIPHON_LIKELY</td><td>۷۵‑۸۹</td></tr>
+                <tr><td>FULLY_READY</td><td>۹۰+</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ========== ADVANCED INTERNALS ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">⚡ Advanced Internals</h2>
+        <h2 class="fa-heading">⚡ جزئیات فنی پیشرفته</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <ul class="feature-list">
+                <li><strong>Socket tuning</strong>: <code>TCP_NODELAY</code> on every socket.</li>
+                <li><strong>TLS enforcement</strong>: Only TLS 1.2+ with AEAD ciphers, mandatory certificate verification.</li>
+                <li><strong>Retry logic</strong>: Exponential backoff + jitter, plus per‑test 1.2‑1.5× timeout multipliers.</li>
+                <li><strong>Atomic checkpoint</strong>: Write‑temp‑then‑rename prevents corruption.</li>
+                <li><strong>Thread safety</strong>: Locks protect shared caches and file writes; server list fetch uses atomic cache update.</li>
+                <li><strong>Memory control</strong>: DNS and GeoIP caches expire after 300 s; server list limited to 100 entries.</li>
+                <li><strong>Zero DNS dependency</strong>: All tests use hostnames through the proxy; only SOCKS4 needs a pre‑resolved IP (from cache or fallback).</li>
+                <li><strong>Manual Pause/Resume</strong>: Keyboard listener thread with <code>threading.Event</code>, cross‑platform.</li>
+            </ul>
+        </div>
+        <div class="col-fa">
+            <ul class="feature-list">
+                <li><strong>تنظیم سوکت</strong>: <code>TCP_NODELAY</code> روی هر سوکت فعال است.</li>
+                <li><strong>اجبار TLS</strong>: فقط TLS 1.2+ با رمزهای AEAD، تأیید اجباری گواهی.</li>
+                <li><strong>منطق تلاش مجدد</strong>: پس‌روی نمایی با لرزش، و ضرب‌های ۱.۲–۱.۵ برابری زمان.</li>
+                <li><strong>نقطه بررسی اتمیک</strong>: نوشتن در فایل موقت سپس بازنام‌گذاری.</li>
+                <li><strong>امنیت ترد</strong>: قفل‌ها از حافظه‌های مشترک و فایل‌ها محافظت می‌کنند؛ به‌روزرسانی کش لیست سرور اتمیک است.</li>
+                <li><strong>کنترل حافظه</strong>: کش‌های DNS و GeoIP پس از ۳۰۰ ثانیه منقضی می‌شوند؛ لیست سرور به ۱۰۰ رکورد محدود است.</li>
+                <li><strong>بدون وابستگی به DNS</strong>: تمام تست‌ها با نام دامنه از طریق پروکسی انجام می‌شوند؛ فقط SOCKS4 به IP از قبل حل‌شده نیاز دارد (از کش یا فال‌بک).</li>
+                <li><strong>توقف/ادامهٔ دستی</strong>: نخ شنوندهٔ کیبورد با <code>threading.Event</code>، چندسکویی.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ========== EXTRA NOTES ========== -->
+    <div class="bilingual-heading">
+        <h2 class="en-heading">🧩 Final Notes</h2>
+        <h2 class="fa-heading">🧩 نکات پایانی</h2>
+    </div>
+    <div class="row">
+        <div class="col-en">
+            <ul class="feature-list">
+                <li>Proxies without credentials when needed are marked <code>AUTH:Y</code> and skipped (score 0).</li>
+                <li>Slow proxies get an automatic second chance and are labelled <code>SLOW_OK</code>.</li>
+                <li>Ping &gt; 5000 ms triggers a <code>HEAVY_LOAD</code> warning but does not discard the proxy.</li>
+                <li>All tests are performed <strong>through</strong> the proxy; no direct connections are used for scoring.</li>
+                <li>Output <code>alive_proxies.txt</code> contains 20+ tab‑separated columns for deep analysis.</li>
+                <li>The scanner is Python 3.7+ compatible and has been tested on Linux / Windows / macOS.</li>
+                <li>Press <kbd>P</kbd> to pause, <kbd>R</kbd> to resume during scan.</li>
+            </ul>
+        </div>
+        <div class="col-fa">
+            <ul class="feature-list">
+                <li>پروکسی‌های بدون اعتبارنامه با <code>AUTH:Y</code> علامت‌گذاری و نادیده گرفته می‌شوند.</li>
+                <li>پروکسی‌های کند به‌طور خودکار شانس دوم می‌گیرند و برچسب <code>SLOW_OK</code> می‌خورند.</li>
+                <li>پینگ بالای ۵۰۰۰ میلی‌ثانیه هشدار <code>HEAVY_LOAD</code> می‌دهد اما پروکسی را حذف نمی‌کند.</li>
+                <li>تمام تست‌ها <strong>از مسیر خود پروکسی</strong> انجام می‌شوند؛ هیچ اتصال مستقیمی برای امتیازدهی استفاده نمی‌شود.</li>
+                <li>خروجی <code>alive_proxies.txt</code> بیش از ۲۰ ستون جداشده با تب برای تحلیل عمیق دارد.</li>
+                <li>اسکنر با Python 3.7 به بالا سازگار است و روی لینوکس/ویندوز/مک آزمایش شده است.</li>
+                <li>در حین اسکن با فشردن <kbd>P</kbd> توقف و با <kbd>R</kbd> ادامه دهید.</li>
+            </ul>
+        </div>
+    </div>
+
+    <p style="margin-top: 3rem; text-align: center; opacity: 0.7;">
+        🌟 PSI-Tracker V1.0 “Aegis Perfecta” — Built to win the war against censorship.
+    </p>
+</div>
+
+<a href="#" class="back-to-top" title="Back to top">↑</a>
+
+<script>
+(function() {
+    var canvas = document.getElementById('globeCanvas');
+    var ctx = canvas.getContext('2d');
+    var width, height;
+    var particles = [];
+    var beams = [];
+    var ribbonProgress = 0;
+
+    function resize() {
+        width = canvas.offsetWidth;
+        height = canvas.offsetHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    for (var i=0; i<160; i++) {
+        particles.push({
+            x: Math.random()*width,
+            y: Math.random()*height,
+            r: Math.random()*1.5+0.3,
+            speed: Math.random()*0.4+0.1,
+            phase: Math.random()*Math.PI*2,
+            color: Math.random()<0.3 ? 'rgba(180,200,255,' : 'rgba(255,255,255,'
+        });
+    }
+
+    function spawnBeam() {
+        var edge = Math.floor(Math.random()*4);
+        var x, y, tx, ty;
+        var cx = width/2, cy = height/2;
+        if (edge===0) { x=0; y=Math.random()*height; tx=cx+ (Math.random()-0.5)*width*0.6; ty=cy+ (Math.random()-0.5)*height*0.6; }
+        else if (edge===1) { x=width; y=Math.random()*height; tx=cx+ (Math.random()-0.5)*width*0.6; ty=cy+ (Math.random()-0.5)*height*0.6; }
+        else if (edge===2) { x=Math.random()*width; y=0; tx=cx+ (Math.random()-0.5)*width*0.6; ty=cy+ (Math.random()-0.5)*height*0.6; }
+        else { x=Math.random()*width; y=height; tx=cx+ (Math.random()-0.5)*width*0.6; ty=cy+ (Math.random()-0.5)*height*0.6; }
+        beams.push({
+            x:x, y:y, tx:tx, ty:ty,
+            life: 0.6+Math.random()*0.8,
+            color: Math.random()<0.5 ? 'rgba(180,220,255,' : 'rgba(255,200,200,',
+            width: 0.8+Math.random()*1.5
+        });
+    }
+    setInterval(spawnBeam, 400);
+
+    function drawGlobe(ctx, cx, cy, rad, progress) {
+        for (var lat=-60; lat<=60; lat+=30) {
+            if (lat===0) continue;
+            var r = Math.cos(lat*Math.PI/180)*rad;
+            var y = Math.sin(lat*Math.PI/180)*rad;
+            ctx.beginPath();
+            ctx.ellipse(cx, cy-y, r, rad*0.2, 0, 0, Math.PI*2);
+            ctx.strokeStyle = 'rgba(100,140,220,0.1)';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+        }
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, rad, rad*0.22, 0, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(120,160,240,0.25)';
+        ctx.stroke();
+        for (var lon=0; lon<360; lon+=45) {
+            var p = lon*Math.PI/180;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy-rad);
+            ctx.quadraticCurveTo(cx+Math.sin(p)*rad, cy, cx, cy+rad);
+            ctx.strokeStyle = 'rgba(100,140,220,0.1)';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+        }
+
+        var baseOffset = progress;
+        ctx.lineWidth = 3.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        for (var i=0; i<6; i++) {
+            var t = (baseOffset + i*0.6) % 12;
+            var dynamicRad = rad * (0.92 + Math.sin(baseOffset*0.3)*0.05);
+            ctx.beginPath();
+            var resolution = 70;
+            for (var j=0; j<=resolution; j++) {
+                var frac = j/resolution;
+                var angle = frac * Math.PI*2 + t;
+                var lat = Math.sin(angle*1.3)*60;
+                var lon = angle*180/Math.PI;
+                var phi = (90-lat)*Math.PI/180;
+                var theta = lon*Math.PI/180;
+                var x = Math.sin(phi)*Math.cos(theta);
+                var y = Math.cos(phi);
+                var px = cx + x*dynamicRad;
+                var py = cy - y*dynamicRad;
+                if (j===0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            var alpha = 0.35+Math.sin(baseOffset*2+i)*0.35;
+            ctx.strokeStyle = 'rgba(180,210,255,'+Math.max(0.2, alpha)+')';
+            ctx.stroke();
+        }
+
+        var hlAngle = progress*1.8;
+        var hlPhi = (90-Math.sin(hlAngle)*50)*Math.PI/180;
+        var hlTheta = hlAngle*Math.PI;
+        var hlX = cx + Math.sin(hlPhi)*Math.cos(hlTheta)*rad*0.9;
+        var hlY = cy - Math.cos(hlPhi)*rad*0.9;
+        ctx.beginPath();
+        ctx.arc(hlX, hlY, 6, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(230,240,255,0.9)';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(hlX, hlY, 11, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(160,200,255,0.3)';
+        ctx.fill();
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        ribbonProgress += 0.025;
+        drawGlobe(ctx, width/2, height/2-15, Math.min(width, height)*0.32, ribbonProgress);
+        for (var i=beams.length-1; i>=0; i--) {
+            var b = beams[i];
+            b.life -= 0.012;
+            if (b.life <= 0) { beams.splice(i,1); continue; }
+            var alpha = b.life*0.9;
+            ctx.beginPath();
+            ctx.moveTo(b.x, b.y);
+            ctx.lineTo(b.tx, b.ty);
+            ctx.strokeStyle = b.color+alpha+')';
+            ctx.lineWidth = b.width;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(b.tx, b.ty, 3, 0, Math.PI*2);
+            ctx.fillStyle = b.color+'0.7)';
+            ctx.fill();
+        }
+        for (var i=0; i<particles.length; i++) {
+            var p = particles[i];
+            p.y -= p.speed;
+            if (p.y < -5) { p.y = height+5; p.x = Math.random()*width; }
+            p.x += Math.sin(p.phase+ribbonProgress*0.5)*0.15;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+            var alpha = 0.4+Math.sin(ribbonProgress*2+p.phase)*0.25;
+            ctx.fillStyle = p.color+Math.max(0.1, alpha)+')';
+            ctx.fill();
+        }
+        requestAnimationFrame(animate);
+    }
+    animate();
+})();
+</script>
+
+</body>
+</html>
