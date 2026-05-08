@@ -92,27 +92,27 @@ The launcher saves your settings in launcher_settings.ini for next time.
 All arguments can be used directly with python psi_tracker.py (the script is the same file provided).
 
 Basic scan
-bash
+
 python psi_tracker.py --list proxies.txt --alive alive.txt --urls urls.txt
 CIDR range with multiple ports
-bash
+
 python psi_tracker.py --range 192.168.1.0/24 --port 1080 8080 --scope 192.168.0.0/16
 Authentication
-bash
+
 python psi_tracker.py --list auth_proxies.txt --auth admin:123456 --timeout 45
 Resume previous scan
 Progress is saved in scan_progress.json. Just run again with the same --list or --range – it will automatically resume.
 
-bash
+
 python psi_tracker.py --list proxies.txt
 Fast scan (no GeoIP, no diversity)
-bash
+
 python psi_tracker.py --list proxies.txt --no-diversity --no-geo
 Stop after finding 20 alive proxies
-bash
+
 python psi_tracker.py --list proxies.txt --max-alive 20
 Refresh fallback IPs only (no scan)
-bash
+
 python psi_tracker.py --refresh-ips
 📋 Full Command‑Line Arguments
 Argument	Description
