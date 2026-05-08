@@ -1,17 +1,30 @@
 @echo off
 setlocal enabledelayedexpansion
-title PSI-TRACKER LAUNCHER
+title DEY_IMMORTAL :: PSI-Tracker V1.0 Launcher
 color 0A
+mode con: cols=90 lines=30
 
-:: =====================================================================
-::  PSI-TRACKER V1.0 "DEY Warrior" - RELIABLE LAUNCHER
-::  Runs scans in the SAME window so you can use P/R keys.
-:: =====================================================================
-
-set "SCRIPT=psi_tracker.py"
+:: ============================================================
+::                 CONFIGURATION
+:: ============================================================
+set "SCRIPT=PSI_tracker.py"
 set "CONFIG=launcher_settings.ini"
 
-:: Default values
+:: ----------------------------------------------------------
+::  PRE‑CHECKS
+:: ----------------------------------------------------------
+if not exist "%SCRIPT%" (
+    echo [ERROR] %SCRIPT% not found. Place this launcher next to the Python script.
+    pause & exit /b 1
+)
+where python >nul 2>&1 || (
+    echo [ERROR] Python not found. Install Python 3.7+ and add to PATH.
+    pause & exit /b 1
+)
+
+:: ----------------------------------------------------------
+::  DEFAULT VALUES (overwritten by config file if present)
+:: ----------------------------------------------------------
 set "LIST_FILE="
 set "RANGE_LIST="
 set "PORT_LIST="
@@ -36,205 +49,316 @@ set "CLEAN="
 set "RETEST="
 set "REFRESH="
 
-:: Load saved settings if exists
+:: Load previous settings
 if exist "%CONFIG%" (
     for /f "usebackq tokens=1,* delims==" %%a in ("%CONFIG%") do set "%%a=%%b"
 )
 
-:: Check Python and script
-where python >nul 2>&1
-if errorlevel 1 (
-    echo [ERROR] Python not found. Install Python 3.7+ and add to PATH.
-    pause
-    exit /b 1
-)
-if not exist "%SCRIPT%" (
-    echo [ERROR] %SCRIPT% not found in current folder.
-    pause
-    exit /b 1
-)
-
+:: ============================================================
+::                       MAIN MENU
+:: ============================================================
 :menu
 cls
 echo ===============================================================================
-echo                      PSI-TRACKER V1.0 "DEY Warrior"
+echo               PSI-Tracker V1.0 "DEY_IMMORTAL" - Main Menu
 echo ===============================================================================
+echo  Current Settings:
+echo  [1]  List file           = %LIST_FILE%
+echo  [2]  Range(s)            = %RANGE_LIST%
+echo  [3]  Port(s)             = %PORT_LIST%
+echo  [4]  Threads             = %THREADS%
+echo  [5]  Timeout (sec)       = %TIMEOUT%
+echo  [6]  TCP multiplier      = %TCP_MULT%
+echo  [7]  Auth (user:pass)    = %AUTH%
+echo  [8]  SSH host            = %SSH_HOST%
+echo  [9]  SSH port            = %SSH_PORT%
+echo  [10] Alive output        = %ALIVE_FILE%
+echo  [11] URLs output         = %URLS_FILE%
+echo  [12] Checkpoint file     = %CHECKPOINT%
+echo  [13] Scope CIDRs         = %SCOPE%
+echo  [14] Allow all           = %ALLOW_ALL%
+echo  [15] Targets config      = %TARGETS_CFG%
+echo  [16] Fallback IPs        = %FALLBACK_IPS%
+echo  [17] No GeoIP            = %NO_GEO%
+echo  [18] No diversity        = %NO_DIV%
+echo  [19] Verbose             = %VERBOSE%
+echo  [20] Max alive (stop)    = %MAX_ALIVE%
+echo  [21] Clean files         = %CLEAN%
+echo  [22] Retest all          = %RETEST%
+echo  [23] Refresh fallback    = %REFRESH%
 echo.
-echo  [1] List file          : %LIST_FILE%
-echo  [2] Range(s)           : %RANGE_LIST%
-echo  [3] Port(s)            : %PORT_LIST%
-echo  [4] Threads            : %THREADS%
-echo  [5] Timeout            : %TIMEOUT% sec
-echo  [6] TCP multiplier     : %TCP_MULT%
-echo  [7] Auth (user:pass)   : %AUTH%
-echo  [8] SSH host:port      : %SSH_HOST%:%SSH_PORT%
-echo  [9] Output alive       : %ALIVE_FILE%
-echo [10] Output URLs        : %URLS_FILE%
-echo [11] Checkpoint         : %CHECKPOINT%
-echo [12] Scope CIDRs        : %SCOPE%
-echo [13] Allow all          : %ALLOW_ALL%
-echo [14] Targets config     : %TARGETS_CFG%
-echo [15] Fallback IPs       : %FALLBACK_IPS%
-echo [16] No GeoIP           : %NO_GEO%
-echo [17] No diversity       : %NO_DIV%
-echo [18] Verbose            : %VERBOSE%
-echo [19] Max alive (stop)   : %MAX_ALIVE%
-echo [20] Clean files        : %CLEAN%
-echo [21] Retest all         : %RETEST%
-echo [22] Refresh fallback   : %REFRESH%
+echo  Profiles:
+echo  [Q] Quick Scan   (20 threads, 30s, --no-geo --no-diversity)
+echo  [D] Deep Scan    (50 threads, 90s, --verbose)
+echo  [F] Full Scan    (50 threads, 120s, --verbose)
+echo  [C] Custom Scan  (run with current settings, NO questions)
+echo  [A] Advanced Custom (ask EVERY setting step-by-step)
 echo.
-echo  [Q] Quick scan  (20 threads, 30s, --no-geo --no-diversity)
-echo  [D] Deep scan   (50 threads, 90s, --verbose)
-echo  [F] Full scan   (50 threads, 120s, --verbose)
-echo  [C] Custom scan (use current settings)
-echo  [S] Save current settings
-echo  [L] Load default settings
-echo  [H] Help
-echo  [X] Exit
+echo  [S] Save settings   [L] Load defaults   [H] Help   [X] Exit
 echo.
 set /p "opt=Choose option: "
 
-:: -------------------- Settings --------------------
-if /i "%opt%"=="1"  goto set_list
-if /i "%opt%"=="2"  goto set_range
-if /i "%opt%"=="3"  goto set_port
-if /i "%opt%"=="4"  goto set_threads
-if /i "%opt%"=="5"  goto set_timeout
-if /i "%opt%"=="6"  goto set_tcp_mult
-if /i "%opt%"=="7"  goto set_auth
-if /i "%opt%"=="8"  goto set_ssh
-if /i "%opt%"=="9"  goto set_alive
-if /i "%opt%"=="10" goto set_urls
-if /i "%opt%"=="11" goto set_checkpoint
-if /i "%opt%"=="12" goto set_scope
-if /i "%opt%"=="13" goto set_allowall
-if /i "%opt%"=="14" goto set_targets
-if /i "%opt%"=="15" goto set_fallback
-if /i "%opt%"=="16" goto set_nogeo
-if /i "%opt%"=="17" goto set_nodiv
-if /i "%opt%"=="18" goto set_verbose
-if /i "%opt%"=="19" goto set_maxalive
-if /i "%opt%"=="20" goto set_clean
-if /i "%opt%"=="21" goto set_retest
-if /i "%opt%"=="22" goto set_refresh
+:: ----------------------------------------------------------
+::  ROUTE USER CHOICE
+:: ----------------------------------------------------------
+if "%opt%"=="1"  goto set_list
+if "%opt%"=="2"  goto set_range
+if "%opt%"=="3"  goto set_port
+if "%opt%"=="4"  goto set_threads
+if "%opt%"=="5"  goto set_timeout
+if "%opt%"=="6"  goto set_tcp_mult
+if "%opt%"=="7"  goto set_auth
+if "%opt%"=="8"  goto set_ssh_host
+if "%opt%"=="9"  goto set_ssh_port
+if "%opt%"=="10" goto set_alive
+if "%opt%"=="11" goto set_urls
+if "%opt%"=="12" goto set_checkpoint
+if "%opt%"=="13" goto set_scope
+if "%opt%"=="14" goto set_allowall
+if "%opt%"=="15" goto set_targets
+if "%opt%"=="16" goto set_fallback
+if "%opt%"=="17" goto set_nogeo
+if "%opt%"=="18" goto set_nodiv
+if "%opt%"=="19" goto set_verbose
+if "%opt%"=="20" goto set_maxalive
+if "%opt%"=="21" goto set_clean
+if "%opt%"=="22" goto set_retest
+if "%opt%"=="23" goto set_refresh
 
-:: -------------------- Scan profiles --------------------
 if /i "%opt%"=="Q" goto quick
 if /i "%opt%"=="D" goto deep
 if /i "%opt%"=="F" goto full
 if /i "%opt%"=="C" goto custom
+if /i "%opt%"=="A" goto advanced_custom
 if /i "%opt%"=="S" goto save
 if /i "%opt%"=="L" goto load_default
 if /i "%opt%"=="H" goto help
-if /i "%opt%"=="X" goto exit
+if /i "%opt%"=="X" exit /b 0
 
 echo Invalid option. Press any key.
 pause >nul
 goto menu
 
-:: -------- Setter routines --------
+:: ============================================================
+::  INDIVIDUAL SETTERS (each returns to menu)
+:: ============================================================
 :set_list
 echo.
-set /p "LIST_FILE=Enter list file path (or leave empty): "
-goto menu
-:set_range
-echo.
-set /p "RANGE_LIST=Enter range(s) (e.g., 192.168.1.1-192.168.1.10): "
-goto menu
-:set_port
-echo.
-set /p "PORT_LIST=Enter port(s) separated by space: "
-goto menu
-:set_threads
-echo.
-set /p "THREADS=Threads (default 50): "
-if "%THREADS%"=="" set "THREADS=50"
-goto menu
-:set_timeout
-echo.
-set /p "TIMEOUT=Timeout seconds (default 60): "
-if "%TIMEOUT%"=="" set "TIMEOUT=60"
-goto menu
-:set_tcp_mult
-echo.
-set /p "TCP_MULT=TCP multiplier (0.1-1.0, default 0.6): "
-if "%TCP_MULT%"=="" set "TCP_MULT=0.6"
-goto menu
-:set_auth
-echo.
-set /p "AUTH=Auth (user:pass) or empty: "
-goto menu
-:set_ssh
-echo.
-set /p "SSH_HOST=SSH host [github.com]: "
-if "%SSH_HOST%"=="" set "SSH_HOST=github.com"
-set /p "SSH_PORT=SSH port [22]: "
-if "%SSH_PORT%"=="" set "SSH_PORT=22"
-goto menu
-:set_alive
-echo.
-set /p "ALIVE_FILE=Alive output file [alive_proxies.txt]: "
-if "%ALIVE_FILE%"=="" set "ALIVE_FILE=alive_proxies.txt"
-goto menu
-:set_urls
-echo.
-set /p "URLS_FILE=URLs output file [proxy_urls.txt]: "
-if "%URLS_FILE%"=="" set "URLS_FILE=proxy_urls.txt"
-goto menu
-:set_checkpoint
-echo.
-set /p "CHECKPOINT=Checkpoint file [scan_progress.json]: "
-if "%CHECKPOINT%"=="" set "CHECKPOINT=scan_progress.json"
-goto menu
-:set_scope
-echo.
-set /p "SCOPE=Scope CIDRs (space separated): "
-goto menu
-:set_allowall
-if "%ALLOW_ALL%"=="--allow-all" (set "ALLOW_ALL=") else set "ALLOW_ALL=--allow-all"
-goto menu
-:set_targets
-echo.
-set /p "TARGETS_CFG=Targets config JSON file (or empty): "
-goto menu
-:set_fallback
-echo.
-set /p "FALLBACK_IPS=Fallback IPs JSON file [fallback_ips.json]: "
-if "%FALLBACK_IPS%"=="" set "FALLBACK_IPS=fallback_ips.json"
-goto menu
-:set_nogeo
-if "%NO_GEO%"=="--no-geo" (set "NO_GEO=") else set "NO_GEO=--no-geo"
-goto menu
-:set_nodiv
-if "%NO_DIV%"=="--no-diversity" (set "NO_DIV=") else set "NO_DIV=--no-diversity"
-goto menu
-:set_verbose
-if "%VERBOSE%"=="--verbose" (set "VERBOSE=") else set "VERBOSE=--verbose"
-goto menu
-:set_maxalive
-echo.
-set /p "MAX_ALIVE=Stop after N alive (0=unlimited): "
-if "%MAX_ALIVE%"=="" set "MAX_ALIVE=0"
-goto menu
-:set_clean
-if "%CLEAN%"=="--clean" (set "CLEAN=") else set "CLEAN=--clean"
-goto menu
-:set_retest
-if "%RETEST%"=="--retest" (set "RETEST=") else set "RETEST=--retest"
-goto menu
-:set_refresh
-if "%REFRESH%"=="--refresh-ips" (set "REFRESH=") else set "REFRESH=--refresh-ips"
+set /p "LIST_FILE=Enter list file path [%LIST_FILE%]: "
 goto menu
 
-:: -------- Profile definitions --------
+:set_range
+echo.
+set /p "RANGE_LIST=Enter range(s) (e.g., 192.168.1.0/24 or 1.1.1.1-2.2.2.2) [%RANGE_LIST%]: "
+goto menu
+
+:set_port
+echo.
+set /p "PORT_LIST=Enter port(s) separated by space [%PORT_LIST%]: "
+goto menu
+
+:set_threads
+echo.
+set /p "THREADS=Enter number of threads [%THREADS%]: "
+if "%THREADS%"=="" set "THREADS=50"
+goto menu
+
+:set_timeout
+echo.
+set /p "TIMEOUT=Enter timeout in seconds [%TIMEOUT%]: "
+if "%TIMEOUT%"=="" set "TIMEOUT=60"
+goto menu
+
+:set_tcp_mult
+echo.
+set /p "TCP_MULT=Enter TCP connect multiplier (0.1-1.0) [%TCP_MULT%]: "
+if "%TCP_MULT%"=="" set "TCP_MULT=0.6"
+goto menu
+
+:set_auth
+echo.
+set /p "AUTH=Enter credentials (user:pass) or leave empty [%AUTH%]: "
+goto menu
+
+:set_ssh_host
+echo.
+set /p "SSH_HOST=Enter SSH target host [%SSH_HOST%]: "
+if "%SSH_HOST%"=="" set "SSH_HOST=github.com"
+goto menu
+
+:set_ssh_port
+echo.
+set /p "SSH_PORT=Enter SSH target port [%SSH_PORT%]: "
+if "%SSH_PORT%"=="" set "SSH_PORT=22"
+goto menu
+
+:set_alive
+echo.
+set /p "ALIVE_FILE=Enter alive output file name [%ALIVE_FILE%]: "
+if "%ALIVE_FILE%"=="" set "ALIVE_FILE=alive_proxies.txt"
+goto menu
+
+:set_urls
+echo.
+set /p "URLS_FILE=Enter URLs output file name [%URLS_FILE%]: "
+if "%URLS_FILE%"=="" set "URLS_FILE=proxy_urls.txt"
+goto menu
+
+:set_checkpoint
+echo.
+set /p "CHECKPOINT=Enter checkpoint file name [%CHECKPOINT%]: "
+if "%CHECKPOINT%"=="" set "CHECKPOINT=scan_progress.json"
+goto menu
+
+:set_scope
+echo.
+set /p "SCOPE=Enter scope CIDRs (space separated) [%SCOPE%]: "
+goto menu
+
+:set_allowall
+if "%ALLOW_ALL%"=="--allow-all" (set "ALLOW_ALL=") else set "ALLOW_ALL=--allow-all"
+echo Allow all is now: %ALLOW_ALL%
+pause
+goto menu
+
+:set_targets
+echo.
+set /p "TARGETS_CFG=Enter targets config JSON file (or empty) [%TARGETS_CFG%]: "
+goto menu
+
+:set_fallback
+echo.
+set /p "FALLBACK_IPS=Enter fallback IPs JSON file [%FALLBACK_IPS%]: "
+if "%FALLBACK_IPS%"=="" set "FALLBACK_IPS=fallback_ips.json"
+goto menu
+
+:set_nogeo
+if "%NO_GEO%"=="--no-geo" (set "NO_GEO=") else set "NO_GEO=--no-geo"
+echo No GeoIP is now: %NO_GEO%
+pause
+goto menu
+
+:set_nodiv
+if "%NO_DIV%"=="--no-diversity" (set "NO_DIV=") else set "NO_DIV=--no-diversity"
+echo No diversity is now: %NO_DIV%
+pause
+goto menu
+
+:set_verbose
+if "%VERBOSE%"=="--verbose" (set "VERBOSE=") else set "VERBOSE=--verbose"
+echo Verbose is now: %VERBOSE%
+pause
+goto menu
+
+:set_maxalive
+echo.
+set /p "MAX_ALIVE=Stop after N alive proxies (0=unlimited) [%MAX_ALIVE%]: "
+if "%MAX_ALIVE%"=="" set "MAX_ALIVE=0"
+goto menu
+
+:set_clean
+if "%CLEAN%"=="--clean" (set "CLEAN=") else set "CLEAN=--clean"
+echo Clean files is now: %CLEAN%
+pause
+goto menu
+
+:set_retest
+if "%RETEST%"=="--retest" (set "RETEST=") else set "RETEST=--retest"
+echo Retest all is now: %RETEST%
+pause
+goto menu
+
+:set_refresh
+if "%REFRESH%"=="--refresh-ips" (set "REFRESH=") else set "REFRESH=--refresh-ips"
+echo Refresh fallback is now: %REFRESH%
+pause
+goto menu
+
+:: ============================================================
+::  ADVANCED CUSTOM (step‑by‑step wizard)
+:: ============================================================
+:advanced_custom
+cls
+echo ======================== ADVANCED CUSTOM SETUP ========================
+echo  (Press Enter to keep the value shown in brackets)
+echo.
+set /p "LIST_FILE=  1. List file [%LIST_FILE%]: "
+set /p "RANGE_LIST=  2. Range(s) [%RANGE_LIST%]: "
+set /p "PORT_LIST=  3. Port(s) [%PORT_LIST%]: "
+
+set /p "THREADS=  4. Threads [%THREADS%]: "
+if "%THREADS%"=="" set "THREADS=50"
+
+set /p "TIMEOUT=  5. Timeout (sec) [%TIMEOUT%]: "
+if "%TIMEOUT%"=="" set "TIMEOUT=60"
+
+set /p "TCP_MULT=  6. TCP multiplier [%TCP_MULT%]: "
+if "%TCP_MULT%"=="" set "TCP_MULT=0.6"
+
+set /p "AUTH=  7. Auth (user:pass) [%AUTH%]: "
+
+set /p "SSH_HOST=  8. SSH host [%SSH_HOST%]: "
+if "%SSH_HOST%"=="" set "SSH_HOST=github.com"
+
+set /p "SSH_PORT=  9. SSH port [%SSH_PORT%]: "
+if "%SSH_PORT%"=="" set "SSH_PORT=22"
+
+set /p "ALIVE_FILE= 10. Alive output file [%ALIVE_FILE%]: "
+if "%ALIVE_FILE%"=="" set "ALIVE_FILE=alive_proxies.txt"
+
+set /p "URLS_FILE= 11. URLs output file [%URLS_FILE%]: "
+if "%URLS_FILE%"=="" set "URLS_FILE=proxy_urls.txt"
+
+set /p "CHECKPOINT= 12. Checkpoint file [%CHECKPOINT%]: "
+if "%CHECKPOINT%"=="" set "CHECKPOINT=scan_progress.json"
+
+set /p "SCOPE= 13. Scope CIDRs [%SCOPE%]: "
+set /p "ALLOW_ALL= 14. Allow all? (--allow-all) [%ALLOW_ALL%]: "
+set /p "TARGETS_CFG= 15. Targets config JSON [%TARGETS_CFG%]: "
+
+set /p "FALLBACK_IPS= 16. Fallback IPs file [%FALLBACK_IPS%]: "
+if "%FALLBACK_IPS%"=="" set "FALLBACK_IPS=fallback_ips.json"
+
+:: Toggles
+echo  17. No GeoIP currently: %NO_GEO%
+set /p "nogeo_yn=      Enable --no-geo? [y/N]: "
+if /i "!nogeo_yn!"=="y" (set "NO_GEO=--no-geo") else set "NO_GEO="
+
+echo  18. No diversity currently: %NO_DIV%
+set /p "nodiv_yn=      Enable --no-diversity? [y/N]: "
+if /i "!nodiv_yn!"=="y" (set "NO_DIV=--no-diversity") else set "NO_DIV="
+
+echo  19. Verbose currently: %VERBOSE%
+set /p "verbose_yn=      Enable --verbose? [y/N]: "
+if /i "!verbose_yn!"=="y" (set "VERBOSE=--verbose") else set "VERBOSE="
+
+set /p "MAX_ALIVE= 20. Max alive (0=unlimited) [%MAX_ALIVE%]: "
+if "%MAX_ALIVE%"=="" set "MAX_ALIVE=0"
+
+echo  21. Clean files currently: %CLEAN%
+set /p "clean_yn=      Enable --clean? [y/N]: "
+if /i "!clean_yn!"=="y" (set "CLEAN=--clean") else set "CLEAN="
+
+echo  22. Retest all currently: %RETEST%
+set /p "retest_yn=      Enable --retest? [y/N]: "
+if /i "!retest_yn!"=="y" (set "RETEST=--retest") else set "RETEST="
+
+echo  23. Refresh fallback currently: %REFRESH%
+set /p "refresh_yn=      Enable --refresh-ips? [y/N]: "
+if /i "!refresh_yn!"=="y" (set "REFRESH=--refresh-ips") else set "REFRESH="
+
+goto run
+
+:: ============================================================
+::  PROFILES
+:: ============================================================
 :quick
 set "THREADS=20"
 set "TIMEOUT=30"
 set "NO_GEO=--no-geo"
 set "NO_DIV=--no-diversity"
 set "VERBOSE="
-set "MAX_ALIVE=0"
-goto check_and_run
+goto run
 
 :deep
 set "THREADS=50"
@@ -242,8 +366,7 @@ set "TIMEOUT=90"
 set "NO_GEO="
 set "NO_DIV="
 set "VERBOSE=--verbose"
-set "MAX_ALIVE=0"
-goto check_and_run
+goto run
 
 :full
 set "THREADS=50"
@@ -251,40 +374,32 @@ set "TIMEOUT=120"
 set "NO_GEO="
 set "NO_DIV="
 set "VERBOSE=--verbose"
-set "MAX_ALIVE=0"
-goto check_and_run
+goto run
 
 :custom
-goto check_and_run
+:: simply use current settings (no changes)
+goto run
 
-:check_and_run
-:: Ensure we have either --list or --range (unless --refresh-ips is set)
-if "%REFRESH%"=="--refresh-ips" goto run_scan
+:: ============================================================
+::  BUILD COMMAND & EXECUTE
+:: ============================================================
+:run
+if "%REFRESH%"=="--refresh-ips" goto execute
 if "%LIST_FILE%"=="" if "%RANGE_LIST%"=="" (
-    echo.
-    echo [ERROR] No list file or range specified.
-    echo Please set [1] List file or [2] Range before scanning.
-    echo Or use [22] Refresh fallback IPs alone.
+    echo [ERROR] You must specify a list file [1] or a range [2].
     pause
     goto menu
 )
-:: If list file is set but doesn't exist, ask again
 if not "%LIST_FILE%"=="" if not exist "%LIST_FILE%" (
-    echo.
-    echo [ERROR] List file not found: %LIST_FILE%
-    set "LIST_FILE="
-    echo Please set a valid list file using option [1].
+    echo [ERROR] List file "%LIST_FILE%" not found.
     pause
     goto menu
 )
-goto run_scan
 
-:run_scan
-:: Build command line
+:execute
 set "CMD=python "%SCRIPT%""
-
 if not "%LIST_FILE%"=="" set "CMD=!CMD! --list "%LIST_FILE%""
-if not "%RANGE_LIST%"=="" set "CMD=!CMD! --range %RANGE_LIST%"
+if not "%RANGE_LIST%"=="" set "CMD=!CMD! --range "%RANGE_LIST%""
 if not "%PORT_LIST%"=="" set "CMD=!CMD! --port %PORT_LIST%"
 set "CMD=!CMD! --threads %THREADS% --timeout %TIMEOUT%"
 if not "%TCP_MULT%"=="" set "CMD=!CMD! --tcp-timeout-mult %TCP_MULT%"
@@ -295,34 +410,33 @@ if not "%ALIVE_FILE%"=="" set "CMD=!CMD! --alive "%ALIVE_FILE%""
 if not "%URLS_FILE%"=="" set "CMD=!CMD! --urls "%URLS_FILE%""
 if not "%CHECKPOINT%"=="" set "CMD=!CMD! --checkpoint "%CHECKPOINT%""
 if not "%SCOPE%"=="" set "CMD=!CMD! --scope %SCOPE%"
-if not "%ALLOW_ALL%"=="" set "CMD=!CMD! --allow-all"
+if "%ALLOW_ALL%"=="--allow-all" set "CMD=!CMD! --allow-all"
 if not "%TARGETS_CFG%"=="" set "CMD=!CMD! --targets-config "%TARGETS_CFG%""
 if not "%FALLBACK_IPS%"=="" set "CMD=!CMD! --fallback-ips "%FALLBACK_IPS%""
-if not "%NO_GEO%"=="" set "CMD=!CMD! --no-geo"
-if not "%NO_DIV%"=="" set "CMD=!CMD! --no-diversity"
-if not "%VERBOSE%"=="" set "CMD=!CMD! --verbose"
+if "%NO_GEO%"=="--no-geo" set "CMD=!CMD! --no-geo"
+if "%NO_DIV%"=="--no-diversity" set "CMD=!CMD! --no-diversity"
+if "%VERBOSE%"=="--verbose" set "CMD=!CMD! --verbose"
 if %MAX_ALIVE% gtr 0 set "CMD=!CMD! --max-alive %MAX_ALIVE%"
-if not "%CLEAN%"=="" set "CMD=!CMD! --clean"
-if not "%RETEST%"=="" set "CMD=!CMD! --retest"
-if not "%REFRESH%"=="" set "CMD=!CMD! --refresh-ips"
+if "%CLEAN%"=="--clean" set "CMD=!CMD! --clean"
+if "%RETEST%"=="--retest" set "CMD=!CMD! --retest"
+if "%REFRESH%"=="--refresh-ips" set "CMD=!CMD! --refresh-ips"
 
 echo.
 echo ===============================================================================
-echo  RUNNING:
+echo  Running PSI-Tracker...
+echo ===============================================================================
 echo  !CMD!
-echo ===============================================================================
 echo.
-echo [TIP] Press P to pause, R to resume during scan.
-echo.
+echo  [TIP] Press P to pause, R to resume during scan.
 pause
-call !CMD!
-echo.
-echo ===============================================================================
-echo  Scan finished. Press any key to return to menu.
+%CMD%
+echo Scan finished. Press any key to return to menu.
 pause >nul
 goto menu
 
-:: -------- Save/Load/Help --------
+:: ============================================================
+::  SAVE / LOAD / HELP
+:: ============================================================
 :save
 (
 echo LIST_FILE=%LIST_FILE%
@@ -349,7 +463,7 @@ echo CLEAN=%CLEAN%
 echo RETEST=%RETEST%
 echo REFRESH=%REFRESH%
 ) > "%CONFIG%"
-echo Settings saved.
+echo Settings saved to %CONFIG%.
 pause
 goto menu
 
@@ -383,9 +497,8 @@ goto menu
 
 :help
 cls
-echo ================================= HELP =================================
-echo.
-echo PSI-TRACKER V1.0 "DEY Warrior" - FULL ARGUMENT REFERENCE
+echo ======================== HELP ========================
+echo PSI-Tracker V1.0 "DEY_IMMORTAL" - Full Argument Reference
 echo.
 echo --list FILE            Target file (IP:PORT, CIDR, dash range)
 echo --range RANGE          CIDR or dash ranges
@@ -412,17 +525,13 @@ echo --verbose              Detailed console output (full stats)
 echo --max-alive N          Stop after finding N alive proxies
 echo.
 echo EXAMPLES:
-echo   Basic scan: set list file, then press C (Custom)
-echo   CIDR scan : set range and ports, then press C
+echo   Basic scan: set list file [1], then press C (Custom)
+echo   CIDR scan : set range [2] and ports [3], then press C
 echo   Fast scan : press Q (Quick)
 echo.
 echo NOTES:
 echo   - All tests go through the proxy itself. No direct internet required.
 echo   - Press P and R inside the scan window to pause/resume.
 echo   - Output files: alive_proxies.txt (detailed), proxy_urls.txt (ready to use)
-echo.
 pause
 goto menu
-
-:exit
-exit /b 0
