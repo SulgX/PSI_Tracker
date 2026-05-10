@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 title PSI-Tracker V1.0  DEY IMMORTAL
 color 07
-mode con: cols=90 lines=32
+mode con: cols=90 lines=40
 
 :: ---------- Capture ESC character for ANSI sequences ----------
 for /f "delims=" %%a in ('echo prompt $E^| cmd') do set "ESC=%%a"
@@ -108,8 +108,8 @@ echo %ESC%[36m[23]%ESC%[0m  Refresh fallback    = %ESC%[37m%REFRESH%%ESC%[0m
 echo.
 
 REM ---------- foolproof input without stray cursor ----------
-echo|set /p=" Choose option: "
-set /p "opt="
+echo.
+set /p "opt=Choose option: "
 
 :: ----------------------------------------------------------
 ::  ROUTE USER CHOICE
