@@ -8,7 +8,8 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ---
-
+![PSI-Tracker Preview](https://github.com/SulgX/PSI_Tracker/blob/main/preview.png?raw=true)
+---
 ## 🔬 PSI‑Tracker “DEY Warrior” چیست؟
 
 PSI‑Tracker یک **اسکنر پروکسی چندمرحله‌ای و چندنخی (multi‑stage, thread‑parallel)** است که برای **محیط‌های با تأخیر بالا و سانسور شدید** (مانند ایران) طراحی شده است.  
