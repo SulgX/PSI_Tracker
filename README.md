@@ -6,7 +6,8 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ---
-
+![PSI-Tracker Preview](https://github.com/SulgX/PSI_Tracker/blob/main/preview.png?raw=true)
+---
 ## 🔬 What is PSI‑Tracker “DEY Warrior”?
 
 PSI‑Tracker is a **multi‑stage, thread‑parallel proxy scanner** designed for **high‑latency, heavily censored environments** (like Iran).  
