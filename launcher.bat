@@ -1,8 +1,11 @@
 @echo off
 setlocal enabledelayedexpansion
-title DEY_IMMORTAL :: PSI-Tracker V1.0 Launcher
-color 0A
-mode con: cols=90 lines=30
+title PSI-Tracker V1.0  DEY IMMORTAL
+color 07
+mode con: cols=90 lines=32
+
+:: ---------- Capture ESC character for ANSI sequences ----------
+for /f "delims=" %%a in ('echo prompt $E^| cmd') do set "ESC=%%a"
 
 :: ============================================================
 ::                 CONFIGURATION
@@ -10,9 +13,6 @@ mode con: cols=90 lines=30
 set "SCRIPT=PSI_tracker.py"
 set "CONFIG=launcher_settings.ini"
 
-:: ----------------------------------------------------------
-::  PRE‑CHECKS
-:: ----------------------------------------------------------
 if not exist "%SCRIPT%" (
     echo [ERROR] %SCRIPT% not found. Place this launcher next to the Python script.
     pause & exit /b 1
@@ -59,44 +59,57 @@ if exist "%CONFIG%" (
 :: ============================================================
 :menu
 cls
-echo ===============================================================================
-echo               PSI-Tracker V1.0 "DEY_IMMORTAL" - Main Menu
-echo ===============================================================================
-echo  Current Settings:
-echo  [1]  List file           = %LIST_FILE%
-echo  [2]  Range(s)            = %RANGE_LIST%
-echo  [3]  Port(s)             = %PORT_LIST%
-echo  [4]  Threads             = %THREADS%
-echo  [5]  Timeout (sec)       = %TIMEOUT%
-echo  [6]  TCP multiplier      = %TCP_MULT%
-echo  [7]  Auth (user:pass)    = %AUTH%
-echo  [8]  SSH host            = %SSH_HOST%
-echo  [9]  SSH port            = %SSH_PORT%
-echo  [10] Alive output        = %ALIVE_FILE%
-echo  [11] URLs output         = %URLS_FILE%
-echo  [12] Checkpoint file     = %CHECKPOINT%
-echo  [13] Scope CIDRs         = %SCOPE%
-echo  [14] Allow all           = %ALLOW_ALL%
-echo  [15] Targets config      = %TARGETS_CFG%
-echo  [16] Fallback IPs        = %FALLBACK_IPS%
-echo  [17] No GeoIP            = %NO_GEO%
-echo  [18] No diversity        = %NO_DIV%
-echo  [19] Verbose             = %VERBOSE%
-echo  [20] Max alive (stop)    = %MAX_ALIVE%
-echo  [21] Clean files         = %CLEAN%
-echo  [22] Retest all          = %RETEST%
-echo  [23] Refresh fallback    = %REFRESH%
+
+REM ══════════════════════════════════════════════════════════════════════
+REM  CLEAN BANNER (all ASCII, no problematic symbols)
+REM ══════════════════════════════════════════════════════════════════════
+echo %ESC%[1;36m========================================================================================%ESC%[0m
+echo %ESC%[1;36m==%ESC%[0m  %ESC%[1;33;44m   PSI TRACKER   %ESC%[0m    %ESC%[1;36m==%ESC%[0m  %ESC%[1;33mDEY_IMMORTAL V1.0%ESC%[0m                         %ESC%[1;36m==%ESC%[0m
+echo %ESC%[1;36m==%ESC%[0m  %ESC%[37mUnbreakable Proxy Auditor for Censored Networks%ESC%[0m              %ESC%[1;36m==%ESC%[0m
+echo %ESC%[1;36m========================================================================================%ESC%[0m
 echo.
-echo  Profiles:
-echo  [Q] Quick Scan   (20 threads, 30s, --no-geo --no-diversity)
-echo  [D] Deep Scan    (50 threads, 90s, --verbose)
-echo  [F] Full Scan    (50 threads, 120s, --verbose)
-echo  [C] Custom Scan  (run with current settings, NO questions)
-echo  [A] Advanced Custom (ask EVERY setting step-by-step)
+
+REM --------------------------------------------------------------------
+REM  PROFILES
+REM --------------------------------------------------------------------
+echo %ESC%[33;1mProfiles:%ESC%[0m
+echo %ESC%[36m [Q]%ESC%[0m %ESC%[33mQuick Scan%ESC%[0m   (20 threads, 30s, --no-geo --no-diversity)
+echo %ESC%[36m [D]%ESC%[0m %ESC%[33mDeep Scan%ESC%[0m    (50 threads, 90s, --verbose)
+echo %ESC%[36m [F]%ESC%[0m %ESC%[33mFull Scan%ESC%[0m    (50 threads, 120s, --verbose)
+echo %ESC%[36m [C]%ESC%[0m %ESC%[33mCustom Scan%ESC%[0m  (run with current settings, NO questions)
+echo %ESC%[36m [A]%ESC%[0m %ESC%[33mAdvanced Custom%ESC%[0m (ask EVERY setting step-by-step)
 echo.
-echo  [S] Save settings   [L] Load defaults   [H] Help   [X] Exit
+echo %ESC%[36m [S]%ESC%[0m %ESC%[32mSave settings%ESC%[0m   %ESC%[36m[L]%ESC%[0m %ESC%[32mLoad defaults%ESC%[0m   %ESC%[36m[H]%ESC%[0m %ESC%[32mHelp%ESC%[0m   %ESC%[36m[X]%ESC%[0m %ESC%[32mExit%ESC%[0m
 echo.
-set /p "opt=Choose option: "
+echo %ESC%[33;1mCurrent Settings:%ESC%[0m
+echo %ESC%[36m [1]%ESC%[0m  List file           = %ESC%[37m%LIST_FILE%%ESC%[0m
+echo %ESC%[36m [2]%ESC%[0m  Range(s)            = %ESC%[37m%RANGE_LIST%%ESC%[0m
+echo %ESC%[36m [3]%ESC%[0m  Port(s)             = %ESC%[37m%PORT_LIST%%ESC%[0m
+echo %ESC%[36m [4]%ESC%[0m  Threads             = %ESC%[37m%THREADS%%ESC%[0m
+echo %ESC%[36m [5]%ESC%[0m  Timeout (sec)       = %ESC%[37m%TIMEOUT%%ESC%[0m
+echo %ESC%[36m [6]%ESC%[0m  TCP multiplier      = %ESC%[37m%TCP_MULT%%ESC%[0m
+echo %ESC%[36m [7]%ESC%[0m  Auth (user:pass)    = %ESC%[37m%AUTH%%ESC%[0m
+echo %ESC%[36m [8]%ESC%[0m  SSH host            = %ESC%[37m%SSH_HOST%%ESC%[0m
+echo %ESC%[36m [9]%ESC%[0m  SSH port            = %ESC%[37m%SSH_PORT%%ESC%[0m
+echo %ESC%[36m[10]%ESC%[0m  Alive output        = %ESC%[37m%ALIVE_FILE%%ESC%[0m
+echo %ESC%[36m[11]%ESC%[0m  URLs output         = %ESC%[37m%URLS_FILE%%ESC%[0m
+echo %ESC%[36m[12]%ESC%[0m  Checkpoint file     = %ESC%[37m%CHECKPOINT%%ESC%[0m
+echo %ESC%[36m[13]%ESC%[0m  Scope CIDRs         = %ESC%[37m%SCOPE%%ESC%[0m
+echo %ESC%[36m[14]%ESC%[0m  Allow all           = %ESC%[37m%ALLOW_ALL%%ESC%[0m
+echo %ESC%[36m[15]%ESC%[0m  Targets config      = %ESC%[37m%TARGETS_CFG%%ESC%[0m
+echo %ESC%[36m[16]%ESC%[0m  Fallback IPs        = %ESC%[37m%FALLBACK_IPS%%ESC%[0m
+echo %ESC%[36m[17]%ESC%[0m  No GeoIP            = %ESC%[37m%NO_GEO%%ESC%[0m
+echo %ESC%[36m[18]%ESC%[0m  No diversity        = %ESC%[37m%NO_DIV%%ESC%[0m
+echo %ESC%[36m[19]%ESC%[0m  Verbose             = %ESC%[37m%VERBOSE%%ESC%[0m
+echo %ESC%[36m[20]%ESC%[0m  Max alive (stop)    = %ESC%[37m%MAX_ALIVE%%ESC%[0m
+echo %ESC%[36m[21]%ESC%[0m  Clean files         = %ESC%[37m%CLEAN%%ESC%[0m
+echo %ESC%[36m[22]%ESC%[0m  Retest all          = %ESC%[37m%RETEST%%ESC%[0m
+echo %ESC%[36m[23]%ESC%[0m  Refresh fallback    = %ESC%[37m%REFRESH%%ESC%[0m
+echo.
+
+REM ---------- foolproof input without stray cursor ----------
+echo|set /p=" Choose option: "
+set /p "opt="
 
 :: ----------------------------------------------------------
 ::  ROUTE USER CHOICE
@@ -135,12 +148,12 @@ if /i "%opt%"=="L" goto load_default
 if /i "%opt%"=="H" goto help
 if /i "%opt%"=="X" exit /b 0
 
-echo Invalid option. Press any key.
+echo %ESC%[31mInvalid option. Press any key.%ESC%[0m
 pause >nul
 goto menu
 
 :: ============================================================
-::  INDIVIDUAL SETTERS (each returns to menu)
+::  INDIVIDUAL SETTERS (unchanged logic)
 :: ============================================================
 :set_list
 echo.
@@ -149,7 +162,7 @@ goto menu
 
 :set_range
 echo.
-set /p "RANGE_LIST=Enter range(s) (e.g., 192.168.1.0/24 or 1.1.1.1-2.2.2.2) [%RANGE_LIST%]: "
+set /p "RANGE_LIST=Enter range(s) [%RANGE_LIST%]: "
 goto menu
 
 :set_port
@@ -319,7 +332,6 @@ set /p "TARGETS_CFG= 15. Targets config JSON [%TARGETS_CFG%]: "
 set /p "FALLBACK_IPS= 16. Fallback IPs file [%FALLBACK_IPS%]: "
 if "%FALLBACK_IPS%"=="" set "FALLBACK_IPS=fallback_ips.json"
 
-:: Toggles
 echo  17. No GeoIP currently: %NO_GEO%
 set /p "nogeo_yn=      Enable --no-geo? [y/N]: "
 if /i "!nogeo_yn!"=="y" (set "NO_GEO=--no-geo") else set "NO_GEO="
@@ -386,12 +398,12 @@ goto run
 :run
 if "%REFRESH%"=="--refresh-ips" goto execute
 if "%LIST_FILE%"=="" if "%RANGE_LIST%"=="" (
-    echo [ERROR] You must specify a list file [1] or a range [2].
+    echo %ESC%[31m[ERROR] You must specify a list file [1] or a range [2].%ESC%[0m
     pause
     goto menu
 )
 if not "%LIST_FILE%"=="" if not exist "%LIST_FILE%" (
-    echo [ERROR] List file "%LIST_FILE%" not found.
+    echo %ESC%[31m[ERROR] List file "%LIST_FILE%" not found.%ESC%[0m
     pause
     goto menu
 )
@@ -422,15 +434,15 @@ if "%RETEST%"=="--retest" set "CMD=!CMD! --retest"
 if "%REFRESH%"=="--refresh-ips" set "CMD=!CMD! --refresh-ips"
 
 echo.
-echo ===============================================================================
-echo  Running PSI-Tracker...
-echo ===============================================================================
+echo %ESC%[33m===============================================================================%ESC%[0m
+echo %ESC%[33m  Running PSI-Tracker...%ESC%[0m
+echo %ESC%[33m===============================================================================%ESC%[0m
 echo  !CMD!
 echo.
-echo  [TIP] Press P to pause, R to resume during scan.
+echo %ESC%[36m  [TIP] Press P to pause, R to resume during scan.%ESC%[0m
 pause
 %CMD%
-echo Scan finished. Press any key to return to menu.
+echo %ESC%[32mScan finished. Press any key to return to menu.%ESC%[0m
 pause >nul
 goto menu
 
@@ -463,7 +475,7 @@ echo CLEAN=%CLEAN%
 echo RETEST=%RETEST%
 echo REFRESH=%REFRESH%
 ) > "%CONFIG%"
-echo Settings saved to %CONFIG%.
+echo %ESC%[32mSettings saved to %CONFIG%.%ESC%[0m
 pause
 goto menu
 
@@ -491,45 +503,45 @@ set "MAX_ALIVE=0"
 set "CLEAN="
 set "RETEST="
 set "REFRESH="
-echo Default settings loaded.
+echo %ESC%[32mDefault settings loaded.%ESC%[0m
 pause
 goto menu
 
 :help
 cls
-echo ======================== HELP ========================
-echo PSI-Tracker V1.0 "DEY_IMMORTAL" - Full Argument Reference
+echo %ESC%[33;1m======================== HELP ========================%ESC%[0m
+echo %ESC%[36mPSI-Tracker V1.0 "DEY_IMMORTAL" - Full Argument Reference%ESC%[0m
 echo.
-echo --list FILE            Target file (IP:PORT, CIDR, dash range)
-echo --range RANGE          CIDR or dash ranges
-echo --port PORT [PORT]     Port(s) for IPs without port
-echo --threads N            Threads (default 50)
-echo --timeout SECONDS      Per-proxy timeout (default 60)
-echo --tcp-timeout-mult X   TCP connect multiplier (default 0.6)
-echo --auth USER:PASS       Credentials for auth-requiring proxies
-echo --ssh-host HOST        SSH target host (default github.com)
-echo --ssh-port PORT        SSH target port (default 22)
-echo --alive FILE           Output file for alive proxies with details
-echo --urls FILE            Output file for proxy URLs
-echo --checkpoint FILE      Progress checkpoint file
-echo --scope CIDR [CIDR]    Restrict range expansion to these CIDRs
-echo --allow-all            Bypass --scope requirement
-echo --targets-config JSON  Custom test targets JSON config
-echo --fallback-ips JSON    Additional fallback IPs JSON file
-echo --clean                Clear output files before start
-echo --retest               Ignore checkpoint and re-test all
-echo --refresh-ips          Re-resolve known hosts & update fallback IPs
-echo --no-geo               Disable GeoIP lookup
-echo --no-diversity         Skip port diversity test
-echo --verbose              Detailed console output (full stats)
-echo --max-alive N          Stop after finding N alive proxies
+echo %ESC%[37m--list FILE            Target file (IP:PORT, CIDR, dash range)%ESC%[0m
+echo %ESC%[37m--range RANGE          CIDR or dash ranges%ESC%[0m
+echo %ESC%[37m--port PORT [PORT]     Port(s) for IPs without port%ESC%[0m
+echo %ESC%[37m--threads N            Threads (default 50)%ESC%[0m
+echo %ESC%[37m--timeout SECONDS      Per-proxy timeout (default 60)%ESC%[0m
+echo %ESC%[37m--tcp-timeout-mult X   TCP connect multiplier (default 0.6)%ESC%[0m
+echo %ESC%[37m--auth USER:PASS       Credentials for auth-requiring proxies%ESC%[0m
+echo %ESC%[37m--ssh-host HOST        SSH target host (default github.com)%ESC%[0m
+echo %ESC%[37m--ssh-port PORT        SSH target port (default 22)%ESC%[0m
+echo %ESC%[37m--alive FILE           Output file for alive proxies with details%ESC%[0m
+echo %ESC%[37m--urls FILE            Output file for proxy URLs%ESC%[0m
+echo %ESC%[37m--checkpoint FILE      Progress checkpoint file%ESC%[0m
+echo %ESC%[37m--scope CIDR [CIDR]    Restrict range expansion to these CIDRs%ESC%[0m
+echo %ESC%[37m--allow-all            Bypass --scope requirement%ESC%[0m
+echo %ESC%[37m--targets-config JSON  Custom test targets JSON config%ESC%[0m
+echo %ESC%[37m--fallback-ips JSON    Additional fallback IPs JSON file%ESC%[0m
+echo %ESC%[37m--clean                Clear output files before start%ESC%[0m
+echo %ESC%[37m--retest               Ignore checkpoint and re-test all%ESC%[0m
+echo %ESC%[37m--refresh-ips          Re-resolve known hosts ^& update fallback IPs%ESC%[0m
+echo %ESC%[37m--no-geo               Disable GeoIP lookup%ESC%[0m
+echo %ESC%[37m--no-diversity         Skip port diversity test%ESC%[0m
+echo %ESC%[37m--verbose              Detailed console output (full stats)%ESC%[0m
+echo %ESC%[37m--max-alive N          Stop after finding N alive proxies%ESC%[0m
 echo.
-echo EXAMPLES:
-echo   Basic scan: set list file [1], then press C (Custom)
-echo   CIDR scan : set range [2] and ports [3], then press C
-echo   Fast scan : press Q (Quick)
+echo %ESC%[33mEXAMPLES:%ESC%[0m
+echo   %ESC%[36mBasic scan:%ESC%[0m set list file [1], then press C (Custom)
+echo   %ESC%[36mCIDR scan :%ESC%[0m set range [2] and ports [3], then press C
+echo   %ESC%[36mFast scan :%ESC%[0m press Q (Quick)
 echo.
-echo NOTES:
+echo %ESC%[33mNOTES:%ESC%[0m
 echo   - All tests go through the proxy itself. No direct internet required.
 echo   - Press P and R inside the scan window to pause/resume.
 echo   - Output files: alive_proxies.txt (detailed), proxy_urls.txt (ready to use)
