@@ -34,6 +34,8 @@ from typing import Optional, Tuple, Dict, List, Any
 from pathlib import Path
 import base64
 import requests
+import ctypes
+from ctypes import wintypes
 
 try:
     import socks
@@ -54,7 +56,22 @@ try:
 except ImportError:
     class Fore: GREEN = RED = YELLOW = BLUE = MAGENTA = CYAN = WHITE = RESET = ''
     class Style: BRIGHT = ''; RESET_ALL = ''
+# بارگذاری آیکون از فایل
+icon_path = os.path.join(os.path.dirname(__file__), "scanner.jpg")
+# در حالت EXE باید مسیر را از sys._MEIPASS بدهید
 
+# گرفتن handle پنجره کنسول
+kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+user32 = ctypes.WinDLL('user32', use_last_error=True)
+
+console_window = kernel32.GetConsoleWindow()
+if console_window:
+    # بارگذاری آیکون
+    hicon = user32.LoadImageW(None, icon_path, 1, 0, 0, 0x00000010)  # IMAGE_ICON, LR_LOADFROMFILE
+    if hicon:
+        user32.SendMessageW(console_window, 0x0080, 0, hicon)  # WM_SETICON, ICON_SMALL
+        user32.SendMessageW(console_window, 0x0080, 1, hicon)  # ICON_BIG
+        
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 PSIPHON_SSH_IP = "156.146.56.168"
 PSIPHON_SSH_PORT = 22
@@ -1719,10 +1736,30 @@ def main():
                     ch = msvcrt.getch().decode('utf-8', errors='ignore').lower()
                     if ch == 'p':
                         pause_event.clear()
-                        tqdm.write(f"{Fore.YELLOW}[PAUSED] Press 'R' to resume.{Style.RESET_ALL}")
+                        tqdm.write(f"{Fore.YELLOW}[PAUSED] Press 'R' to resume, 'M' to abort & return to menu.{Style.RESET_ALL}")
                     elif ch == 'r':
                         pause_event.set()
                         tqdm.write(f"{Fore.GREEN}[RESUMED] Scanning continues.{Style.RESET_ALL}")
+                    elif ch == 'm':
+                        stop_event.set()
+                        pause_event.set()
+                        tqdm.write(f"{Fore.MAGENTA}[ABORT] Stopping scan & returning to menu...{Style.RESET_ALL}")
+                        try:
+                            cp_save = {
+                                "config_fingerprint": current_fp,
+                                "proxies": progress_data,
+                                "server_list": {
+                                    "cache": _server_list_cache,
+                                    "etag": _server_list_etag,
+                                    "ts": _server_list_ts
+                                },
+                                "last_index": pbar.n + start_index
+                            }
+                            with progress_lock:
+                                save_checkpoint_atomic(args.checkpoint, cp_save)
+                        except:
+                            pass
+                        os._exit(0)
                 time.sleep(0.2)
         except ImportError:
             import sys, tty, termios
@@ -1734,10 +1771,30 @@ def main():
                     ch = sys.stdin.read(1).lower()
                     if ch == 'p':
                         pause_event.clear()
-                        tqdm.write(f"{Fore.YELLOW}[PAUSED] Press 'R' to resume.{Style.RESET_ALL}")
+                        tqdm.write(f"{Fore.YELLOW}[PAUSED] Press 'R' to resume, 'M' to abort & return to menu.{Style.RESET_ALL}")
                     elif ch == 'r':
                         pause_event.set()
                         tqdm.write(f"{Fore.GREEN}[RESUMED] Scanning continues.{Style.RESET_ALL}")
+                    elif ch == 'm':
+                        stop_event.set()
+                        pause_event.set()
+                        tqdm.write(f"{Fore.MAGENTA}[ABORT] Stopping scan & returning to menu...{Style.RESET_ALL}")
+                        try:
+                            cp_save = {
+                                "config_fingerprint": current_fp,
+                                "proxies": progress_data,
+                                "server_list": {
+                                    "cache": _server_list_cache,
+                                    "etag": _server_list_etag,
+                                    "ts": _server_list_ts
+                                },
+                                "last_index": pbar.n + start_index
+                            }
+                            with progress_lock:
+                                save_checkpoint_atomic(args.checkpoint, cp_save)
+                        except:
+                            pass
+                        os._exit(0)
             finally:
                 termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
