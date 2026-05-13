@@ -36,7 +36,6 @@ from pathlib import Path
 import base64
 import requests
 import ctypes
-from ctypes import wintypes
 
 try:
     import socks
@@ -61,18 +60,19 @@ except ImportError:
 icon_path = os.path.join(os.path.dirname(__file__), "scanner.jpg")
 # For EXE
 
-# console icon
-kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
-user32 = ctypes.WinDLL('user32', use_last_error=True)
+# console icon (Windows only)
+if sys.platform == 'win32':
+    from ctypes import wintypes
+    kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+    user32 = ctypes.WinDLL('user32', use_last_error=True)
 
-console_window = kernel32.GetConsoleWindow()
-if console_window:
-    #loadout Icon
-    hicon = user32.LoadImageW(None, icon_path, 1, 0, 0, 0x00000010)  # IMAGE_ICON, LR_LOADFROMFILE
-    if hicon:
-        user32.SendMessageW(console_window, 0x0080, 0, hicon)  # WM_SETICON, ICON_SMALL
-        user32.SendMessageW(console_window, 0x0080, 1, hicon)  # ICON_BIG
-        
+    console_window = kernel32.GetConsoleWindow()
+    if console_window:
+        #loadout Icon
+        hicon = user32.LoadImageW(None, icon_path, 1, 0, 0, 0x00000010)  # IMAGE_ICON, LR_LOADFROMFILE
+        if hicon:
+            user32.SendMessageW(console_window, 0x0080, 0, hicon)  # WM_SETICON, ICON_SMALL
+            user32.SendMessageW(console_window, 0x0080, 1, hicon)  # ICON_BIG
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 PSIPHON_SSH_IP = "156.146.56.168"
 PSIPHON_SSH_PORT = 22
