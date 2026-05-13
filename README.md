@@ -1,3 +1,22 @@
+
+Short Up: 
+✅ Auth – Before: only one user:pass via --auth. 
+After: also supports passlist.txt with up to 20 credentials, tested only on proxies that require authentication.
+✅ Launcher list/range – Before: leaving List empty caused “file not found” errors. 
+After: none placeholders are ignored, allowing range‑only scans.
+✅ Abort during scan – Before: no way to stop and return to menu quickly. 
+After: press M to instantly save checkpoint and exit.
+✅ Pause/Resume – Before: no manual control. 
+After: P to pause, R to resume, automatic pause on network loss.
+✅ Scope / Allow‑all – Before: scope always filtered targets even with --allow-all. 
+After: --allow-all completely bypasses scope.
+✅ Checkpoint / Retest – Before: --retest skipped already‑tested targets incorrectly. 
+After: --retest now properly resets progress.
+✅ Old config migration – Before: old AUTH=user:pass in settings broke the launcher. 
+After: automatically converted to the new auth system.
+
+---------------------------------------------------------------------
+
 # Psiphon Tracker V 1.0 “DEY Warrior”  
 **Unbreakable Proxy Scanner for Censored Networks**  
 *Built to win the war against censorship – dedicated to the immortal names of IRAN, Dey 1404.*
