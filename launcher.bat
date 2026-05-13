@@ -32,6 +32,8 @@ set "THREADS=50"
 set "TIMEOUT=60"
 set "TCP_MULT=0.6"
 set "AUTH="
+set "AUTH_MODE="
+set "AUTH_CRED="
 set "SSH_HOST=github.com"
 set "SSH_PORT=22"
 set "ALIVE_FILE=alive_proxies.txt"
@@ -54,9 +56,20 @@ if exist "%CONFIG%" (
     for /f "usebackq tokens=1,* delims==" %%a in ("%CONFIG%") do set "%%a=%%b"
 )
 
+:: Load Auth Mode
+if not defined AUTH_MODE (
+    if defined AUTH if not "%AUTH%"=="" (
+        set "AUTH_MODE=single"
+        set "AUTH_CRED=!AUTH!"
+    ) else (
+        set "AUTH_MODE="
+        set "AUTH_CRED="
+    )
+    set "AUTH="
+)
+
 :: ---------- Helpers for "none" ----------
 :: Case-insensitive "none" -> treat as empty
-:: We'll use a subroutine to check if a variable is "none" (case-insensitive) and return empty if so.
 goto :menu
 
 :isnone
@@ -93,13 +106,18 @@ echo.
 echo %ESC%[36m [S]%ESC%[0m %ESC%[32mSave settings%ESC%[0m   %ESC%[36m[L]%ESC%[0m %ESC%[32mLoad defaults%ESC%[0m   %ESC%[36m[H]%ESC%[0m %ESC%[32mHelp%ESC%[0m   %ESC%[36m[X]%ESC%[0m %ESC%[32mExit%ESC%[0m
 echo.
 echo %ESC%[33;1mCurrent Settings:%ESC%[0m
+:: about Auth ?
+set "AUTH_DISPLAY=none"
+if "%AUTH_MODE%"=="single" set "AUTH_DISPLAY=single: %AUTH_CRED%"
+if "%AUTH_MODE%"=="file" set "AUTH_DISPLAY=file: passlist.txt"
+
 echo %ESC%[36m [1]%ESC%[0m  List file           = %ESC%[37m%LIST_FILE%%ESC%[0m
 echo %ESC%[36m [2]%ESC%[0m  Range(s)            = %ESC%[37m%RANGE_LIST%%ESC%[0m
 echo %ESC%[36m [3]%ESC%[0m  Port(s)             = %ESC%[37m%PORT_LIST%%ESC%[0m
 echo %ESC%[36m [4]%ESC%[0m  Threads             = %ESC%[37m%THREADS%%ESC%[0m
 echo %ESC%[36m [5]%ESC%[0m  Timeout (sec)       = %ESC%[37m%TIMEOUT%%ESC%[0m
 echo %ESC%[36m [6]%ESC%[0m  TCP multiplier      = %ESC%[37m%TCP_MULT%%ESC%[0m
-echo %ESC%[36m [7]%ESC%[0m  Auth (user:pass)    = %ESC%[37m%AUTH%%ESC%[0m
+echo %ESC%[36m [7]%ESC%[0m  Auth (user:pass)    = %ESC%[37m!AUTH_DISPLAY!%ESC%[0m
 echo %ESC%[36m [8]%ESC%[0m  SSH host            = %ESC%[37m%SSH_HOST%%ESC%[0m
 echo %ESC%[36m [9]%ESC%[0m  SSH port            = %ESC%[37m%SSH_PORT%%ESC%[0m
 echo %ESC%[36m[10]%ESC%[0m  Alive output        = %ESC%[37m%ALIVE_FILE%%ESC%[0m
@@ -209,7 +227,29 @@ goto menu
 
 :set_auth
 echo.
-set /p "AUTH=Enter credentials (user:pass) or leave empty [%AUTH%]: "
+echo Current Auth mode: %AUTH_MODE% %AUTH_CRED%
+echo   [1] Single credential (user:pass^)
+echo   [2] Use passlist.txt in script folder
+echo   [3] None (no authentication^)
+set /p "auth_choice=Choose [1/2/3] or press Enter to keep: "
+if "%auth_choice%"=="1" (
+    set /p "new_cred=Enter credentials (user:pass): "
+    if not "!new_cred!"=="" (
+        set "AUTH_MODE=single"
+        set "AUTH_CRED=!new_cred!"
+    ) else (
+        echo No input, keeping previous.
+    )
+) else if "%auth_choice%"=="2" (
+    set "AUTH_MODE=file"
+    set "AUTH_CRED="
+) else if "%auth_choice%"=="3" (
+    set "AUTH_MODE="
+    set "AUTH_CRED="
+) else (
+    echo Invalid choice, keeping previous.
+)
+pause >nul
 goto menu
 
 :set_ssh_host
@@ -348,7 +388,17 @@ if "%TIMEOUT%"=="" set "TIMEOUT=60"
 set /p "TCP_MULT=  6. TCP multiplier [%TCP_MULT%]: "
 if "%TCP_MULT%"=="" set "TCP_MULT=0.6"
 
-set /p "AUTH=  7. Auth (user:pass) [%AUTH%]: "
+echo  7. Auth currently: %AUTH_MODE% %AUTH_CRED%
+set /p "AUTH_INPUT=     Enter user:pass, 'file' for passlist.txt, or leave empty for none: "
+if /i "!AUTH_INPUT!"=="file" (
+    set "AUTH_MODE=file"
+    set "AUTH_CRED="
+) else if "!AUTH_INPUT!"=="" (
+    rem keep current
+) else (
+    set "AUTH_MODE=single"
+    set "AUTH_CRED=!AUTH_INPUT!"
+)
 
 set /p "SSH_HOST=  8. SSH host [%SSH_HOST%]: "
 if "%SSH_HOST%"=="" set "SSH_HOST=github.com"
@@ -466,7 +516,8 @@ if not "%RANGE_LIST%"==""  set "CMD=!CMD! --range "%RANGE_LIST%""
 if not "%PORT_LIST%"==""   set "CMD=!CMD! --port %PORT_LIST%"
 set "CMD=!CMD! --threads %THREADS% --timeout %TIMEOUT%"
 if not "%TCP_MULT%"==""    set "CMD=!CMD! --tcp-timeout-mult %TCP_MULT%"
-if not "%AUTH%"==""        set "CMD=!CMD! --auth "%AUTH%""
+:: Auth: only pass --auth if single mode and credentials exist
+if "%AUTH_MODE%"=="single" if not "%AUTH_CRED%"=="" set "CMD=!CMD! --auth "%AUTH_CRED%""
 if not "%SSH_HOST%"==""    set "CMD=!CMD! --ssh-host %SSH_HOST%"
 if not "%SSH_PORT%"==""    set "CMD=!CMD! --ssh-port %SSH_PORT%"
 if not "%ALIVE_FILE%"==""  set "CMD=!CMD! --alive "%ALIVE_FILE%""
@@ -508,7 +559,8 @@ echo PORT_LIST=%PORT_LIST%
 echo THREADS=%THREADS%
 echo TIMEOUT=%TIMEOUT%
 echo TCP_MULT=%TCP_MULT%
-echo AUTH=%AUTH%
+echo AUTH_MODE=%AUTH_MODE%
+echo AUTH_CRED=%AUTH_CRED%
 echo SSH_HOST=%SSH_HOST%
 echo SSH_PORT=%SSH_PORT%
 echo ALIVE_FILE=%ALIVE_FILE%
@@ -538,6 +590,8 @@ set "THREADS=50"
 set "TIMEOUT=60"
 set "TCP_MULT=0.6"
 set "AUTH="
+set "AUTH_MODE="
+set "AUTH_CRED="
 set "SSH_HOST=github.com"
 set "SSH_PORT=22"
 set "ALIVE_FILE=alive_proxies.txt"
