@@ -26,6 +26,7 @@ PSI-Tracker V1.0 "DEY Warrior" – Final Unbreakable Proxy Auditor for Iran
 - Best ping/score shown live in progress bar
 - Proper cleanup on Ctrl+C and session close where needed
 - Production‑hardened, crash‑resistant, Python 3.7+ compatible
+- Multi-credential brute-force via passlist.txt for authenticated proxies
 ===================================================================================
 """
 
@@ -56,17 +57,17 @@ try:
 except ImportError:
     class Fore: GREEN = RED = YELLOW = BLUE = MAGENTA = CYAN = WHITE = RESET = ''
     class Style: BRIGHT = ''; RESET_ALL = ''
-# بارگذاری آیکون از فایل
+#dont change {for EXE}
 icon_path = os.path.join(os.path.dirname(__file__), "scanner.jpg")
-# در حالت EXE باید مسیر را از sys._MEIPASS بدهید
+# For EXE
 
-# گرفتن handle پنجره کنسول
+# console icon
 kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
 user32 = ctypes.WinDLL('user32', use_last_error=True)
 
 console_window = kernel32.GetConsoleWindow()
 if console_window:
-    # بارگذاری آیکون
+    #loadout Icon
     hicon = user32.LoadImageW(None, icon_path, 1, 0, 0, 0x00000010)  # IMAGE_ICON, LR_LOADFROMFILE
     if hicon:
         user32.SendMessageW(console_window, 0x0080, 0, hicon)  # WM_SETICON, ICON_SMALL
@@ -127,6 +128,8 @@ GEOIP_SERVICES = [
 ]
 
 DIVERSITY_PORTS = [22, 53, 80, 443, 554]
+
+MAX_AUTH_ATTEMPTS = 20   # max passlist.txt
 
 JUDGE_SERVERS = [
     {
@@ -1224,7 +1227,7 @@ def scan_proxy(entry: str, timeout: float,
                tcp_open_file_lock, tcp_open_path,
                progress_data, progress_lock,
                targets_cfg: dict,
-               auth_cred: Optional[Tuple[str, str]] = None,
+               auth_cred: Optional[List[Tuple[str, str]]] = None,
                ssh_target_host: str = "github.com", ssh_target_port: int = 22,
                no_diversity: bool = False, no_geo: bool = False,
                tcp_timeout_mult: float = 0.6,
@@ -1287,23 +1290,35 @@ def scan_proxy(entry: str, timeout: float,
         elif http_state == 'OPEN':
             best_proto = 'HTTP'; proxy_url = f"http://{host}:{port}"; cred_req = False; res['auth'] = 'NO_AUTH'
         elif s5_state == 'AUTH_REQUIRED' and auth_cred:
-            u, p = auth_cred
-            ok, lat, err = socks5_auth_tunnel_tls(host, port, u, p, "b-cdn.net", 443, "b-cdn.net", dt)
-            if ok:
-                best_proto = 'SOCKS5'; proxy_url = f"socks5h://{host}:{port}"; cred_req = False
-                res['auth'] = 'AUTH_OK'; auth_ok = True; res['connect_tls_ok'] = True; res['latency_ms'] = lat
-            else:
-                best_proto = 'SOCKS5'; proxy_url = f"socks5h://{host}:{port}"; cred_req = True; res['auth'] = 'AUTH_FAILED'
-                res['errors'].append(f'S5AUTH_{err}')
+            auth_success = False
+            last_err = None
+            for (u, p) in auth_cred:
+                ok, lat, err = socks5_auth_tunnel_tls(host, port, u, p, "b-cdn.net", 443, "b-cdn.net", dt)
+                if ok:
+                    best_proto = 'SOCKS5'; proxy_url = f"socks5h://{host}:{port}"; cred_req = False
+                    res['auth'] = 'AUTH_OK'; auth_ok = True; res['connect_tls_ok'] = True; res['latency_ms'] = lat
+                    auth_success = True
+                    break
+                last_err = err
+            if not auth_success:
+                best_proto = 'SOCKS5'; proxy_url = f"socks5h://{host}:{port}"; cred_req = True
+                res['auth'] = 'AUTH_FAILED'
+                if last_err: res['errors'].append(f'S5AUTH_{last_err}')
         elif http_state == 'AUTH_REQUIRED' and auth_cred:
-            u, p = auth_cred
-            ok, lat, err = http_connect_auth_tunnel_tls(host, port, u, p, "b-cdn.net", 443, "b-cdn.net", dt)
-            if ok:
-                best_proto = 'HTTP'; proxy_url = f"http://{host}:{port}"; cred_req = False
-                res['auth'] = 'AUTH_OK'; auth_ok = True; res['connect_tls_ok'] = True; res['latency_ms'] = lat
-            else:
-                best_proto = 'HTTP'; proxy_url = f"http://{host}:{port}"; cred_req = True; res['auth'] = 'AUTH_FAILED'
-                res['errors'].append(f'HTTPAUTH_{err}')
+            auth_success = False
+            last_err = None
+            for (u, p) in auth_cred:
+                ok, lat, err = http_connect_auth_tunnel_tls(host, port, u, p, "b-cdn.net", 443, "b-cdn.net", dt)
+                if ok:
+                    best_proto = 'HTTP'; proxy_url = f"http://{host}:{port}"; cred_req = False
+                    res['auth'] = 'AUTH_OK'; auth_ok = True; res['connect_tls_ok'] = True; res['latency_ms'] = lat
+                    auth_success = True
+                    break
+                last_err = err
+            if not auth_success:
+                best_proto = 'HTTP'; proxy_url = f"http://{host}:{port}"; cred_req = True
+                res['auth'] = 'AUTH_FAILED'
+                if last_err: res['errors'].append(f'HTTPAUTH_{last_err}')
         elif s5_state == 'AUTH_REQUIRED':
             best_proto = 'SOCKS5'; proxy_url = f"socks5h://{host}:{port}"; cred_req = True; res['auth'] = s5_auth
         elif http_state == 'AUTH_REQUIRED':
@@ -1338,7 +1353,7 @@ def scan_proxy(entry: str, timeout: float,
             _write_outputs(res, file_lock, alive_path, proxy_urls_path, progress_lock, progress_data, entry)
             return console, res
 
-        actual_auth = auth_cred if auth_ok else None
+        actual_auth = auth_cred[0] if auth_ok and auth_cred else None
 
         test_host = "b-cdn.net"
         if best_proto == 'SOCKS4':
@@ -1658,10 +1673,41 @@ def main():
     if args.targets_config and Path(args.targets_config).exists():
         with open(args.targets_config, "r") as f: cfg.update(json.load(f))
 
-    auth_cred = None
+    # -------------------------------------------------------------
+    # passlist data 
+    # -------------------------------------------------------------
+    auth_cred = None   # none form 
+
     if args.auth:
-        if ':' not in args.auth: print(f"{Fore.RED}Error: --auth must be user:pass"); return
-        u, p = args.auth.split(':', 1); auth_cred = (u, p)
+        if ':' not in args.auth:
+            print(f"{Fore.RED}Error: --auth must be user:pass"); return
+        u, p = args.auth.split(':', 1)
+        auth_cred = [(u, p)]          # alone form
+        print(f"Using single credential from --auth: {u}:****")
+    else:
+        # passlist.txt check path
+        passlist_path = Path(__file__).parent / "passlist.txt"
+        if passlist_path.exists():
+            print(f"Found passlist.txt, loading credentials...")
+            auth_cred = []
+            with open(passlist_path, "r", encoding="utf-8") as pf:
+                for line in pf:
+                    line = line.strip()
+                    if not line or line.startswith("#"):
+                        continue
+                    if ':' not in line:
+                        print(f"{Fore.YELLOW}Warning: Skipping malformed line in passlist.txt: {line}{Style.RESET_ALL}")
+                        continue
+                    u, p = line.split(':', 1)
+                    auth_cred.append((u.strip(), p.strip()))
+                    if len(auth_cred) >= MAX_AUTH_ATTEMPTS:
+                        print(f"{Fore.YELLOW}Warning: passlist.txt had more than {MAX_AUTH_ATTEMPTS} entries; only first {MAX_AUTH_ATTEMPTS} will be used.{Style.RESET_ALL}")
+                        break
+            if not auth_cred:
+                print(f"{Fore.RED}Error: passlist.txt exists but contains no valid credentials.{Style.RESET_ALL}")
+                auth_cred = None
+            else:
+                print(f"Loaded {len(auth_cred)} credentials from passlist.txt.")
 
     allowed_nets = []
     if args.scope:
@@ -1721,7 +1767,7 @@ def main():
     if args.no_geo: print("GeoIP lookup DISABLED.")
     if args.verbose: print("Verbose output enabled.")
     if args.max_alive: print(f"Will stop after finding {args.max_alive} alive proxies.")
-    print("Press 'P' to pause, 'R' to resume.")
+    print("Press 'P' to pause, 'R' to resume, 'M' to abort & return to menu.")
     print("=" * 100)
 
     pause_event = threading.Event()
