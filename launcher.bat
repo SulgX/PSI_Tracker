@@ -54,6 +54,17 @@ if exist "%CONFIG%" (
     for /f "usebackq tokens=1,* delims==" %%a in ("%CONFIG%") do set "%%a=%%b"
 )
 
+:: ---------- Helpers for "none" ----------
+:: Case-insensitive "none" -> treat as empty
+:: We'll use a subroutine to check if a variable is "none" (case-insensitive) and return empty if so.
+goto :menu
+
+:isnone
+:: %1 = variable name, sets %~1 to empty if its value equals "none" (case-insensitive)
+set "temp_val=!%~1!"
+if /i "!temp_val!"=="none" set "%~1="
+exit /b
+
 :: ============================================================
 ::                       MAIN MENU
 :: ============================================================
@@ -109,6 +120,7 @@ echo.
 
 REM ---------- foolproof input without stray cursor ----------
 echo.
+set "opt="
 set /p "opt=Choose option: "
 
 :: ----------------------------------------------------------
@@ -153,21 +165,28 @@ pause >nul
 goto menu
 
 :: ============================================================
-::  INDIVIDUAL SETTERS (unchanged logic)
+::  INDIVIDUAL SETTERS (preserve current value on empty input)
 :: ============================================================
 :set_list
 echo.
-set /p "LIST_FILE=Enter list file path [%LIST_FILE%]: "
+call :isnone LIST_FILE
+set /p "LIST_FILE=Enter list file path (type 'none' to disable) [%LIST_FILE%]: "
+if "%LIST_FILE%"=="" set "LIST_FILE=none"
+call :isnone LIST_FILE
 goto menu
 
 :set_range
 echo.
 set /p "RANGE_LIST=Enter range(s) [%RANGE_LIST%]: "
+if "%RANGE_LIST%"=="" set "RANGE_LIST=none"
+call :isnone RANGE_LIST
 goto menu
 
 :set_port
 echo.
 set /p "PORT_LIST=Enter port(s) separated by space [%PORT_LIST%]: "
+if "%PORT_LIST%"=="" set "PORT_LIST=none"
+call :isnone PORT_LIST
 goto menu
 
 :set_threads
@@ -207,60 +226,78 @@ goto menu
 
 :set_alive
 echo.
-set /p "ALIVE_FILE=Enter alive output file name [%ALIVE_FILE%]: "
-if "%ALIVE_FILE%"=="" set "ALIVE_FILE=alive_proxies.txt"
+call :isnone ALIVE_FILE
+set /p "ALIVE_FILE=Enter alive output file name (type 'none' to disable) [%ALIVE_FILE%]: "
+if "%ALIVE_FILE%"=="" set "ALIVE_FILE=none"
+call :isnone ALIVE_FILE
 goto menu
 
 :set_urls
 echo.
-set /p "URLS_FILE=Enter URLs output file name [%URLS_FILE%]: "
-if "%URLS_FILE%"=="" set "URLS_FILE=proxy_urls.txt"
+call :isnone URLS_FILE
+set /p "URLS_FILE=Enter URLs output file name (type 'none' to disable) [%URLS_FILE%]: "
+if "%URLS_FILE%"=="" set "URLS_FILE=none"
+call :isnone URLS_FILE
 goto menu
 
 :set_checkpoint
 echo.
-set /p "CHECKPOINT=Enter checkpoint file name [%CHECKPOINT%]: "
-if "%CHECKPOINT%"=="" set "CHECKPOINT=scan_progress.json"
+call :isnone CHECKPOINT
+set /p "CHECKPOINT=Enter checkpoint file name (type 'none' to disable) [%CHECKPOINT%]: "
+if "%CHECKPOINT%"=="" set "CHECKPOINT=none"
+call :isnone CHECKPOINT
 goto menu
 
 :set_scope
 echo.
 set /p "SCOPE=Enter scope CIDRs (space separated) [%SCOPE%]: "
+if "%SCOPE%"=="" set "SCOPE=none"
+call :isnone SCOPE
 goto menu
 
 :set_allowall
-if "%ALLOW_ALL%"=="--allow-all" (set "ALLOW_ALL=") else set "ALLOW_ALL=--allow-all"
-echo Allow all is now: %ALLOW_ALL%
-pause
+:: Now a yes/no prompt, not toggle
+echo.
+echo Allow all currently: %ALLOW_ALL%
+set /p "allow_yn=Enable --allow-all? [y/N]: "
+if /i "!allow_yn!"=="y" (set "ALLOW_ALL=--allow-all") else set "ALLOW_ALL="
 goto menu
 
 :set_targets
 echo.
-set /p "TARGETS_CFG=Enter targets config JSON file (or empty) [%TARGETS_CFG%]: "
+call :isnone TARGETS_CFG
+set /p "TARGETS_CFG=Enter targets config JSON file (type 'none' to disable) [%TARGETS_CFG%]: "
+if "%TARGETS_CFG%"=="" set "TARGETS_CFG=none"
+call :isnone TARGETS_CFG
 goto menu
 
 :set_fallback
 echo.
-set /p "FALLBACK_IPS=Enter fallback IPs JSON file [%FALLBACK_IPS%]: "
-if "%FALLBACK_IPS%"=="" set "FALLBACK_IPS=fallback_ips.json"
+call :isnone FALLBACK_IPS
+set /p "FALLBACK_IPS=Enter fallback IPs JSON file (type 'none' to disable) [%FALLBACK_IPS%]: "
+if "%FALLBACK_IPS%"=="" set "FALLBACK_IPS=none"
+call :isnone FALLBACK_IPS
 goto menu
 
 :set_nogeo
-if "%NO_GEO%"=="--no-geo" (set "NO_GEO=") else set "NO_GEO=--no-geo"
-echo No GeoIP is now: %NO_GEO%
-pause
+echo.
+echo No GeoIP currently: %NO_GEO%
+set /p "nogeo_yn=Enable --no-geo? [y/N]: "
+if /i "!nogeo_yn!"=="y" (set "NO_GEO=--no-geo") else set "NO_GEO="
 goto menu
 
 :set_nodiv
-if "%NO_DIV%"=="--no-diversity" (set "NO_DIV=") else set "NO_DIV=--no-diversity"
-echo No diversity is now: %NO_DIV%
-pause
+echo.
+echo No diversity currently: %NO_DIV%
+set /p "nodiv_yn=Enable --no-diversity? [y/N]: "
+if /i "!nodiv_yn!"=="y" (set "NO_DIV=--no-diversity") else set "NO_DIV="
 goto menu
 
 :set_verbose
-if "%VERBOSE%"=="--verbose" (set "VERBOSE=") else set "VERBOSE=--verbose"
-echo Verbose is now: %VERBOSE%
-pause
+echo.
+echo Verbose currently: %VERBOSE%
+set /p "verbose_yn=Enable --verbose? [y/N]: "
+if /i "!verbose_yn!"=="y" (set "VERBOSE=--verbose") else set "VERBOSE="
 goto menu
 
 :set_maxalive
@@ -270,21 +307,24 @@ if "%MAX_ALIVE%"=="" set "MAX_ALIVE=0"
 goto menu
 
 :set_clean
-if "%CLEAN%"=="--clean" (set "CLEAN=") else set "CLEAN=--clean"
-echo Clean files is now: %CLEAN%
-pause
+echo.
+echo Clean files currently: %CLEAN%
+set /p "clean_yn=Enable --clean? [y/N]: "
+if /i "!clean_yn!"=="y" (set "CLEAN=--clean") else set "CLEAN="
 goto menu
 
 :set_retest
-if "%RETEST%"=="--retest" (set "RETEST=") else set "RETEST=--retest"
-echo Retest all is now: %RETEST%
-pause
+echo.
+echo Retest all currently: %RETEST%
+set /p "retest_yn=Enable --retest? [y/N]: "
+if /i "!retest_yn!"=="y" (set "RETEST=--retest") else set "RETEST="
 goto menu
 
 :set_refresh
-if "%REFRESH%"=="--refresh-ips" (set "REFRESH=") else set "REFRESH=--refresh-ips"
-echo Refresh fallback is now: %REFRESH%
-pause
+echo.
+echo Refresh fallback currently: %REFRESH%
+set /p "refresh_yn=Enable --refresh-ips? [y/N]: "
+if /i "!refresh_yn!"=="y" (set "REFRESH=--refresh-ips") else set "REFRESH="
 goto menu
 
 :: ============================================================
@@ -396,6 +436,17 @@ goto run
 ::  BUILD COMMAND & EXECUTE
 :: ============================================================
 :run
+:: First, treat all "none" values as empty
+call :isnone LIST_FILE
+call :isnone RANGE_LIST
+call :isnone PORT_LIST
+call :isnone ALIVE_FILE
+call :isnone URLS_FILE
+call :isnone CHECKPOINT
+call :isnone SCOPE
+call :isnone TARGETS_CFG
+call :isnone FALLBACK_IPS
+
 if "%REFRESH%"=="--refresh-ips" goto execute
 if "%LIST_FILE%"=="" if "%RANGE_LIST%"=="" (
     echo %ESC%[31m[ERROR] You must specify a list file [1] or a range [2].%ESC%[0m
@@ -410,27 +461,27 @@ if not "%LIST_FILE%"=="" if not exist "%LIST_FILE%" (
 
 :execute
 set "CMD=python "%SCRIPT%""
-if not "%LIST_FILE%"=="" set "CMD=!CMD! --list "%LIST_FILE%""
-if not "%RANGE_LIST%"=="" set "CMD=!CMD! --range "%RANGE_LIST%""
-if not "%PORT_LIST%"=="" set "CMD=!CMD! --port %PORT_LIST%"
+if not "%LIST_FILE%"==""   set "CMD=!CMD! --list "%LIST_FILE%""
+if not "%RANGE_LIST%"==""  set "CMD=!CMD! --range "%RANGE_LIST%""
+if not "%PORT_LIST%"==""   set "CMD=!CMD! --port %PORT_LIST%"
 set "CMD=!CMD! --threads %THREADS% --timeout %TIMEOUT%"
-if not "%TCP_MULT%"=="" set "CMD=!CMD! --tcp-timeout-mult %TCP_MULT%"
-if not "%AUTH%"=="" set "CMD=!CMD! --auth "%AUTH%""
-if not "%SSH_HOST%"=="" set "CMD=!CMD! --ssh-host %SSH_HOST%"
-if not "%SSH_PORT%"=="" set "CMD=!CMD! --ssh-port %SSH_PORT%"
-if not "%ALIVE_FILE%"=="" set "CMD=!CMD! --alive "%ALIVE_FILE%""
-if not "%URLS_FILE%"=="" set "CMD=!CMD! --urls "%URLS_FILE%""
-if not "%CHECKPOINT%"=="" set "CMD=!CMD! --checkpoint "%CHECKPOINT%""
-if not "%SCOPE%"=="" set "CMD=!CMD! --scope %SCOPE%"
+if not "%TCP_MULT%"==""    set "CMD=!CMD! --tcp-timeout-mult %TCP_MULT%"
+if not "%AUTH%"==""        set "CMD=!CMD! --auth "%AUTH%""
+if not "%SSH_HOST%"==""    set "CMD=!CMD! --ssh-host %SSH_HOST%"
+if not "%SSH_PORT%"==""    set "CMD=!CMD! --ssh-port %SSH_PORT%"
+if not "%ALIVE_FILE%"==""  set "CMD=!CMD! --alive "%ALIVE_FILE%""
+if not "%URLS_FILE%"==""   set "CMD=!CMD! --urls "%URLS_FILE%""
+if not "%CHECKPOINT%"==""  set "CMD=!CMD! --checkpoint "%CHECKPOINT%""
+if not "%SCOPE%"==""       set "CMD=!CMD! --scope %SCOPE%"
 if "%ALLOW_ALL%"=="--allow-all" set "CMD=!CMD! --allow-all"
 if not "%TARGETS_CFG%"=="" set "CMD=!CMD! --targets-config "%TARGETS_CFG%""
 if not "%FALLBACK_IPS%"=="" set "CMD=!CMD! --fallback-ips "%FALLBACK_IPS%""
-if "%NO_GEO%"=="--no-geo" set "CMD=!CMD! --no-geo"
+if "%NO_GEO%"=="--no-geo"   set "CMD=!CMD! --no-geo"
 if "%NO_DIV%"=="--no-diversity" set "CMD=!CMD! --no-diversity"
 if "%VERBOSE%"=="--verbose" set "CMD=!CMD! --verbose"
-if %MAX_ALIVE% gtr 0 set "CMD=!CMD! --max-alive %MAX_ALIVE%"
-if "%CLEAN%"=="--clean" set "CMD=!CMD! --clean"
-if "%RETEST%"=="--retest" set "CMD=!CMD! --retest"
+if %MAX_ALIVE% gtr 0        set "CMD=!CMD! --max-alive %MAX_ALIVE%"
+if "%CLEAN%"=="--clean"     set "CMD=!CMD! --clean"
+if "%RETEST%"=="--retest"   set "CMD=!CMD! --retest"
 if "%REFRESH%"=="--refresh-ips" set "CMD=!CMD! --refresh-ips"
 
 echo.
@@ -439,7 +490,7 @@ echo %ESC%[33m  Running PSI-Tracker...%ESC%[0m
 echo %ESC%[33m===============================================================================%ESC%[0m
 echo  !CMD!
 echo.
-echo %ESC%[36m  [TIP] Press P to pause, R to resume during scan.%ESC%[0m
+echo %ESC%[36m  [TIP] Press P to pause, R to resume, M to abort and return to menu.%ESC%[0m
 pause
 %CMD%
 echo %ESC%[32mScan finished. Press any key to return to menu.%ESC%[0m
